@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/http;//dreamsbydutch.github.io/gshl/static/css/main.073c9b0a.css",
-    "main.js": "/http;//dreamsbydutch.github.io/gshl/static/js/main.55ef328b.js",
-    "static/js/787.a5becb26.chunk.js": "/http;//dreamsbydutch.github.io/gshl/static/js/787.a5becb26.chunk.js",
-    "index.html": "/http;//dreamsbydutch.github.io/gshl/index.html",
-    "main.073c9b0a.css.map": "/http;//dreamsbydutch.github.io/gshl/static/css/main.073c9b0a.css.map",
-    "main.55ef328b.js.map": "/http;//dreamsbydutch.github.io/gshl/static/js/main.55ef328b.js.map",
-    "787.a5becb26.chunk.js.map": "/http;//dreamsbydutch.github.io/gshl/static/js/787.a5becb26.chunk.js.map"
+    "main.css": "/gshl/static/css/main.073c9b0a.css",
+    "main.js": "/gshl/static/js/main.f9b4c5aa.js",
+    "static/js/787.a5becb26.chunk.js": "/gshl/static/js/787.a5becb26.chunk.js",
+    "index.html": "/gshl/index.html",
+    "main.073c9b0a.css.map": "/gshl/static/css/main.073c9b0a.css.map",
+    "main.f9b4c5aa.js.map": "/gshl/static/js/main.f9b4c5aa.js.map",
+    "787.a5becb26.chunk.js.map": "/gshl/static/js/787.a5becb26.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.073c9b0a.css",
-    "static/js/main.55ef328b.js"
+    "static/js/main.f9b4c5aa.js"
   ]
 }
