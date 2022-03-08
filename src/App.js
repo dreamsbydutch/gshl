@@ -1,12 +1,11 @@
-// import logo from './logo.svg';
 import './App.css';
+import Standings from './components/Standings/Standings';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <h1>HELLO WORLD</h1>
-      </header>
+      <img src="https://dreamsbydutch.github.io/gshl/logo192.png" className="App-logo" alt="logo" />
+      <Standings />
     </div>
   );
 }
