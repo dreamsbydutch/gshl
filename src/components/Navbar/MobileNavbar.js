@@ -21,7 +21,7 @@ function NavBar() {
                 </Navbar.Brand>
                 <span className='nav-border-line' />
                 <Navbar.Brand as={Link} to="/golferstats">
-                    <img className="mobile-navbar-img" alt="PGC logo" src="https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/golferstatsIcon.png" />
+                    <img className="mobile-navbar-img" alt="PGC logo" src="https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/LockerRoomIcon.png" />
                 </Navbar.Brand>
                 <span className='nav-border-line' />
                 <Navbar.Brand as={Link} to="/rulebook">
