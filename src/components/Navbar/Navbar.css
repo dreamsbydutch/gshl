@@ -1,0 +1,27 @@
+.navbar-container {
+    font-size: 1.05rem;
+    font-weight: 500;
+}
+.nav-link {
+    margin: 0px 10px;
+}
+.nav-item {
+    margin: 0px 10px;
+}
+
+.navbar {
+    box-shadow: 0 2px 5px rgba(114,114,114,0.8);
+}
+
+@media screen and (max-width: 1000px) {
+    .navbar-container {
+        font-size: 0.9rem;
+        font-weight: 400;
+    }
+    .nav-link {
+        margin: 0px 0px;
+    }
+    .nav-item {
+        margin: 0px 0px;
+    }
+}

@@ -26,3 +26,28 @@ export function useStandingsFetch() {
     return { data, error, loading }
 
 }
+
+export function useScheduleFetch() {
+    const url = 'https://opensheet.elk.sh/12vxesMbhg1fDOy75Vs_AYrGGra_zBQhhyhXC8UJtNJQ/1'
+    const [data, setData] = useState(null)
+    const [error, setError] = useState(null)
+    const [loading, setLoading] = useState(false)
+
+    useEffect(() => {(
+            async function () {
+                try {
+                    setLoading(true)
+                    const response = await axios.get(url)
+                    setData(response.data)
+                } catch (err) {
+                    setError(err)
+                } finally {
+                    setLoading(false)
+                }
+            }
+        )()
+    }, [])
+
+    return { data, error, loading }
+
+}

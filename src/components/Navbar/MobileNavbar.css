@@ -1,0 +1,25 @@
+
+
+.mobile-navbar-img {
+    max-height: 45px;
+    max-width: 45px;
+}
+
+a.navbar-brand {
+    margin: 0 0.35rem;
+}
+.nav-border-line {
+    height: 40px;
+    width: 0px;
+    border : 1px solid #ddd;
+}
+
+
+
+
+@media only screen and (min-width: 360px) {
+    .mobile-navbar-img {
+        max-height: 50px;
+        max-width: 50px;
+    }
+}    
