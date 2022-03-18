@@ -1,51 +1,75 @@
-import React from 'react'
-import { Button, ButtonGroup, Container, Dropdown } from 'react-bootstrap'
+import React, { useState } from 'react'
+import { Button, ButtonGroup, Container, Row, Col } from 'react-bootstrap'
 import { Link, useParams } from 'react-router-dom'
 import { useFetchSchedule } from '../../hooks/schedule'
 import ErrorPage from '../../pages/ErrorPage/ErrorPage'
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner'
 import ScheduleItem from './ScheduleItem/ScheduleItem'
+import './ScheduleContainer.css'
 
 function Schedule() {
-  const { weekid } = useParams() 
+  const { weekid } = useParams()
+  const [schedType, setSchedType] = useState('Week')
   const scheduleData = useFetchSchedule('2021-22')
   if (scheduleData.loading) { return <LoadingSpinner /> }
   if (scheduleData.error) { return <ErrorPage /> }
   return (
     <Container fluid>
-      <Dropdown as={ButtonGroup}>
-        <Button as={Link} variant="Secondary" to="/schedule/21" className="leaderboard-header-live-button">Current Week</Button>
-        <Dropdown.Toggle split variant="Secondary" id="dropdown-split-basic" className="leaderboard-header-tournament-toggle" />
-        <Dropdown.Menu>
-          <Dropdown.Item as={Link} to="/schedule/1">Week 1</Dropdown.Item>
-          <Dropdown.Item as={Link} to="/schedule/2">Week 2</Dropdown.Item>
-          <Dropdown.Item as={Link} to="/schedule/3">Week 3</Dropdown.Item>
-          <Dropdown.Item as={Link} to="/schedule/4">Week 4</Dropdown.Item>
-          <Dropdown.Item as={Link} to="/schedule/5">Week 5</Dropdown.Item>
-          <Dropdown.Item as={Link} to="/schedule/6">Week 6</Dropdown.Item>
-          <Dropdown.Item as={Link} to="/schedule/7">Week 7</Dropdown.Item>
-          <Dropdown.Item as={Link} to="/schedule/8">Week 8</Dropdown.Item>
-          <Dropdown.Item as={Link} to="/schedule/9">Week 9</Dropdown.Item>
-          <Dropdown.Item as={Link} to="/schedule/10">Week 10</Dropdown.Item>
-          <Dropdown.Item as={Link} to="/schedule/11">Week 11</Dropdown.Item>
-          <Dropdown.Item as={Link} to="/schedule/12">Week 12</Dropdown.Item>
-          <Dropdown.Item as={Link} to="/schedule/13">Week 13</Dropdown.Item>
-          <Dropdown.Item as={Link} to="/schedule/14">Week 14</Dropdown.Item>
-          <Dropdown.Item as={Link} to="/schedule/15">Week 15</Dropdown.Item>
-          <Dropdown.Item as={Link} to="/schedule/16">Week 16</Dropdown.Item>
-          <Dropdown.Item as={Link} to="/schedule/17">Week 17</Dropdown.Item>
-          <Dropdown.Item as={Link} to="/schedule/18">Week 18</Dropdown.Item>
-          <Dropdown.Item as={Link} to="/schedule/19">Week 19</Dropdown.Item>
-          <Dropdown.Item as={Link} to="/schedule/20">Week 20</Dropdown.Item>
-          <Dropdown.Item as={Link} to="/schedule/21">Week 21</Dropdown.Item>
-          <Dropdown.Item as={Link} to="/schedule/22">Week 22</Dropdown.Item>
-          <Dropdown.Divider />
-          <Dropdown.Item as={Link} to="/schedule/23">Conference Semifinals</Dropdown.Item>
-          <Dropdown.Item as={Link} to="/schedule/24">Conference Finals</Dropdown.Item>
-          <Dropdown.Item as={Link} to="/schedule/25">GSHL Final</Dropdown.Item>
-        </Dropdown.Menu>
-      </Dropdown>
-      {scheduleData.data.filter(obj => obj.HomeTeam && obj.AwayTeam).filter(obj => obj.WeekNum === weekid).map((obj,i) => <ScheduleItem data={obj} key={i}/>)}
+      <ButtonGroup>
+        <Button onClick={() => setSchedType('Team')} variant="Secondary">Team Schedule</Button>
+        <Button onClick={() => setSchedType('Week')} variant="Secondary" >Weekly Schedule</Button>
+      </ButtonGroup>
+      {schedType === 'Week' &&
+        <>
+          <div>
+            <ButtonGroup className='season-listing-btn-group btn-group'>
+              <Button as={Link} variant="Secondary" to="/schedule/1" >1</Button>
+              <Button as={Link} variant="Secondary" to="/schedule/2" >2</Button>
+              <Button as={Link} variant="Secondary" to="/schedule/3" >3</Button>
+              <Button as={Link} variant="Secondary" to="/schedule/4" >4</Button>
+              <Button as={Link} variant="Secondary" to="/schedule/5" >5</Button>
+              <Button as={Link} variant="Secondary" to="/schedule/6" >6</Button>
+              <Button as={Link} variant="Secondary" to="/schedule/7" >7</Button>
+            </ButtonGroup>
+          </div>
+          <div>
+            <ButtonGroup className='season-listing-btn-group btn-group'>
+              <Button as={Link} variant="Secondary" to="/schedule/8" >8</Button>
+              <Button as={Link} variant="Secondary" to="/schedule/9" >9</Button>
+              <Button as={Link} variant="Secondary" to="/schedule/10" >10</Button>
+              <Button as={Link} variant="Secondary" to="/schedule/11" >11</Button>
+              <Button as={Link} variant="Secondary" to="/schedule/12" >12</Button>
+              <Button as={Link} variant="Secondary" to="/schedule/13" >13</Button>
+              <Button as={Link} variant="Secondary" to="/schedule/14" >14</Button>
+              <Button as={Link} variant="Secondary" to="/schedule/15" >15</Button>
+            </ButtonGroup>
+          </div>
+          <div>
+            <ButtonGroup className='season-listing-btn-group btn-group'>
+              <Button as={Link} variant="Secondary" to="/schedule/16" >16</Button>
+              <Button as={Link} variant="Secondary" to="/schedule/17" >17</Button>
+              <Button as={Link} variant="Secondary" to="/schedule/18" >18</Button>
+              <Button as={Link} variant="Secondary" to="/schedule/19" >19</Button>
+              <Button as={Link} variant="Secondary" to="/schedule/20" >20</Button>
+              <Button as={Link} variant="Secondary" to="/schedule/21" >21</Button>
+              <Button as={Link} variant="Secondary" to="/schedule/22" >22</Button>
+            </ButtonGroup>
+          </div>
+          <div>
+            <ButtonGroup className='playoff-listing-btn-group btn-group'>
+              <Button as={Link} variant="Secondary" to="/schedule/23" >CSF</Button>
+              <Button as={Link} variant="Secondary" to="/schedule/24" >CF</Button>
+              <Button as={Link} variant="Secondary" to="/schedule/25" >F</Button>
+            </ButtonGroup>
+          </div>
+          <Row className='schedule-header-row'>
+            <Col>Away Team</Col>
+            <Col className='col-2'>Score</Col>
+            <Col>Home Team</Col>
+          </Row>
+          {scheduleData.data.filter(obj => obj.HomeTeam && obj.AwayTeam).filter(obj => obj.WeekNum === weekid).map((obj, i) => <ScheduleItem data={obj} key={i} />)}
+        </>
+      }
     </Container>
   )
 }

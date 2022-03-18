@@ -1,6 +1,7 @@
 * {
   text-align:center;
   align-items:center;
+  box-sizing: border-box;
 }
 a {
   text-decoration: none;
