@@ -1,17 +1,27 @@
 import React, { useState } from 'react'
-import { Container, ButtonGroup, Button } from 'react-bootstrap'
+import { Container } from 'react-bootstrap'
+import PageNavbar from '../../components/Navbar/PageNavbar'
 import WeeklySchedule from '../../components/WeeklySchedule/WeeklySchedule'
 import './Schedule.css'
 
 function Schedule() {
   const [schedType, setSchedType] = useState('Week')
+
+  const pageNavData = [
+    {
+      'text': 'Team Schedule',
+      'onClick': () => setSchedType('Team')
+    },
+    {
+      'text': 'Weekly Schedule',
+      'onClick': () => setSchedType('Week')
+    }
+  ]
+  
   return (
     <>
       <Container>
-        <ButtonGroup>
-          <Button onClick={() => setSchedType('Team')} variant="Secondary">Team Schedule</Button>
-          <Button onClick={() => setSchedType('Week')} variant="Secondary" >Weekly Schedule</Button>
-        </ButtonGroup>
+        <PageNavbar data={pageNavData} />
         {schedType === 'Week' ? <WeeklySchedule /> : <></>}
       </Container>
     </>
