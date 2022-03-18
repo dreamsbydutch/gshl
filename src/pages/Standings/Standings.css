@@ -1,0 +1,38 @@
+.standings-nav {
+    width: 95%;
+    margin: 2rem auto;
+}
+.toggle-container {
+    display:grid;
+    grid-template-columns: repeat(4,1fr);
+}
+
+.standings-nav div {
+    justify-self: center;
+    align-self: center;
+    border-radius: 1.25rem;
+    margin: 0 0.25rem;
+    height: 8vh;
+}
+.standings-nav div:hover {
+    background-color: #eee;
+    color: #222;
+}
+.standings-nav div img{
+    width: 90%;
+    max-height: 100%
+}
+
+
+.standings-container {
+    border-radius: 3rem;
+    padding: 2rem 1rem;
+    margin: 0.25rem;
+}
+
+.SV {color: #1a4d83;}
+.HH {color: #77261c;}
+.WC,.OVR {color: #222;}
+.SV-bg {background-color: #1a4d8325;}
+.HH-bg {background-color: #77261c25;}
+.WC-bg,.OVR-bg {background-color: #22222225;}

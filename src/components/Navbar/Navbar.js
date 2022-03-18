@@ -16,24 +16,26 @@ function NavBar() {
                         <Nav.Link href="/gshl">Home</Nav.Link>
                         <Nav.Link aria-controls="basic-navbar-nav" href="/gshl#/schedule">Schedule</Nav.Link>
                         <Nav.Link aria-controls="basic-navbar-nav" href="/gshl#/standings">Standings</Nav.Link>
+                        <Nav.Link aria-controls="basic-navbar-nav" href="/gshl#/lockerroom">Locker Room</Nav.Link>
+                        <Nav.Link aria-controls="basic-navbar-nav" href="/gshl#/leagueoffice">League Office</Nav.Link>
                         <NavDropdown title="Teams" id="collapsible-nav-dropdown">
-                            <NavDropdown.Item href="/gshl#/tournament/11">Auto Draft All-Stars</NavDropdown.Item>
-                            <NavDropdown.Item href="/gshl#/tournament/10">Butabi Brothers</NavDropdown.Item>
-                            <NavDropdown.Item href="/gshl#/tournament/9">Dirty F & Gs</NavDropdown.Item>
-                            <NavDropdown.Item href="/gshl#/tournament/6">Dutch Rudders</NavDropdown.Item>
-                            <NavDropdown.Item href="/gshl#/tournament/2">Robert Thomas</NavDropdown.Item>
-                            <NavDropdown.Item href="/gshl#/tournament/3">Sauce Puck</NavDropdown.Item>
-                            <NavDropdown.Item href="/gshl#/tournament/4">The Poo Balances</NavDropdown.Item>
-                            <NavDropdown.Item href="/gshl#/tournament/14">Toronto Maple Reg's</NavDropdown.Item>
+                            <NavDropdown.Item href="/gshl#/teams/2">Auto Draft All-Stars</NavDropdown.Item>
+                            <NavDropdown.Item href="/gshl#/teams/">Butabi Brothers</NavDropdown.Item>
+                            <NavDropdown.Item href="/gshl#/teams/">Dirty F & Gs</NavDropdown.Item>
+                            <NavDropdown.Item href="/gshl#/teams/1">Dutch Rudders</NavDropdown.Item>
+                            <NavDropdown.Item href="/gshl#/teams/">Robert Thomas</NavDropdown.Item>
+                            <NavDropdown.Item href="/gshl#/teams/">Sauce Puck</NavDropdown.Item>
+                            <NavDropdown.Item href="/gshl#/teams/">The Poo Balances</NavDropdown.Item>
+                            <NavDropdown.Item href="/gshl#/teams/">Toronto Maple Reg's</NavDropdown.Item>
                             <NavDropdown.Divider />
-                            <NavDropdown.Item href="/gshl#/tournament/5">Ben Eagers Hands</NavDropdown.Item>
-                            <NavDropdown.Item href="/gshl#/tournament/7">Blazer Dri</NavDropdown.Item>
-                            <NavDropdown.Item href="/gshl#/tournament/8">Hubie's Beauties</NavDropdown.Item>
-                            <NavDropdown.Item href="/gshl#/tournament/1">Oxford Dandellions</NavDropdown.Item>
-                            <NavDropdown.Item href="/gshl#/tournament/12">Peps</NavDropdown.Item>
-                            <NavDropdown.Item href="/gshl#/tournament/13">The Juggernaut</NavDropdown.Item>
-                            <NavDropdown.Item href="/gshl#/tournament/15">THE WAUPOOS FLASH</NavDropdown.Item>
-                            <NavDropdown.Item href="/gshl#/tournament/7">Your Buds</NavDropdown.Item>
+                            <NavDropdown.Item href="/gshl#/teams/">Ben Eagers Hands</NavDropdown.Item>
+                            <NavDropdown.Item href="/gshl#/teams/">Blazer Dri</NavDropdown.Item>
+                            <NavDropdown.Item href="/gshl#/teams/">Hubie's Beauties</NavDropdown.Item>
+                            <NavDropdown.Item href="/gshl#/teams/">Oxford Dandellions</NavDropdown.Item>
+                            <NavDropdown.Item href="/gshl#/teams/">Peps</NavDropdown.Item>
+                            <NavDropdown.Item href="/gshl#/teams/">The Juggernaut</NavDropdown.Item>
+                            <NavDropdown.Item href="/gshl#/teams/">THE WAUPOOS FLASH</NavDropdown.Item>
+                            <NavDropdown.Item href="/gshl#/teams/">Your Buds</NavDropdown.Item>
                         </NavDropdown>
                     </Nav>
                 </Navbar.Collapse>

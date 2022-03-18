@@ -9,8 +9,10 @@ import Navbar from './components/Navbar/Navbar';
 import Footer from './components/Footer/Footer';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 import Home from './pages/Home/Home';
-import Standings from './components/Standings/Standings';
-import Schedule from './components/Schedule/Schedule';
+import Standings from './pages/Standings/Standings';
+import Schedule from './pages/Schedule/Schedule';
+import LeagueOffice from './pages/LeagueOffice/LeagueOffice';
+import LockerRoom from './pages/LockerRoom/LockerRoom';
 import ErrorPage from './pages/ErrorPage/ErrorPage';
 
 function App() {
@@ -21,8 +23,10 @@ function App() {
       <Container className='main-page-container'>
       <Routes>
           <Route exact path="/" element={<Home />} />
-          <Route path="/leaderboard" element={<Schedule />} />
+          <Route path="/schedule/:weekid" element={<Schedule />} />
           <Route path="/standings" element={<Standings />} />
+          <Route path="/lockerroom" element={<LockerRoom />} />
+          <Route path="/leagueoffice" element={<LeagueOffice />} />
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </Container>

@@ -4,26 +4,9 @@
   --shadow: 0 1px 5px rgba(104,104,104,0.8);
 }
 
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-
 .main-page-container {
   min-height: 750px;
   padding-top: 1rem;
   max-width: 650px;
-}
-
-
-@media only screen and (max-width: 850px) {  
-  body {
-    margin-top: 35px;
-    margin-bottom: 75px;
-  }
+  margin-bottom: 75px;
 }

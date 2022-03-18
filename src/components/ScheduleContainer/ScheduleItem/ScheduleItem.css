@@ -1,0 +1,13 @@
+.matchup-container {
+    padding: 0.5rem 0;
+    border-bottom: 1px dotted #666;
+}
+.teamName {
+    font-size: 0.8rem;
+}
+.W {
+    font-weight: bold;
+}
+.teamLogo img {
+    width:25px;
+}
