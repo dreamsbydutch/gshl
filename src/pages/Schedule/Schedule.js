@@ -10,11 +10,13 @@ function Schedule() {
   const pageNavData = [
     {
       'text': 'Team Schedule',
-      'onClick': () => setSchedType('Team')
+      'onClick': () => setSchedType('Team'),
+      'key': 'Team'
     },
     {
       'text': 'Weekly Schedule',
-      'onClick': () => setSchedType('Week')
+      'onClick': () => setSchedType('Week'),
+      'key': 'Week'
     }
   ]
 

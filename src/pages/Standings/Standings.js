@@ -8,20 +8,24 @@ function Standings() {
 
   const pageNavData = [
     {
-      'text': 'President\'s Trophy',
-      'onClick': () => setType('OVR')
+      'text': <img src='https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/League/GSHL.png' alt='Presidents Trophy logo' />,
+      'onClick': () => setType('OVR'),
+      'key': 'OVR'
     },
     {
-      'text': 'Wildcard',
-      'onClick': () => setType('WC')
+      'text': <img src='https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/League/GSHL.png' alt='Wildcard logo' />,
+      'onClick': () => setType('WC'),
+      'key': 'WC'
     },
     {
-      'text': <img src='https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/League/Sunview.png' alt='SV logo' />,
-      'onClick': () => setType('HH')
+      'text': <img src='https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/League/Hotel.png' alt='Hickory Hotel logo' />,
+      'onClick': () => setType('HH'),
+      'key': 'HH'
     },
     {
-      'text': 'Sunview Conf',
-      'onClick': () => setType('SV')
+      'text': <img src='https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/League/Sunview.png' alt='Sunview logo' />,
+      'onClick': () => setType('SV'),
+      'key': 'SV'
     }
   ]
 
