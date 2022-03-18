@@ -1,22 +1,9 @@
-.btn-group {
-    border-radius: 0.25rem;
-    margin: 0.5rem 0;
-    padding: 0;
-    width: 90%;
+.weekly-schedule-toolbar .btn-group {
+    margin-bottom: 1rem;
 }
-.btn-group a {
-    border-right: 1px dotted #777;
-}
-.btn-group a:last-child {
-    border-right: none;
-}
-
-.season-listing-btn-group {background-color: #eee;}
-.playoff-listing-btn-group {background-color: #ffd90033;}
 
 .schedule-header-row {
     font-weight: bold;
     font-size: 0.85rem;
-    padding: 0.25rem 0;
-    margin-top: 5rem;
+    padding: 1rem 0 0.5rem 0;
 }

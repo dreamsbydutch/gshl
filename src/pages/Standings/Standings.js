@@ -1,25 +1,33 @@
 import React, { useState } from 'react'
+import PageNavbar from '../../components/Navbar/PageNavbar'
 import StandingsContainer from '../../components/StandingsContainer/StandingsContainer'
 import './Standings.css'
 
 function Standings() {
   const [type, setType] = useState("OVR")
+
+  const pageNavData = [
+    {
+      'text': 'President\'s Trophy',
+      'onClick': () => setType('OVR')
+    },
+    {
+      'text': 'Wildcard',
+      'onClick': () => setType('WC')
+    },
+    {
+      'text': <img src='https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/League/Sunview.png' alt='SV logo' />,
+      'onClick': () => setType('HH')
+    },
+    {
+      'text': 'Sunview Conf',
+      'onClick': () => setType('SV')
+    }
+  ]
+
   return (
     <>
-      <div className='standings-nav toggle-container'>
-        <div onClick={() => {setType("OVR")}} className={'toggle-btn' + (type==='OVR'?' active' : '')}>
-          <img src='https://dreamsbydutch.github.io/GSHLicon.png' alt='OVR Logo' />
-        </div>
-        <div onClick={() => {setType("WC")}} className={'toggle-btn' + (type==='WC'?' active' : '')} >
-          <img src='https://dreamsbydutch.github.io/GSHLicon.png' alt='WC Logo' />
-        </div>
-        <div onClick={() => {setType("HH")}} className={'toggle-btn' + (type==='HH'?' active' : '')} >
-          <img src='https://dreamsbydutch.github.io/GSHL/Images/Logos/Hotel.png' alt='HH Logo' />
-        </div>
-        <div onClick={() => {setType("SV")}} className={'toggle-btn' + (type==='SV'?' active' : '')} >
-          <img src='https://dreamsbydutch.github.io/GSHL/Images/Logos/Sunview.png' alt='SV Logo' />
-        </div>
-      </div>
+      <PageNavbar data={pageNavData} active={type} />
       <div className={'standings-container '+type+'-bg'}>
         <StandingsContainer type={type} />    
       </div>

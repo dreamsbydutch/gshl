@@ -17,11 +17,11 @@ function Schedule() {
       'onClick': () => setSchedType('Week')
     }
   ]
-  
+
   return (
     <>
       <Container>
-        <PageNavbar data={pageNavData} />
+        <PageNavbar data={pageNavData} active={schedType} />
         {schedType === 'Week' ? <WeeklySchedule /> : <></>}
       </Container>
     </>
