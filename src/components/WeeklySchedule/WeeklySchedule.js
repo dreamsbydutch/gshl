@@ -12,11 +12,18 @@ function Schedule() {
   const scheduleData = useFetchSchedule('2021-22')
   if (scheduleData.loading) { return <LoadingSpinner /> }
   if (scheduleData.error) { return <ErrorPage /> }
-  console.log(weekID)
+  
+  const weeksList = [
+    {'type': 'RS', 'data':[1,2,3,4,5,6,7,8]},
+    {'type': 'RS', 'data':[9,10,11,12,13,14,15]},
+    {'type': 'RS', 'data':[16,17,18,19,20,21,22]},
+    {'type': 'PO', 'data':['1st Rd','Conf. Finals','Finals']}
+  ]
+
   return (
     <Container fluid>
         <>
-          <WeeksToolbar state={ {'data': weekID,'setter': setWeekID()} } />
+          <WeeksToolbar variant={{'RS':'outline-secondary','PO':'outline-warning'}} data={weeksList} setter={setWeekID} active={weekID} />
           <Row className='schedule-header-row'>
             <Col>Away Team</Col>
             <Col className='col-2'>Score</Col>
