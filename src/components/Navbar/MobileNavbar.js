@@ -12,7 +12,7 @@ function NavBar() {
                     <img className="mobile-navbar-img" alt="GSHL logo" src="https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/logo512.png" />
                 </Navbar.Brand>
                 <span className='nav-border-line' />
-                <Navbar.Brand as={Link} to="/schedule">
+                <Navbar.Brand as={Link} to="/schedule/21">
                     <img className="mobile-navbar-img" alt="PGC logo" src="https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/ScheduleIcon.png" />
                 </Navbar.Brand>
                 <span className='nav-border-line' />
