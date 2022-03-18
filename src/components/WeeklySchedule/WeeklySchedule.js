@@ -1,35 +1,30 @@
 import React, { useState } from 'react'
 import { Button, ButtonGroup, Container, Row, Col } from 'react-bootstrap'
-import { Link, useParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useFetchSchedule } from '../../hooks/schedule'
 import ErrorPage from '../../pages/ErrorPage/ErrorPage'
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner'
 import ScheduleItem from './ScheduleItem/ScheduleItem'
-import './ScheduleContainer.css'
+import './WeeklySchedule.css'
 
 function Schedule() {
-  const { weekid } = useParams()
-  const [schedType, setSchedType] = useState('Week')
+  const [weekID, setWeekID] = useState()
   const scheduleData = useFetchSchedule('2021-22')
   if (scheduleData.loading) { return <LoadingSpinner /> }
   if (scheduleData.error) { return <ErrorPage /> }
+  console.log(weekID)
   return (
     <Container fluid>
-      <ButtonGroup>
-        <Button onClick={() => setSchedType('Team')} variant="Secondary">Team Schedule</Button>
-        <Button onClick={() => setSchedType('Week')} variant="Secondary" >Weekly Schedule</Button>
-      </ButtonGroup>
-      {schedType === 'Week' &&
         <>
           <div>
             <ButtonGroup className='season-listing-btn-group btn-group'>
-              <Button as={Link} variant="Secondary" to="/schedule/1" >1</Button>
-              <Button as={Link} variant="Secondary" to="/schedule/2" >2</Button>
-              <Button as={Link} variant="Secondary" to="/schedule/3" >3</Button>
-              <Button as={Link} variant="Secondary" to="/schedule/4" >4</Button>
-              <Button as={Link} variant="Secondary" to="/schedule/5" >5</Button>
-              <Button as={Link} variant="Secondary" to="/schedule/6" >6</Button>
-              <Button as={Link} variant="Secondary" to="/schedule/7" >7</Button>
+              <Button variant="Secondary" onClick={() => setWeekID(1)} >1</Button>
+              <Button variant="Secondary" onClick={() => setWeekID(2)} >2</Button>
+              <Button variant="Secondary" onClick={() => setWeekID(3)} >3</Button>
+              <Button variant="Secondary" onClick={() => setWeekID(4)} >4</Button>
+              <Button variant="Secondary" onClick={() => setWeekID(5)} >5</Button>
+              <Button variant="Secondary" onClick={() => setWeekID(6)} >6</Button>
+              <Button variant="Secondary" onClick={() => setWeekID(7)} >7</Button>
             </ButtonGroup>
           </div>
           <div>
@@ -67,9 +62,8 @@ function Schedule() {
             <Col className='col-2'>Score</Col>
             <Col>Home Team</Col>
           </Row>
-          {scheduleData.data.filter(obj => obj.HomeTeam && obj.AwayTeam).filter(obj => obj.WeekNum === weekid).map((obj, i) => <ScheduleItem data={obj} key={i} />)}
+          {scheduleData.data.filter(obj => obj.HomeTeam && obj.AwayTeam).filter(obj => obj.WeekNum === weekID).map((obj, i) => <ScheduleItem data={obj} key={i} />)}
         </>
-      }
     </Container>
   )
 }

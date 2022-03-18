@@ -23,7 +23,7 @@ function App() {
       <Container className='main-page-container'>
       <Routes>
           <Route exact path="/" element={<Home />} />
-          <Route path="/schedule/:weekid" element={<Schedule />} />
+          <Route path="/schedule" element={<Schedule />} />
           <Route path="/standings" element={<Standings />} />
           <Route path="/lockerroom" element={<LockerRoom />} />
           <Route path="/leagueoffice" element={<LeagueOffice />} />
