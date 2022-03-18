@@ -7,7 +7,7 @@ import ScheduleItem from './ScheduleItem/ScheduleItem'
 import './WeeklySchedule.css'
 import WeeksToolbar from './WeeksToolbar/WeeksToolbar'
 
-function Schedule() {
+function Schedule(props) {
   const [weekID, setWeekID] = useState(21)
   const scheduleData = useFetchSchedule('2021-22')
   if (scheduleData.loading) { return <LoadingSpinner /> }
@@ -23,7 +23,7 @@ function Schedule() {
   return (
     <Container fluid>
         <>
-          <WeeksToolbar variant={{'RS':'outline-secondary','PO':'outline-warning'}} data={weeksList} setter={setWeekID} active={weekID} />
+          {props.toolbar && <WeeksToolbar variant={{'RS':'outline-secondary','PO':'outline-warning'}} data={weeksList} setter={setWeekID} active={weekID} />}
           <Row className='schedule-header-row'>
             <Col>Away Team</Col>
             <Col className='col-2'>Score</Col>

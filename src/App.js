@@ -19,8 +19,8 @@ function App() {
   return (
     <Router>
       <ScrollToTop />
-      {window.innerWidth < 850 ? <><MobileNavbar /></> : <Navbar />}
-      <Container className='main-page-container'>
+      {window.innerWidth < 801 ? <><MobileNavbar /></> : <Navbar />}
+      <Container className='main-page-container' fluid>
       <Routes>
           <Route exact path="/" element={<Home />} />
           <Route path="/schedule" element={<Schedule />} />
@@ -30,7 +30,7 @@ function App() {
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </Container>
-      {window.innerWidth < 850 ? <div style={{ 'color': '#fff' }}>.</div> : <Footer />}
+      {window.innerWidth < 801 ? <div style={{ 'color': '#fff' }}>.</div> : <Footer />}
     </Router >
   );
 }

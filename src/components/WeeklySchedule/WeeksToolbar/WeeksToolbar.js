@@ -1,9 +1,10 @@
 import React from 'react'
-import { Button, ButtonGroup, ButtonToolbar } from 'react-bootstrap'
+import { Button, ButtonGroup, Stack } from 'react-bootstrap'
+import './WeeksToolbar.css'
 
 function WeeksToolbar(props) {
     return (
-        <ButtonToolbar className='weekly-schedule-toolbar justify-content-center'>
+        <Stack gap={2} className='weekly-schedule-toolbar justify-content-center'>
             {props.data.map((group,i) => {
                 const grouptype = group.type;
                 return (
@@ -13,7 +14,7 @@ function WeeksToolbar(props) {
                     ))}
                 </ButtonGroup>
             )})}
-        </ButtonToolbar>
+        </Stack>
     )
 }
 

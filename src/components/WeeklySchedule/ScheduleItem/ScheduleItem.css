@@ -2,13 +2,32 @@
     padding: 0.5rem 0;
     border-bottom: 1px dotted #666;
 }
-.teamName {
-    font-size: 0.8rem;
-}
+.teamName {font-size: 0.6rem;}
+.score {font-size:0.7rem;}
 .W {
     font-weight: bold;
-    font-size: 0.825rem;
+    font-size: 0.625rem;
 }
-.teamLogo img {
-    width: 100%;
+.teamLogo img {width: 100%;}
+
+
+@media screen and (min-width: 360px) {
+    .teamName {font-size: 0.675rem;}
+    .score {font-size:0.775rem;}
+    .W {font-size: 0.725rem;}
+}
+@media screen and (min-width: 412px) {
+    .teamName {font-size: 0.775rem;}
+    .score {font-size:0.875rem;}
+    .W {font-size: 0.825rem;}
+}
+@media screen and (min-width: 480px) {
+    .teamName {font-size: 0.875rem;}
+    .score {font-size:1rem;}
+    .W {font-size: 0.925rem;}
+}
+@media screen and (min-width: 768px) {
+    .teamName {font-size: 1.125rem;}
+    .score {font-size:1.3rem;}
+    .W {font-size: 1.2rem;}
 }

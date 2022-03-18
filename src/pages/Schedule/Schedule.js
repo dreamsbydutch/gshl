@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { Container } from 'react-bootstrap'
 import PageNavbar from '../../components/Navbar/PageNavbar'
 import WeeklySchedule from '../../components/WeeklySchedule/WeeklySchedule'
+import TeamSchedule from '../../components/TeamSchedule/TeamSchedule'
 import './Schedule.css'
 
 function Schedule() {
@@ -22,10 +22,9 @@ function Schedule() {
 
   return (
     <>
-      <Container>
-        <PageNavbar data={pageNavData} active={schedType} />
-        {schedType === 'Week' ? <WeeklySchedule /> : <></>}
-      </Container>
+      <PageNavbar data={pageNavData} active={schedType} />
+      {schedType === 'Week' ? <WeeklySchedule toolbar={true} /> : <></>}
+      {schedType === 'Team' ? <TeamSchedule toolbar={true} /> : <></>}
     </>
   )
 }
