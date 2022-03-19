@@ -1,7 +1,21 @@
 button img {
-    height: 35px;
+    height: 27px;
     padding: 0rem;
 }
 .btn.team-toolbar-logo {
     padding: 0.25rem;
+}
+
+@media screen and (min-width: 360px) {
+    button img {height: 33px;}
+}
+@media screen and (min-width: 412px) {
+    button img {height: 40px;}
+}
+@media screen and (min-width: 480px) {
+    button img {height: 47px;}
+}
+@media screen and (min-width: 768px) {
+    button img {height: 55px;}
+    .btn.team-toolbar-logo {padding: 0.5rem}
 }
