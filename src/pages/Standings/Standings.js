@@ -31,7 +31,7 @@ function Standings() {
 
   return (
     <>
-      <PageNavbar data={pageNavData} active={type} />
+      <PageNavbar data={pageNavData} active={type} variant='outline-secondary' />
       <div className={'standings-container '+type+'-bg'}>
         <StandingsContainer type={type} />    
       </div>

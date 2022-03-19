@@ -9,7 +9,7 @@ function PageNavbar(props) {
         {props.data.map((obj, i) => {
           const classNames = ['page-nav-btn'];
           if (props.active === obj.key) { classNames.push('active') };
-          return <Button key={i} variant='outline-dark' className={classNames.join(' ')} onClick={obj.onClick} >{obj.text}</Button>
+          return <Button key={i} variant={props.variant || 'outline-dark'} className={classNames.join(' ')} onClick={obj.onClick} >{obj.text}</Button>
         })}
       </ButtonGroup>
     </>

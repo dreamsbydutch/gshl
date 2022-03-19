@@ -7,7 +7,7 @@ import ScheduleItem from './ScheduleItem/ScheduleItem'
 import './WeeklySchedule.css'
 import WeeksToolbar from './WeeksToolbar/WeeksToolbar'
 
-function Schedule(props) {
+function WeeklySchedule(props) {
   const [weekID, setWeekID] = useState(21)
   const scheduleData = useFetchSchedule('2021-22')
   if (scheduleData.loading) { return <LoadingSpinner /> }
@@ -35,4 +35,4 @@ function Schedule(props) {
   )
 }
 
-export default Schedule
+export default WeeklySchedule

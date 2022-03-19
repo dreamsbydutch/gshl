@@ -3,7 +3,6 @@ import { Col, Row } from 'react-bootstrap'
 import './ScheduleItem.css'
 
 function ScheduleItem(props) {
-  console.log(props.data)
   return (
     <>
       <Row className='matchup-container'>

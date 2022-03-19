@@ -1,0 +1,24 @@
+.row.team-schedule-item {
+    padding: 0.25rem 0;
+    border-bottom: 1px dotted #bbb;
+}
+.row.team-schedule-item:last-child {
+    border-bottom: none;
+}
+
+.col.team-schedule-opponent, .col.team-schedule-WL, .col.team-schedule-score {
+    padding: 0;
+    margin: 0;
+}
+.col.team-schedule-opponent {
+    font-size: 0.95rem;
+}
+.col.team-schedule-W {
+    color: green;
+    font-weight: bold;
+    font-size: 0.8rem;
+}
+.col.team-schedule-L {
+    color: red;
+    font-size: 0.8rem;
+}
