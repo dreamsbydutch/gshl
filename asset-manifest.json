@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/gshl/static/css/main.f2375eb3.css",
+    "main.css": "/gshl/static/css/main.79c280a5.css",
     "main.js": "/gshl/static/js/main.83ad6f96.js",
     "static/media/fontawesome-webfont.svg?v=4.7.0": "/gshl/static/media/fontawesome-webfont.c1e38fd9e0e74ba58f7a.svg",
     "static/media/fontawesome-webfont.eot": "/gshl/static/media/fontawesome-webfont.8b43027f47b20503057d.eot",
@@ -8,11 +8,11 @@
     "static/media/fontawesome-webfont.woff?v=4.7.0": "/gshl/static/media/fontawesome-webfont.f691f37e57f04c152e23.woff",
     "static/media/fontawesome-webfont.woff2?v=4.7.0": "/gshl/static/media/fontawesome-webfont.20fd1704ea223900efa9.woff2",
     "index.html": "/gshl/index.html",
-    "main.f2375eb3.css.map": "/gshl/static/css/main.f2375eb3.css.map",
+    "main.79c280a5.css.map": "/gshl/static/css/main.79c280a5.css.map",
     "main.83ad6f96.js.map": "/gshl/static/js/main.83ad6f96.js.map"
   },
   "entrypoints": [
-    "static/css/main.f2375eb3.css",
+    "static/css/main.79c280a5.css",
     "static/js/main.83ad6f96.js"
   ]
 }
