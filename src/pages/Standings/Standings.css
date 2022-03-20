@@ -2,7 +2,7 @@
     padding: 0.25rem;
 }
 .standings-page-nav div button img {
-    height: 75px;
+    height: 60px;
 }
 
 .standings-container {
@@ -19,3 +19,17 @@
 .WC-bg,.OVR-bg {background-color: #22222225;}
 
 
+
+
+@media screen and (min-width: 360px) {
+    .standings-page-nav div button img {height: 70px;}
+}
+@media screen and (min-width: 412px) {
+    .standings-page-nav div button img {height: 85px;}
+}
+@media screen and (min-width: 480px) {
+    .standings-page-nav div button img {height: 95px;}
+}
+@media screen and (min-width: 768px) {
+    .standings-page-nav div button img {height: 110px;}
+}
