@@ -8,7 +8,7 @@ import './WeeklySchedule.css'
 import WeeksToolbar from './WeeksToolbar/WeeksToolbar'
 
 function WeeklySchedule(props) {
-  const [weekID, setWeekID] = useState(21)
+  const [weekID, setWeekID] = useState(22)
   const scheduleData = useFetchSchedule('2021-22')
   if (scheduleData.loading) { return <LoadingSpinner /> }
   if (scheduleData.error) { return <ErrorPage /> }
