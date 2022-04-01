@@ -10,7 +10,18 @@ function WeeksToolbar(props) {
                 return (
                 <ButtonGroup key={i}>
                     {group.data.map((item,j) => (
-                        <Button key={j} variant={props.variant[grouptype]} onClick={() => props.setter(item)} className={props.active===item ? 'active' : null} >{item}</Button>
+                        <Button 
+                            key={j} 
+                            variant={props.variant[grouptype]} 
+                            onClick={() => {
+                            if(isNaN(item)) {
+                                props.setter(23+j)
+                            } else {
+                                props.setter(item)
+                            }}}
+                            className={props.active===item ? 'active' : null} >
+                            {item}
+                        </Button>
                     ))}
                 </ButtonGroup>
             )})}
