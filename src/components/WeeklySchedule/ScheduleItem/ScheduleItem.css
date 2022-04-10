@@ -2,6 +2,9 @@
     padding: 0.5rem 0;
     border-bottom: 1px dotted #666;
 }
+.matchup-container:last-child {
+    border-bottom: none;
+}
 .teamName {font-size: 0.6rem;}
 .score {font-size:0.7rem;}
 .W {
@@ -9,7 +12,7 @@
     font-size: 0.625rem;
 }
 .teamLogo img {width: 100%;}
-
+.matchup-container .matchup-stats {width: 75%;margin:auto;}
 
 @media screen and (min-width: 360px) {
     .teamName {font-size: 0.675rem;}

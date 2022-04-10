@@ -1,0 +1,21 @@
+.team-stat-leader {
+    font-weight: 600;
+    font-size: 1.25rem;
+    color: green;
+}
+.team-stat {
+    font-weight: 400;
+    font-size: 1.15rem;
+    color: rgb(75, 4, 4);
+}
+.matchup-stats .stat-row {
+    border-bottom: 1px dotted #ccc;
+    margin: 0.2rem 0;
+}
+.stat-row:last-child {
+    border-bottom: none;
+}
+.stat-label {
+    font-weight:500;
+    font-size:1.1rem;
+}

@@ -27,6 +27,7 @@ function App() {
           <Route path="/standings" element={<Standings />} />
           <Route path="/lockerroom" element={<LockerRoom />} />
           <Route path="/leagueoffice" element={<LeagueOffice />} />
+          <Route path="/matchup/:id" element={<LeagueOffice />} />
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </Container>
