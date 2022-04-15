@@ -1,13 +1,14 @@
 .team-stat-leader {
     font-weight: 600;
-    font-size: 1.25rem;
-    color: green;
+    font-size: 0.65rem;
+    color: rgb(0, 150, 0);
 }
 .team-stat {
-    font-weight: 400;
-    font-size: 1.15rem;
-    color: rgb(75, 4, 4);
+    font-weight: 350;
+    font-size: 0.55rem;
+    color: rgb(150, 0,0);
 }
+.matchup-stats {padding-top:1rem;padding-bottom:2.5rem;}
 .matchup-stats .stat-row {
     border-bottom: 1px dotted #ccc;
     margin: 0.2rem 0;
@@ -16,6 +17,28 @@
     border-bottom: none;
 }
 .stat-label {
-    font-weight:500;
-    font-size:1.1rem;
+    font-weight:400;
+    font-size:0.55rem;
+}
+
+
+@media screen and (min-width: 360px) {
+    .stat-label {font-size:0.6rem}
+    .team-stat {font-size:0.6875rem;}
+    .team-stat-leader {font-size: 0.75rem;}
+}
+@media screen and (min-width: 412px) {
+    .stat-label {font-size:0.675rem}
+    .team-stat {font-size:0.775rem;}
+    .team-stat-leader {font-size: 0.85rem;}
+}
+@media screen and (min-width: 480px) {
+    .stat-label {font-size:0.775rem}
+    .team-stat {font-size:0.825rem;}
+    .team-stat-leader {font-size: 0.9rem;}
+}
+@media screen and (min-width: 768px) {
+    .stat-label {font-size:0.9rem}
+    .team-stat {font-size:0.975rem;}
+    .team-stat-leader {font-size: 1.05rem;}
 }
