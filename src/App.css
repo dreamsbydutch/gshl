@@ -15,6 +15,9 @@
   margin-bottom: 75px;
 }
 
+.cup-logo-img-home {
+    display: block;
+}
 .cup-logo-img-home img {
     width: 60%;
 }
