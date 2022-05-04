@@ -1,0 +1,19 @@
+table {
+    margin: 0.5rem 5%;
+    width: 90%;
+}
+
+thead {
+    font-weight: 500;
+}
+
+.contractTableHeader, .salariesTableHeader {
+    margin: 2.5rem 0 0 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+.capSpace {
+    margin: 2rem 0;
+    font-size: 1.6rem;
+    font-weight: 700;
+}

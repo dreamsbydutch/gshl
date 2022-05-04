@@ -12,7 +12,7 @@ function WeeklySchedule(props) {
   const scheduleData = useFetchSchedule('2021-22')
   if (scheduleData.loading) { return <LoadingSpinner /> }
   if (scheduleData.error) { return <ErrorPage /> }
-  
+
   const weeksList = [
     {'type': 'RS', 'data':[1,2,3,4,5,6,7,8]},
     {'type': 'RS', 'data':[9,10,11,12,13,14,15]},
