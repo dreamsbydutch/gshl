@@ -28,12 +28,12 @@ function LockerRoom() {
           </tr>
         </thead>
         <tbody>
-          {contractData.data.filter(obj => new Date(obj.EndDate) > new Date()).map(obj => {
+          {contractData.data.filter(obj => obj.EndDate > new Date()).map(obj => {
             return (
               <tr key={obj.id}>
                 <td>{obj.Player}</td>
                 <td>{obj.Pos}</td>
-                <td>{obj.AAV}</td>
+                <td>{obj.CapHit}</td>
                 <td>{obj.EndDate - new Date()}</td>
               </tr>
             )
@@ -50,12 +50,12 @@ function LockerRoom() {
           </tr>
         </thead>
         <tbody>
-          {salaryData.data.sort((a, b) => b.Salary.replace(",", "").replace(",", "").replace("$", "") - a.Salary.replace(",", "").replace(",", "").replace("$", "")).map(obj => {
+          {salaryData.data.sort((a, b) => b.CapHit.replace(",", "").replace(",", "").replace("$", "") - a.CapHit.replace(",", "").replace(",", "").replace("$", "")).map(obj => {
             return (
               <tr key={obj.id}>
                 <td>{obj.PlayerName}</td>
                 <td>{obj.nhlPos}</td>
-                <td>{obj.Salary}</td>
+                <td>{obj.CapHit}</td>
               </tr>
             )
           })}
