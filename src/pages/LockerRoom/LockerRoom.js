@@ -16,7 +16,7 @@ function LockerRoom() {
   return (
     <>
       <TeamsToolbar variant='outline-secondary' setter={setTeamID} active={teamID} />
-      <div className='capSpace'>Cap Space - {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumSignificantDigits: 3 }).format(22500000 - contractData.data.reduce((a,b) => a + +b.Salary.replace(",", "").replace(",", "").replace("$", ""), 0))}</div>
+      <div className='capSpace'>Cap Space - {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumSignificantDigits: 3 }).format(22500000 - contractData.data.reduce((a,b) => a + +b.CapHit.replace(",", "").replace(",", "").replace("$", ""), 0))}</div>
       <div className='contractTableHeader'>Current Contracts</div>
       <table className='contractTable'>
         <thead>
@@ -28,13 +28,13 @@ function LockerRoom() {
           </tr>
         </thead>
         <tbody>
-          {contractData.data.filter(obj => new Date(obj.Termination) > new Date()).map(obj => {
+          {contractData.data.filter(obj => new Date(obj.EndDate) > new Date()).map(obj => {
             return (
               <tr key={obj.id}>
                 <td>{obj.Player}</td>
                 <td>{obj.Pos}</td>
                 <td>{obj.AAV}</td>
-                <td>{obj.Years-1}</td>
+                <td>{obj.EndDate - new Date()}</td>
               </tr>
             )
           })}
