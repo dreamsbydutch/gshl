@@ -1,81 +1,63 @@
-import { useEffect, useState } from 'react'
-import useFetch from './useFetch'
+import axios from 'axios'
+import { useQuery } from 'react-query';
 
 
-export function useFetchAllSalaries() {
-    const allSalariesURL = 'https://opensheet.elk.sh/159KBWmaW7ystY-O7FIlOrZPvyjJP6rro63BkgkCfp-Q/1'
-    const allSalariesFetchData = useFetch(allSalariesURL)
-
-    const [data, setData] = useState(null)
-    const [error, setError] = useState(null)
-    const [loading, setLoading] = useState(true)
-
-    useEffect(() => {
-        (
-            async function () {
-                try {
-                    setLoading(true)
-                    if (allSalariesFetchData.data) {
-                        setData(allSalariesFetchData.data)
-                        setLoading(false)
-                    }
-                } catch (err) {
-                    setError(err)
-                }
-            }
-        )()
-    }, [allSalariesFetchData.data])
-    return { data, error, loading }
+const getAllContracts = async () => {
+    return await axios.get('https://opensheet.elk.sh/1jiL1gtJ-_Drlksr24kWaiRABOEniO0pg4Vlm05SFqYM/Contracts')
+}
+const getAllEligiblePlayers = async () => {
+    return await axios.get('https://opensheet.elk.sh/1qtdxTU_LhU9AF6lUxo5QhXlREbrj00_-4NurVD458f8/EligiblePlayers')
+}
+const getAllSalaries = async () => {
+    return await axios.get('https://opensheet.elk.sh/159KBWmaW7ystY-O7FIlOrZPvyjJP6rro63BkgkCfp-Q/Salaries')
+}
+export function useAllContracts() {
+  return useQuery("getAllContracts", getAllContracts);
+}
+export function useAllEligiblePlayers() {
+  return useQuery("getAllEligiblePlayers", getAllEligiblePlayers);
+}
+export function useAllSalaries() {
+  return useQuery("getAllSalaries", getAllSalaries);
 }
 
-export function useFetchTeamSalaries(teamID) {
-    const teamSalariesURL = 'https://opensheet.elk.sh/159KBWmaW7ystY-O7FIlOrZPvyjJP6rro63BkgkCfp-Q/2'
-    const teamSalariesFetchData = useFetch(teamSalariesURL)
 
-    const [data, setData] = useState(null)
-    const [error, setError] = useState(null)
-    const [loading, setLoading] = useState(true)
+export function useTeamContracts(teamID=null) {
+  const contractsObj = useAllContracts()
 
-    useEffect(() => {
-        (
-            async function () {
-                try {
-                    setLoading(true)
-                    if (teamSalariesFetchData.data) {
-                        setData(teamSalariesFetchData.data.filter(obj => obj.gshlTeam === teamID))
-                        setLoading(false)
-                    }
-                } catch (err) {
-                    setError(err)
-                }
-            }
-        )()
-    }, [teamSalariesFetchData.data, teamID])
-    return { data, error, loading }
+  if (contractsObj.isLoading) return []
+  if (contractsObj.error) return {error: contractsObj.error}
+
+
+  var teamContracts = []
+  var contracts = contractsObj.data.data.filter(obj => obj.CurrentTeam === teamID && new Date(obj.CapHitExpiry) >= new Date())
+  contracts.forEach((contract,index) => {
+    var name = contract.Player
+    var pos = contract.Pos
+    var salary = contract.CapHit
+    var yearsRem = contract.YearsRemaining
+    teamContracts.push({id:index, Player:name, Pos:pos, Salary:salary, YearsRem: yearsRem})
+  })
+
+  return teamContracts.sort((a,b) => b.Salary.replace(",","").replace(",","").replace("$","") - a.Salary.replace(",","").replace(",","").replace("$",""))
 }
+export function useTeamSalaries(teamID=null) {
+  const salariesObj = useAllSalaries()
+  const eligiblePlayersObj = useAllEligiblePlayers()
 
-export function useFetchTeamContracts(teamID) {
-    const teamContractsURL = 'https://opensheet.elk.sh/1jiL1gtJ-_Drlksr24kWaiRABOEniO0pg4Vlm05SFqYM/7'
-    const teamContractsFetchData = useFetch(teamContractsURL)
+  if (salariesObj.isLoading || eligiblePlayersObj.isLoading) return []
+  if (salariesObj.error) return {error: salariesObj.error}
+  if (eligiblePlayersObj.error) return {error: eligiblePlayersObj.error}
 
-    const [data, setData] = useState(null)
-    const [error, setError] = useState(null)
-    const [loading, setLoading] = useState(true)
+  var teamSalaries = []
+  var players = eligiblePlayersObj.data.data.filter(obj => obj.teamID === teamID)
+  players.forEach((player,index) => {
+    const playerSalary = salariesObj.data.data.filter(obj => obj.Name === player.PlayerName)[0]
+    var name = player.PlayerName
+    var pos = playerSalary.Pos
+    var salary = playerSalary.Salary
+    teamSalaries.push({id:index, Player:name, Pos:pos, Salary:salary})
+  })
 
-    useEffect(() => {
-        (
-            async function () {
-                try {
-                    setLoading(true)
-                    if (teamContractsFetchData.data) {
-                        setData(teamContractsFetchData.data.filter(obj => obj.Team === teamID && new Date(obj.Expiry) > new Date()))
-                        setLoading(false)
-                    }
-                } catch (err) {
-                    setError(err)
-                }
-            }
-        )()
-    }, [teamContractsFetchData.data, teamID])
-    return { data, error, loading }
+  return teamSalaries
 }
