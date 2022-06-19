@@ -1,24 +1,22 @@
 import './LockerRoom.css'
 import React, { useState } from 'react'
-// import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner'
+import LoadingSpinner from '../../utils/LoadingSpinner/LoadingSpinner'
 import TeamsToolbar from '../../components/TeamSchedule/TeamsToolbar/TeamsToolbar'
-import { useTeamContracts, useTeamSalaries } from '../../hooks/salaries'
+import { useAllContracts } from '../../hooks/getContractInfo'
 
 function LockerRoom() {
-  const [teamID, setTeamID] = useState(1)
-  const contractData = useTeamContracts(teamID)
-  const salaryData = useTeamSalaries(teamID)
-  
-  var capSpace = 22500000
-  contractData.forEach(obj => {
-    capSpace -= +obj.Salary.replace(",","").replace(",","").replace("$","")
-  })
+  const [teamID, setTeamID] = useState(null)
+  const allContractData = useAllContracts()
+  console.log("allContract", allContractData)
+  console.log("teamID",teamID)
 
+  if (allContractData.isLoading) return <LoadingSpinner />
+  
 
   return (
     <>
       <TeamsToolbar variant='outline-secondary' setter={setTeamID} active={teamID} />
-      <div className='capSpace'>Cap Space - ${capSpace.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</div>
+      <div className='capSpace'>Cap Space - $0</div>
       <div className='contractTableHeader'>Current Contracts & Buyouts</div>
       <table className='contractTable'>
         <thead>
@@ -30,7 +28,7 @@ function LockerRoom() {
           </tr>
         </thead>
         <tbody>
-          {contractData.map(obj => {
+          {/* {teamContractData.contracts.map(obj => {
             return (
               <tr key={obj.id}>
                 <td>{obj.Player}</td>
@@ -39,7 +37,7 @@ function LockerRoom() {
                 <td>{obj.YearsRem}</td>
               </tr>
             )
-          })}
+          })} */}
         </tbody>
       </table>
       <div className='salariesTableHeader'>Current Roster Salaries</div>
@@ -52,7 +50,9 @@ function LockerRoom() {
           </tr>
         </thead>
         <tbody>
-          {salaryData.sort((a, b) => b.Salary.replace(",", "").replace(",", "").replace("$", "") - a.Salary.replace(",", "").replace(",", "").replace("$", "")).map(obj => {
+          {/* {salaryData.isLoading ?
+          <LoadingSpinner /> :
+          salaryData.sort((a, b) => b.Salary.replace(",", "").replace(",", "").replace("$", "") - a.Salary.replace(",", "").replace(",", "").replace("$", "")).map(obj => {
             return (
               <tr key={obj.id}>
                 <td>{obj.Player}</td>
@@ -60,7 +60,7 @@ function LockerRoom() {
                 <td>{obj.Salary}</td>
               </tr>
             )
-          })}
+          })} */}
         </tbody>
       </table>
     </>

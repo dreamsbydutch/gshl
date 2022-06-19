@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import PageNavbar from '../../components/Navbar/PageNavbar'
-import StandingsContainer from '../../components/StandingsContainer/StandingsContainer'
+// import StandingsContainer from '../../components/StandingsContainer/StandingsContainer'
 import './Standings.css'
 
 function Standings() {
@@ -35,7 +35,7 @@ function Standings() {
         <PageNavbar data={pageNavData} active={type} variant='outline-secondary' />
       </div>
       <div className={'standings-container ' + type + '-bg'}>
-        <StandingsContainer type={type} />
+        {/* <StandingsContainer type={type} /> */}
       </div>
     </>
   )

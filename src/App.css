@@ -1,18 +1,9 @@
-:root{
-  --hotelcolour: #77261c;
-  --sunviewcolour: #1a4c83;
-  --mainDark: #161616;
-  --mainGrey: #6d6d6d;
-  --mainLightGrey: #acacac;
-  --mainWhite: #fcfcfc;
-  --shadow: 0 1px 5px rgba(104,104,104,0.8);
-}
-
 .main-page-container {
-  min-height: 750px;
-  padding-top: 1rem;
-  max-width: 650px;
-  margin-bottom: 75px;
+  min-height: 850px;
+  padding-top: 0.5em;
+  max-width: 850px;
+  margin: auto;
+  margin-bottom: 5em;
 }
 
 .cup-logo-img-home {

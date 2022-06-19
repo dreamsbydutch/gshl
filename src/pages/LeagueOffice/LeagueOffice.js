@@ -1,5 +1,5 @@
 import React from 'react'
-import { useAllSalaries } from '../../hooks/salaries'
+import { useAllSalaries } from '../../hooks/getContractInfo'
 
 function LeagueOffice() {
   var allSalaries = useAllSalaries()
