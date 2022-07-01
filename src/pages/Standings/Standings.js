@@ -8,22 +8,22 @@ function Standings() {
 
   const pageNavData = [
     {
-      'text': <img src='https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/League/PresTrophyLogo.png' alt='Presidents Trophy logo' />,
+      'image': <img src='https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/League/PresTrophyLogo.png' alt='Presidents Trophy logo' />,
       'onClick': () => setType('OVR'),
       'key': 'OVR'
     },
     {
-      'text': <img src='https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/League/JungleCatTrophyLogo.png' alt='Jungle Cat Trophy logo' />,
+      'image': <img src='https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/League/JungleCatTrophyLogo.png' alt='Jungle Cat Trophy logo' />,
       'onClick': () => setType('SV'),
       'key': 'SV'
     },
     {
-      'text': <img src='https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/League/RandyTrophyLogo.png' alt='Randy Trophy logo' />,
+      'image': <img src='https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/League/RandyTrophyLogo.png' alt='Randy Trophy logo' />,
       'onClick': () => setType('HH'),
       'key': 'HH'
     },
     {
-      'text': <img src='https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/League/GSHLCupLogo.png' alt='GSHL Cup logo' />,
+      'image': <img src='https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/League/GSHLCupLogo.png' alt='GSHL Cup logo' />,
       'onClick': () => setType('WC'),
       'key': 'WC'
     }
@@ -32,7 +32,7 @@ function Standings() {
   return (
     <>
       <div className="standings-page-nav">
-        <PageNavbar data={pageNavData} active={type} variant='outline-secondary' />
+        <PageNavbar data={pageNavData} active={type} />
       </div>
       <div className={'standings-container ' + type + '-bg'}>
         {/* <StandingsContainer type={type} /> */}

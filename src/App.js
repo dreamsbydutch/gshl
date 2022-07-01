@@ -6,13 +6,13 @@ import './App.css';
 import MobileNavbar from './components/Navbar/MobileNavbar';
 import Navbar from './components/Navbar/Navbar';
 import Footer from './components/Footer/Footer';
-import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 import Home from './pages/Home/Home';
 import Standings from './pages/Standings/Standings';
 import Schedule from './pages/Schedule/Schedule';
 import LeagueOffice from './pages/LeagueOffice/LeagueOffice';
 import LockerRoom from './pages/LockerRoom/LockerRoom';
-import ErrorPage from './pages/ErrorPage/ErrorPage';
+import ErrorPage from './utils/ErrorPage/ErrorPage'
+import ScrollToTop from './utils/ScrollToTop/ScrollToTop'
 
 
 
@@ -32,7 +32,7 @@ function App() {
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </div>
-      {window.innerWidth < 801 ? <div style={{ 'color': '#fff' }}>.</div> : <Footer />}
+      {window.innerWidth < 801 ? <div style={{ 'color': '#var(--mainWhite)' }}>.</div> : <Footer />}
     </Router >
   );
 }

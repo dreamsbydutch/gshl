@@ -5,7 +5,7 @@ import './MobileNavbar.css';
 
 function NavBar() {
     return (
-        <navbar>
+        <div className='mobile-navbar'>
             <div className='mobile-navbar-container'>
                 <Link to="">
                     <img className="mobile-navbar-img" alt="GSHL logo" src="https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/logo512.png" />
@@ -27,7 +27,7 @@ function NavBar() {
                     <img className="mobile-navbar-img" alt="PGC logo" src="https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/LeagueOfficeIcon.png" />
                 </Link>
             </div>
-        </navbar>
+        </div>
     )
 }
 

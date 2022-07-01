@@ -1,8 +1,8 @@
 import React from 'react'
-import { useAllSalaries } from '../../hooks/getContractInfo'
+import { useAllSalaryInfo } from '../../hooks/getContractInfo'
 
 function LeagueOffice() {
-  var allSalaries = useAllSalaries()
+  var allSalaries = useAllSalaryInfo()
 
   return (
     <table>

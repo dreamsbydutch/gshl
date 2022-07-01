@@ -1,27 +1,22 @@
 import React from 'react';
-import { Container, Navbar, Nav } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import './Navbar.css';
 
 
 function NavBar() {
     return (
-        <Navbar bg="light" expand="md">
-            <Container className='navbar-container'>
-                <Navbar.Brand href="/gshl">
+        <div className='desktop-navbar'>
+            <div className='desktop-navbar-container'>
+                <Link to="">
                     <img alt="PGC logo" src="https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/logo512.png" height="50" width="50" />
-                </Navbar.Brand>
-                <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-                <Navbar.Collapse id="responsive-navbar-nav">
-                    <Nav className="mr-auto">
-                        <Nav.Link href="/gshl">Home</Nav.Link>
-                        <Nav.Link aria-controls="basic-navbar-nav" href="/gshl#/schedule">Schedule</Nav.Link>
-                        <Nav.Link aria-controls="basic-navbar-nav" href="/gshl#/standings">Standings</Nav.Link>
-                        <Nav.Link aria-controls="basic-navbar-nav" href="/gshl#/lockerroom">Locker Room</Nav.Link>
-                        <Nav.Link aria-controls="basic-navbar-nav" href="/gshl#/leagueoffice">League Office</Nav.Link>
-                    </Nav>
-                </Navbar.Collapse>
-            </Container>
-        </Navbar>
+                    Home
+                </Link>
+                <Link to="/schedule">Schedule</Link>
+                <Link to="/standings">Standings</Link>
+                <Link to="/lockerroom">Locker Room</Link>
+                <Link to="/leagueoffice">League Office</Link>
+            </div>
+        </div>
     )
 }
 

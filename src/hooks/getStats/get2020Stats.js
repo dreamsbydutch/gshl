@@ -23,25 +23,25 @@ const getPlayerTotalsStats = async () => {
   return await axios.get('https://opensheet.elk.sh/1Jusx8UKgXqA8rJ5q_pbt_rf7b3727awbfnpt1Mid13c/SeasonTotalsData');
 }
 export function useTeamDailyStats2020() {
-  return useQuery("getTeamDailyStats", getTeamDailyStats);
+  return useQuery("getTeamDailyStats2020", getTeamDailyStats);
 }
 export function useTeamWeeklyStats2020() {
-  return useQuery("getTeamWeeklyStats", getTeamWeeklyStats);
+  return useQuery("getTeamWeeklyStats2020", getTeamWeeklyStats);
 }
 export function useTeamSeasonStats2020() {
-  return useQuery("getTeamSeasonStats", getTeamSeasonStats);
+  return useQuery("getTeamSeasonStats2020", getTeamSeasonStats);
 }
 export function usePlayerDailyStats2020() {
-  return useQuery("getPlayerDailyStats", getPlayerDailyStats);
+  return useQuery("getPlayerDailyStats2020", getPlayerDailyStats);
 }
 export function usePlayerWeeklyStats2020() {
-  return useQuery("getPlayerWeeklyStats", getPlayerWeeklyStats);
+  return useQuery("getPlayerWeeklyStats2020", getPlayerWeeklyStats);
 }
 export function usePlayerSplitsStats2020() {
-  return useQuery("getPlayerSplitsStats", getPlayerSplitsStats);
+  return useQuery("getPlayerSplitsStats2020", getPlayerSplitsStats);
 }
 export function usePlayerTotalsStats2020() {
-  return useQuery("getPlayerTotalsStats", getPlayerTotalsStats);
+  return useQuery("getPlayerTotalsStats2020", getPlayerTotalsStats);
 }
 
 
@@ -50,7 +50,7 @@ const getStandings = async () => {
   return await axios.get('https://opensheet.elk.sh/16tgCTD0KaciZuJKYtgRqR5tNawC8rXchs6INUjP77JI/Standings');
 }
 export function useStandings2020() {
-  return useQuery("getStandings", getStandings);
+  return useQuery("getStandings2020", getStandings);
 }
 
 
@@ -86,32 +86,32 @@ const getGMOfYearTrophy = async () => {
   return await axios.get('https://opensheet.elk.sh/15QQfWzTS4h7IFR1EadAe8wp604doRHVrDpbVV7O5a20/GMOfYear');
 }
 export function useHartTrophy2020() {
-  return useQuery("getHartTrophy", getHartTrophy);
+  return useQuery("getHartTrophy2020", getHartTrophy);
 }
 export function useVezinaTrophy2020() {
-  return useQuery("getVezinaTrophy", getVezinaTrophy);
+  return useQuery("getVezinaTrophy2020", getVezinaTrophy);
 }
 export function useNorrisTrophy2020() {
-  return useQuery("getNorrisTrophy", getNorrisTrophy);
+  return useQuery("getNorrisTrophy2020", getNorrisTrophy);
 }
 export function useRocketTrophy2020() {
-  return useQuery("getRocketTrophy", getRocketTrophy);
+  return useQuery("getRocketTrophy2020", getRocketTrophy);
 }
 export function useArtRossTrophy2020() {
-  return useQuery("getArtRossTrophy", getArtRossTrophy);
+  return useQuery("getArtRossTrophy2020", getArtRossTrophy);
 }
 export function useConnSmytheTrophy2020() {
-  return useQuery("getConnSmytheTrophy", getConnSmytheTrophy);
+  return useQuery("getConnSmytheTrophy2020", getConnSmytheTrophy);
 }
 export function useCalderTrophy2020() {
-  return useQuery("getCalderTrophy", getCalderTrophy);
+  return useQuery("getCalderTrophy2020", getCalderTrophy);
 }
 export function useLadyByngTrophy2020() {
-  return useQuery("getLadyByngTrophy", getLadyByngTrophy);
+  return useQuery("getLadyByngTrophy2020", getLadyByngTrophy);
 }
 export function useCoachOfYearTrophy2020() {
-  return useQuery("getCoachOfYearTrophy", getCoachOfYearTrophy);
+  return useQuery("getCoachOfYearTrophy2020", getCoachOfYearTrophy);
 }
 export function useGMOfYearTrophy2020() {
-  return useQuery("getGMOfYearTrophy", getGMOfYearTrophy);
+  return useQuery("getGMOfYearTrophy2020", getGMOfYearTrophy);
 }

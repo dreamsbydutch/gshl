@@ -5,18 +5,35 @@ import { useQuery } from 'react-query';
 const getAllContracts = async () => {
     return await axios.get('https://opensheet.elk.sh/1jiL1gtJ-_Drlksr24kWaiRABOEniO0pg4Vlm05SFqYM/Contracts')
 }
-const getAllEligiblePlayers = async () => {
-    return await axios.get('https://opensheet.elk.sh/1qtdxTU_LhU9AF6lUxo5QhXlREbrj00_-4NurVD458f8/EligiblePlayers')
-}
-const getAllSalaries = async () => {
-    return await axios.get('https://opensheet.elk.sh/159KBWmaW7ystY-O7FIlOrZPvyjJP6rro63BkgkCfp-Q/Salaries')
+const getAllSalaryInfo = async () => {
+    return await axios.get('https://opensheet.elk.sh/1dYRA1bT2phaPGH-LzgyiykkjsXoTHzkRe6aKdQe1vq0/PlayerSalaries')
 }
 export function useAllContracts() {
   return useQuery("useAllContracts", getAllContracts)
 }
-export function useAllEligiblePlayers() {
-  return useQuery("useAllEligiblePlayers", getAllEligiblePlayers);
+export function useAllSalaryInfo() {
+  return useQuery("useAllSalaryInfo", getAllSalaryInfo);
 }
-export function useAllSalaries() {
-  return useQuery("useAllSalaries", getAllSalaries);
+
+export function useTeamContracts(teamID) {
+  const contracts = useAllContracts()
+  var isLoading = contracts.isLoading
+  var data = isLoading ? [] :  contracts.data.data.filter(obj => obj.CurrentTeam === teamID && new Date(obj.CapHitExpiry) >= new Date())
+  var error = contracts.error
+  return { 
+      data: data,
+      isLoading: isLoading,
+      error: error
+  }
+}
+export function useTeamSalaryInfo(teamID) {
+  const salaryInfo = useAllSalaryInfo()
+  var isLoading = salaryInfo.isLoading
+  var data = isLoading ? [] :  salaryInfo.data.data.filter(obj => obj.gshlTeam === teamID)
+  var error = salaryInfo.error
+  return { 
+      data: data,
+      isLoading: isLoading,
+      error: error
+  }
 }

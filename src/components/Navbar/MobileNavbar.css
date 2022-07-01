@@ -1,6 +1,6 @@
 .mobile-navbar-container {
     width: 100%;
-    height: 5em;
+    height: 6em;
     background: var(--mainLightGrey);
     box-shadow: var(--shadow);
     display: flex;
@@ -9,10 +9,17 @@
     position: fixed;
     bottom: 0%;
 }
-.mobile-navbar-container > a > img {
+
+.mobile-navbar-container>a>img {
     height: 4em;
 }
+
+.mobile-navbar-container>a:first-child>img {
+    height: 5.25em;
+}
+
 .nav-border-line {
     height: 65%;
-    border : 1px solid var(--mainGrey);
+    border: 1px solid var(--mainGrey);
+    background: var(--mainGrey)
 }

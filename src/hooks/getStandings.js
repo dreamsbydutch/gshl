@@ -10,6 +10,14 @@ export function useStandings() {
 }
 
 
+const getTeams = async () => {
+    return await axios.get('https://opensheet.elk.sh/1jiL1gtJ-_Drlksr24kWaiRABOEniO0pg4Vlm05SFqYM/GSHLTeams')
+  }
+export function useTeams() {
+  return useQuery("useTeams", getTeams)
+}
+
+
 
 const getSchedule = async () => {
     return await axios.get('https://opensheet.elk.sh/1jiL1gtJ-_Drlksr24kWaiRABOEniO0pg4Vlm05SFqYM/Schedule')

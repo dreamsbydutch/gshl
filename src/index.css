@@ -2,7 +2,7 @@
   --hotelcolour: #77261c;
   --sunviewcolour: #1a4c83;
   --mainDark: #161616;
-  --mainGrey: #6d6d6d;
+  --mainGrey: #8b8b8b;
   --mainLightGrey: #e2e2e2;
   --mainWhite: #f3f3f3;
   --shadow: 0 1px 5px var(--mainDark);
@@ -22,7 +22,7 @@
   background-color: var(--mainWhite);
 }
 a {
-  text-decoration: none;
+  text-decoration: none !important;
 }
 a:hover {
   text-decoration:none; 
