@@ -4,7 +4,6 @@ import LoadingSpinner from '../../utils/LoadingSpinner/LoadingSpinner'
 import { useTeamContracts, useTeamSalaryInfo } from '../../hooks/getContractInfo'
 import TeamsToolbar from '../../components/Navbar/TeamsToolbar'
 import { useAllPlayerSplitStats } from '../../hooks/getStats/getStats'
-import { Table } from 'react-bootstrap'
 
 function LockerRoom() {
   const [teamID, setTeamID] = useState(null)
@@ -75,12 +74,12 @@ function LockerRoom() {
         </tbody>
       </table>
       <div className='statsTableHeader'>2021-22 Skater Stats</div>
-      <Table responsive className='statsTable'>
+      <table className='statsTable'>
         <thead>
           <tr>
             <td>Name</td>
             <td>Pos</td>
-            <td>Rtg</td>
+            <td>GP</td>
             <td>G</td>
             <td>A</td>
             <td>P</td>
@@ -88,21 +87,17 @@ function LockerRoom() {
             <td>SOG</td>
             <td>HIT</td>
             <td>BLK</td>
-            <td>Days</td>
-            <td>GP</td>
-            <td>MS</td>
-            <td>BS</td>
           </tr>
         </thead>
         <tbody>
           {playerStats.isLoading ?
             <LoadingSpinner /> :
-            playerStats.data.filter(obj => obj.Season === '2021-22' && obj.gshlTeam === teamID && obj.nhlPos !== "G").sort((a, b) => b.Rating - a.Rating).sort((a, b) => b.RosterDays - a.RosterDays).map(obj => {
+            playerStats.data.filter(obj => obj.Season === '2021-22' && obj.gshlTeam === teamID && obj.nhlPos !== "G").sort((a, b) => b.Rating - a.Rating).map(obj => {
               return (
                 <tr key={obj.id}>
                   <td>{obj.PlayerName}</td>
                   <td>{obj.nhlPos}</td>
-                  <td>{obj.Rating}</td>
+                  <td>{obj.GS}</td>
                   <td>{obj.G}</td>
                   <td>{obj.A}</td>
                   <td>{obj.P}</td>
@@ -110,29 +105,21 @@ function LockerRoom() {
                   <td>{obj.SOG}</td>
                   <td>{obj.HIT}</td>
                   <td>{obj.BLK}</td>
-                  <td>{obj.RosterDays}</td>
-                  <td>{obj.GS}</td>
-                  <td>{obj.MS}</td>
-                  <td>{obj.BS}</td>
                 </tr>
               )
             })}
         </tbody>
-      </Table>
+      </table>
       <div className='statsTableHeader'>2021-22 Goalie Stats</div>
       <table className='statsTable'>
         <thead>
           <tr>
             <td>Name</td>
             <td>Pos</td>
-            <td>Rtg</td>
+            <td>GP</td>
             <td>W</td>
             <td>GAA</td>
             <td>SV%</td>
-            <td>Days</td>
-            <td>GP</td>
-            <td>MS</td>
-            <td>BS</td>
           </tr>
         </thead>
         <tbody>
@@ -143,14 +130,10 @@ function LockerRoom() {
                 <tr key={obj.id}>
                   <td>{obj.PlayerName}</td>
                   <td>{obj.nhlPos}</td>
-                  <td>{obj.Rating}</td>
+                  <td>{obj.GS}</td>
                   <td>{obj.W}</td>
                   <td>{obj.GAA}</td>
                   <td>{obj.SVP}</td>
-                  <td>{obj.RosterDays}</td>
-                  <td>{obj.GS}</td>
-                  <td>{obj.MS}</td>
-                  <td>{obj.BS}</td>
                 </tr>
               )
             })}
