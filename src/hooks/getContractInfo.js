@@ -1,9 +1,10 @@
 import axios from 'axios'
 import { useQuery } from 'react-query';
+import { inputsSheetID } from '../utils/constants';
 
 
 const getAllContracts = async () => {
-    return await axios.get('https://opensheet.elk.sh/1jiL1gtJ-_Drlksr24kWaiRABOEniO0pg4Vlm05SFqYM/Contracts')
+    return await axios.get(inputsSheetID('Contracts'))
 }
 const getAllSalaryInfo = async () => {
     return await axios.get('https://opensheet.elk.sh/1dYRA1bT2phaPGH-LzgyiykkjsXoTHzkRe6aKdQe1vq0/PlayerSalaries')
