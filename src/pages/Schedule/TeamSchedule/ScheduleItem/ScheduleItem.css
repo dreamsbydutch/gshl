@@ -1,0 +1,55 @@
+.team-schedule-item {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    grid-template-areas:
+        "w o o o o o o s s";
+    padding: 0.5em 0;
+    border-bottom: 1px dotted var(--mainDark)
+}
+
+.team-schedule-item>.week {
+    grid-area: w;
+    place-self: center;
+    font-weight: 500;
+}
+
+.team-schedule-item>.opponent {
+    grid-area: o;
+    font-size: 1.3em;
+    place-self: center;
+    font-weight: 600;
+}
+
+.team-schedule-item>.score {
+    grid-area: s;
+    place-self: center;
+    display: flex;
+    gap: 1em;
+}
+
+.team-schedule-item>.score>.winloss {
+    font-size: 1.25em;
+    place-self: center;
+}
+
+.team-schedule-item>.score.W>.winloss {
+    color: #247900;
+    font-weight: 800;
+}
+.team-schedule-item>.score.L>.winloss {
+    color: #990000;
+    font-weight: 400;
+}
+
+.team-schedule-item>.score>.score {
+    font-size: 1.15em;
+    place-self: center;
+}
+.team-schedule-item>.score.W>.score {
+    color: #247900;
+    font-weight: 600;
+}
+.team-schedule-item>.score.L>.score {
+    color: #990000;
+    font-weight: 400;
+}

@@ -1,12 +1,21 @@
 :root{
-  --hotelcolour: #77261c;
-  --sunviewcolour: #1a4c83;
+  --hotelcolour: 119, 38, 28;
+  --sunviewcolour: 26, 76, 131;
   --mainDark: #161616;
   --mainGrey: #8b8b8b;
   --mainLightGrey: #e2e2e2;
   --mainWhite: #f3f3f3;
   --shadow: 0 1px 5px var(--mainDark);
-  --font-size: 9px
+  --font-size: 9px;
+  --embossShadow:
+    inset 0 1px 0 rgba(255,255,255,0.5),
+    0 2px 2px rgba(0,0,0,0.3),
+    0 0 4px 1px rgba(0,0,0,0.2),
+    inset 0 3px 2px rgba(255,255,255,.22), 
+    inset 0 -3px 2px rgba(0,0,0,.15), 
+    inset 0 20px 10px rgba(255,255,255,.12), 
+    0 0 4px 1px rgba(0,0,0,.1), 
+    0 3px 2px rgba(0,0,0,.2);   
 }
 @media screen and (min-width: 320px) {:root {--font-size: 10px}}
 @media screen and (min-width: 360px) {:root {--font-size: 11px}}
@@ -25,9 +34,19 @@ a {
   text-decoration: none !important;
 }
 a:hover {
-  text-decoration:none; 
+  text-decoration: none; 
   cursor:pointer;  
 }
+
+.SV {color: #1a4d83;}
+.HH {color: #77261c;}
+.WC,.OVR {color: #222;}
+.QF {color: #905923;}
+.SF {color: #8c8c8c;}
+.F {color: #b39700;}
+.SV-bg {background-color: #1a4d8325;}
+.HH-bg {background-color: #77261c25;}
+.WC-bg,.OVR-bg {background-color: #22222225;}
 
 
 /* 

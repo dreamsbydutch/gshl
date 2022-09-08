@@ -1,0 +1,20 @@
+.team-schedule-header-row {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    grid-template-areas: 
+        "w o o o o o o s s";
+    font-weight: bold;
+    padding: 1em 0;
+}
+.team-schedule-header-row>.week {
+    grid-area: w;
+    font-size: 1.25em;
+}
+.team-schedule-header-row>.opponent {
+    grid-area: o;
+    font-size: 1.25em;
+}
+.team-schedule-header-row>.score {
+    grid-area: s;
+    font-size: 1.15em;
+}

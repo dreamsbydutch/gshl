@@ -1,0 +1,17 @@
+
+.rulebook-subheader {
+    font-size:2.25em;
+    font-weight:bold;
+    text-align:center;
+    width:100%;
+    margin:auto;
+    margin-top:1em;
+}
+.rulebook-rules {
+    font-size: 1.25em;
+    padding: 0.75em 1em;
+}
+.rulebook-subrules {
+    font-size:1em;
+    padding: 0 1.5em 0.5em 1.5em;
+}

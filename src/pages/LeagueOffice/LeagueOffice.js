@@ -1,38 +1,26 @@
-import React from 'react'
-import { useAllSalaryInfo } from '../../hooks/getContractInfo'
+import React, { useState } from 'react'
+import PageNavbar from '../../components/Navbar/PageNavbar'
+import { leagueOfficeNavData } from '../../utils/constants'
+import Awards from './components/Awards/Awards'
+import FreeAgency from './components/FreeAgency/FreeAgency'
+import HallofFame from './components/HallofFame/HallofFame'
+import Rulebook from './components/Rulebook/Rulebook'
+import TradeMarket from './components/TradeMarket/TradeMarket'
 
 function LeagueOffice() {
-  var allSalaries = useAllSalaryInfo()
-  console.log(allSalaries)
+  const [type, setType] = useState("OVR")
 
   return (
-    <table>
-      <thead>
-        <tr>
-          <td>Name</td>
-          <td>Salary</td>
-          <td>Age</td>
-          <td>Pos</td>
-        </tr>
-      </thead>
-      <tbody>
-        {
-          allSalaries.data && allSalaries.data.data.map(obj => {
-            var salary = obj.PostSeasonSalary.replace("$","").replace(",","").replace(",","")
-            salary = salary * 1.25
-            salary = "$" + salary.toString().replace(/(.)(?=(\d{3})+$)/g,'$1,')
-            return (
-              <tr key={obj.Rank}>
-                <td>{obj.PlayerName}</td>
-                <td>{salary}</td>
-                <td>{obj.Age}</td>
-                <td>{obj.Pos}</td>
-              </tr>
-            )
-          })
-        }
-      </tbody>
-    </table>
+    <>
+    <PageNavbar data={leagueOfficeNavData} setter={setType} activeKey={type} />
+    {{
+      'Awards': <Awards />,
+      'FreeAgency': <FreeAgency />,
+      'Rulebook': <Rulebook />,
+      'HallofFame': <HallofFame />,
+      'TradeMarket': <TradeMarket />
+    }[type]}
+    </>
   )
 }
 

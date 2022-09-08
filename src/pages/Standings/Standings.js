@@ -1,42 +1,23 @@
 import React, { useState } from 'react'
 import PageNavbar from '../../components/Navbar/PageNavbar'
-// import StandingsContainer from '../../components/StandingsContainer/StandingsContainer'
+import { currentSeason, SeasonListNavData, standingsNavData } from '../../utils/constants'
+import { useStandings } from '../../utils/fetchData'
+import LoadingSpinner from '../../utils/LoadingSpinner/LoadingSpinner'
+import StandingsContainer from './StandingsContainer/StandingsContainer'
 import './Standings.css'
 
 function Standings() {
-  const [type, setType] = useState("OVR")
-
-  const pageNavData = [
-    {
-      'image': <img src='https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/League/PresTrophyLogo.png' alt='Presidents Trophy logo' />,
-      'onClick': () => setType('OVR'),
-      'key': 'OVR'
-    },
-    {
-      'image': <img src='https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/League/JungleCatTrophyLogo.png' alt='Jungle Cat Trophy logo' />,
-      'onClick': () => setType('SV'),
-      'key': 'SV'
-    },
-    {
-      'image': <img src='https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/League/RandyTrophyLogo.png' alt='Randy Trophy logo' />,
-      'onClick': () => setType('HH'),
-      'key': 'HH'
-    },
-    {
-      'image': <img src='https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/League/GSHLCupLogo.png' alt='GSHL Cup logo' />,
-      'onClick': () => setType('WC'),
-      'key': 'WC'
-    }
-  ]
+  const [standingsType, setStandingsType] = useState("OVR")
+  const [seasonID, setSeasonID] = useState(currentSeason.key)
+  var standingsData = useStandings();
+  if (standingsData.isLoading) { return <LoadingSpinner /> }
+  const pageNavData = standingsNavData
 
   return (
     <>
-      <div className="standings-page-nav">
-        <PageNavbar data={pageNavData} active={type} />
-      </div>
-      <div className={'standings-container ' + type + '-bg'}>
-        {/* <StandingsContainer type={type} /> */}
-      </div>
+      <PageNavbar data={pageNavData} setter={setStandingsType} activeKey={standingsType} />
+      <PageNavbar data={SeasonListNavData} setter={setSeasonID} activeKey={seasonID} />
+      <StandingsContainer type={standingsType} season={seasonID} />
     </>
   )
 }

@@ -1,11 +1,3 @@
-table {
-    margin: 0.5em auto;
-    width: 90%;
-    border: 2px solid #000000;
-    text-align: center;
-}
-
-
 thead > tr > td {
     font-weight: 500;
     background-color: var(--mainDark);
@@ -14,23 +6,12 @@ thead > tr > td {
     padding: 0.25em;
 }
 
-.contractTableHeader, .salariesTableHeader, .statsTableHeader {
-    margin-top: 3em;
-    font-size: 1.5em;
+.contractTableHeader {
+    margin: 1em;
+    font-size: 2em;
     font-weight: 700;
 }
-.capSpace {
-    margin-top: 1.5em;
-    font-size: 2.25em;
-    font-weight: 700;
-}
-.buyout {
-    color: var(--mainGrey);
-}
 
-
-tbody > tr > td {
-    padding: 0.5em;
-    font-size: 0.85em;
-    border-bottom: 1px solid var(--mainDark);
+tr.Buyout {
+    color: var(--mainGrey)
 }

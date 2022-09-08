@@ -9,7 +9,6 @@ function NavBar() {
             <div className='desktop-navbar-container'>
                 <Link to="">
                     <img alt="PGC logo" src="https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/logo512.png" height="50" width="50" />
-                    Home
                 </Link>
                 <Link to="/schedule">Schedule</Link>
                 <Link to="/standings">Standings</Link>

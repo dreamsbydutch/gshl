@@ -1,26 +1,18 @@
 import React from 'react'
 import './TeamsToolbar.css'
-import { useTeams } from '../../hooks/getStandings'
 import LoadingSpinner from '../../utils/LoadingSpinner/LoadingSpinner'
+import PageNavbar from './PageNavbar'
+import { useGSHLTeams } from '../../utils/fetchData'
 
 function TeamsToolbar(props) {
-  const teamsData = useTeams('2021-22')
+  const teamsData = useGSHLTeams()
   if (teamsData.isLoading) { return <LoadingSpinner /> }
-  const data = [teamsData.data.data.filter(obj => obj.Conference === 'HH' && obj['2021-22']), teamsData.data.data.filter(obj => obj.Conference === 'SV' && obj['2021-22'])]
+  const data = teamsData.data.filter(obj => obj[props.season]).sort((a, b) => ('' + b.Conference).localeCompare(a.Conference)).map(obj => {
+    return { 'key': obj.id, 'content': <img src={obj.LogoURL} alt={obj.TeamName} />, 'classes': [obj.Conference] }
+  })
   return (
-    <div className='team-toolbars'>
-      {data.map(group => (
-        <div className='team-toolbar-container'>
-          {group.map((item, i) => (
-            <>
-              {i !== 0 && <span className='nav-border-line' />}
-              <div key={item['2021-22']} onClick={() => props.setter(item['2021-22'])} className={props.active === item['2021-22'] ? 'active team-toolbar-logo' : 'team-toolbar-logo'} >
-                <img src={item.LogoURL} alt='Team logo' />
-              </div>
-            </>
-          ))}
-        </div>
-      ))}
+    <div className='teams-toolbar-container'>
+      <PageNavbar data={data} setter={props.setActiveTeam} activeKey={props.activeTeam} />
     </div>
   )
 }

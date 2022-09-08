@@ -1,0 +1,17 @@
+.stdg-team-container {
+    display:grid;
+    grid-template-columns: 1fr 2fr 6fr 3fr 2fr;
+    margin: 0 auto;
+    padding: 0.5em 0;
+    text-align: center;
+    align-items: center;
+    border-bottom: 1px dotted var(--mainGrey)
+}
+.stdg-team-container:last-child {
+    border-bottom: none;
+}
+.stdg-team-logo img {width:3em;}
+.stdg-team-rank {font-weight: 600;font-size: 1.15em;}
+.stdg-team-name {font-weight: 700;font-size: 1.25em;}
+.stdg-team-record {font-weight: 600;font-size: 1.2em;}
+.stdg-team-categories {font-weight: 300;font-size: 1em;}

@@ -1,25 +1,58 @@
 .page-navbar-container {
-    margin: auto;
-    width: 85%;
-    height: 5em;
-    background: var(--mainWhite);
+    padding: 1.25em 0.5em;
+}
+
+.page-navbar-list {
     display: flex;
-    justify-content: space-evenly;
+    flex-wrap: wrap;
+    gap: 1em;
     align-items: center;
-    border: 1px solid black;
-    border-radius: 1em;
+    justify-content: center;
+    list-style: none;
+    margin: 0 auto;
+    padding: 0;
 }
 
-.page-nav-btn {
-    font-size: 0.85rem;
+.page-navbar-btn {
+    min-width: 3em;
+    text-align: center;
+    font-weight: bold;
+    padding: 0.25em 1em;
+    border-radius: 0.5em;
+    background: var(--mainLightGrey);
+    box-shadow: var(--embossShadow);
 }
 
-.page-nav-btn>img {
-    height: 50px;
+.page-navbar-btn.active {
+    background: var(--mainGrey);
+    color: var(--mainLightGrey);
 }
 
-.nav-border-line {
-    height: 85%;
-    border : 1px solid var(--mainGrey);
-    background: var(--mainGrey)
+.page-navbar-btn>img {
+    height: 3em;
+}
+
+.page-navbar-btn.HH {
+    background: rgba(var(--hotelcolour),0.25);
+}
+.page-navbar-btn.HH.active {
+    background: rgba(var(--hotelcolour),0.75);
+}
+.page-navbar-btn.SV {
+    background: rgba(var(--sunviewcolour),0.25);
+}
+.page-navbar-btn.SV.active {
+    background: rgba(var(--sunviewcolour),0.75);
+}
+
+
+@media screen and (max-width:350px) {
+    .page-navbar-btn>img {
+        height: 2em;
+    }
+}
+@media screen and (min-width:600px) {
+    .page-navbar-btn>img {
+        height: 3em;
+    }
 }
