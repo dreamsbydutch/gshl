@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import MatchupStats from './MatchupStats/MatchupStats'
+// import MatchupStats from './MatchupStats/MatchupStats'
 import './ScheduleItem.css'
 
 function ScheduleItem(props) {
@@ -16,7 +16,7 @@ function ScheduleItem(props) {
         <div className={'teamname ' + props.data.HomeTeamData.Conference + ' ' + props.data.HomeWL}>{props.data.HomeTeamData.TeamName}</div>
       </div>
       <div className='matchup-stats' style={showInfo ? { display: 'block' } : { display: 'none' }}>
-        <MatchupStats data={props.data} />
+        {/* <MatchupStats data={props.data} /> */}
       </div>
     </div>
   )

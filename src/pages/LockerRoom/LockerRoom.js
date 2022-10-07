@@ -2,7 +2,7 @@ import './LockerRoom.css'
 import React, { useState } from 'react'
 import TeamsToolbar from '../../components/Navbar/TeamsToolbar'
 import { currentSeason } from '../../utils/constants'
-// import TeamPlayerContracts from './components/TeamPlayerContracts/TeamPlayerContracts'
+import TeamPlayerContracts from './components/TeamPlayerContracts/TeamPlayerContracts'
 // import TeamPlayerStats from './components/TeamPlayerStats/TeamPlayerStats'
 
 function LockerRoom() {
@@ -10,7 +10,7 @@ function LockerRoom() {
   return (
     <>
       <TeamsToolbar setActiveTeam={setTeamID} activeTeam={teamID} season={currentSeason.key} />
-      {/* <TeamPlayerContracts teamID={teamID} /> */}
+      <TeamPlayerContracts teamID={teamID} />
       {/* <TeamPlayerStats teamID={teamID} /> */}
     </>
   )

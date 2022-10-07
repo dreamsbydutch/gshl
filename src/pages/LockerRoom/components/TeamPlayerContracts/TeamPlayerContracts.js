@@ -40,15 +40,15 @@ function TeamPlayerContracts(props) {
                     </tr>
                 </thead>
                 <tbody>
-                    {output.map(obj => {
+                    {output.map((obj,i) => {
                         return (
-                            <tr className={"contract-slot " + obj[6]}>
+                            <tr className={"contract-slot " + obj[6]} key={i}>
                                 <td className="playername">{obj[0]}</td>
                                 <td className="position">{obj[1]}</td>
-                                <td className="yearone">{obj[2]}</td>
-                                <td className="yeartwo">{obj[3]}</td>
-                                <td className="yearthree">{obj[4]}</td>
-                                <td className="yearfour">{obj[5]}</td>
+                                <td className="yearone">{obj[2]===""?obj[6]:formatter.format(obj[2])}</td>
+                                <td className="yeartwo">{obj[3]===""&&obj[2]===""?"":obj[3]===""&&obj[2]!==""?obj[6]:formatter.format(obj[3])}</td>
+                                <td className="yearthree">{obj[4]===""&&obj[3]===""?"":obj[4]===""&&obj[3]!==""?obj[6]:formatter.format(obj[4])}</td>
+                                <td className="yearfour">{obj[5]===""&&obj[4]===""?"":obj[5]===""&&obj[4]!==""?obj[6]:formatter.format(obj[5])}</td>
                             </tr>
                         )
                     })}

@@ -67,10 +67,10 @@ export const SeasonListNavData = [
     //     'content': '2018-19',
     //     'key': '2019'
     // },
-    // {
-    //     'content': '2019-20',
-    //     'key': '2020'
-    // },
+    {
+        'content': '2019-20',
+        'key': '2020'
+    },
     {
         'content': '2020-21',
         'key': '2021'
@@ -78,6 +78,10 @@ export const SeasonListNavData = [
     {
         'content': '2021-22',
         'key': '2022'
+    },
+    {
+        'content': '2022-23',
+        'key': '2023'
     }
 ]
 export const awardInfo = [
@@ -352,7 +356,7 @@ export const postions = {
     ],
 }
 export const currentSeason = {
-    'content': '2021-22',
-    'key': '2022'
+    'content': '2022-23',
+    'key': '2023'
 }
-export const currentWeek = '25'
+export const currentWeek = '1'
