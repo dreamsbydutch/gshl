@@ -41,7 +41,7 @@ export function useContracts() {
 
 
 
-export function usePlayerDays() {
+export function usePlayerDays(season=null, type=null) {
     var stats2022RS = useEndpointQuery('usePlayerDays2022RS', '2022PlayerDay', 'SeasonData')
     var stats2022PO = useEndpointQuery('usePlayerDays2022PO', '2022PlayerDay', 'PlayoffData')
     var stats2021RS = useEndpointQuery('usePlayerDays2021RS', '2021PlayerDay', 'SeasonData')
