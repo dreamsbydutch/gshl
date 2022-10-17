@@ -14,6 +14,14 @@ const getURL = (bookName, sheetName) => {
 }
 const endpointIDs = {
     'MainInput': '1jiL1gtJ-_Drlksr24kWaiRABOEniO0pg4Vlm05SFqYM',
+    '2023PlayerInfo': '1iD_8HU134CTutK07nGlbCsCni1q17U47YgMVdMoLjVg',
+    '2023PlayerSeason': '15yECiLjXiUAZkcbZQwJ9806fsI-qMF1BTo6laZTHNZc',
+    '2023PlayerWeek': '1Wx5eCZ59UedzkEsTGRB9Og7JAoALxRMC3KGP7qIEox8',
+    '2023PlayerDay': '1b3XDNZKrQVFlGn1SQnvOvA1IcpJHJ629w7g2dcm_m1U',
+    '2023TeamInfo': '1GzPxpnF7GYtqQjIWDaFYHorQmmIrLYCsUBx0FCeDaSE',
+    '2023TeamSeason': '1u7_ujzKfP80dn5iIyt-9ujMW38SJaCm7cZx96kYFtyM',
+    '2023TeamWeek': '1MrVoHjUspQg-qaN7CY9tek6rPUSWqyllitOscnpvYqY',
+    '2023TeamDay': '1YNGozUkMc80h_tdcxZ5WYbV2ts-ovgvp0bwg34IIUOw',
     '2022PlayerInfo': '1dYRA1bT2phaPGH-LzgyiykkjsXoTHzkRe6aKdQe1vq0',
     '2022PlayerSeason': '1GmvqIithq3PYbRqggXlsw-4nJa8kKsxWfD4NGmZUrh4',
     '2022PlayerWeek': '1gyl5QkH2ZGKB4bUQ7WHC0Hcs36a7f2I0NHzg2G8xDdQ',

@@ -224,24 +224,26 @@ export function useAwards() {
 
 
 export function useStandings() {
+    var standings2023 = useEndpointQuery('useStandings2023', '2023TeamInfo', 'Standings')
     var standings2022 = useEndpointQuery('useStandings2022', '2022TeamInfo', 'Standings')
     var standings2021 = useEndpointQuery('useStandings2021', '2021TeamInfo', 'Standings')
     var standings2020 = useEndpointQuery('useStandings2020', '2020TeamInfo', 'Standings')
 
-    var isLoading = standings2022.isLoading || standings2021.isLoading || standings2020.isLoading
+    var isLoading = standings2023.isLoading || standings2022.isLoading || standings2021.isLoading || standings2020.isLoading
 
-    var standingsData = !isLoading && standings2022.data && standings2021.data && standings2020.data && [...standings2022.data, ...standings2021.data, ...standings2020.data]
+    var standingsData = !isLoading && standings2023.data && standings2022.data && standings2021.data && standings2020.data && [...standings2023.data, ...standings2022.data, ...standings2021.data, ...standings2020.data]
 
     return { 'data': standingsData, 'isLoading': isLoading }
 }
 export function useTeamInfo() {
+    var teamInfo2023 = useEndpointQuery('useTeamInfo2023', '2023TeamInfo', 'Teams')
     var teamInfo2022 = useEndpointQuery('useTeamInfo2022', '2022TeamInfo', 'Teams')
     var teamInfo2021 = useEndpointQuery('useTeamInfo2021', '2021TeamInfo', 'Teams')
     var teamInfo2020 = useEndpointQuery('useTeamInfo2020', '2020TeamInfo', 'Teams')
 
-    var isLoading = teamInfo2022.isLoading || teamInfo2021.isLoading || teamInfo2020.isLoading
+    var isLoading = teamInfo2023.isLoading || teamInfo2022.isLoading || teamInfo2021.isLoading || teamInfo2020.isLoading
 
-    var teamInfoData = !isLoading && teamInfo2022.data && teamInfo2021.data && teamInfo2020.data && [...teamInfo2022.data, ...teamInfo2021.data, ...teamInfo2020.data]
+    var teamInfoData = !isLoading && teamInfo2023.data && teamInfo2022.data && teamInfo2021.data && teamInfo2020.data && [...teamInfo2023.data, ...teamInfo2022.data, ...teamInfo2021.data, ...teamInfo2020.data]
 
     return { 'data': teamInfoData, 'isLoading': isLoading }
 }
