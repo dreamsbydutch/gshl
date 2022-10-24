@@ -4,11 +4,12 @@ import TeamsToolbar from '../../../components/Navbar/TeamsToolbar'
 import LoadingSpinner from '../../../utils/LoadingSpinner/LoadingSpinner'
 import ScheduleItem from './ScheduleItem/ScheduleItem'
 import './TeamSchedule.css'
+import { currentSeason } from '../../../utils/constants'
 
 function TeamSchedule(props) {
   const [teamID, setTeamID] = useState(null)
   var teamData = useGSHLTeams()
-  var scheduleData = useSchedule()
+  var scheduleData = useSchedule(currentSeason.key)
   if (scheduleData.isLoading || teamData.isLoading) { return <LoadingSpinner /> }
 
   return (

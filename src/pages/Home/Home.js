@@ -1,14 +1,12 @@
 import React from 'react'
-import { currentSeason, currentWeek } from '../../utils/constants'
-import { usePlayerDays } from '../../utils/fetchData'
-import WeeklySchedule from '../Schedule/WeeklySchedule/WeeklySchedule'
+import MatchupScroller from './components/MatchupScroller/MatchupScroller'
+import TeamRankings from './components/TeamRankings/TeamRankings'
 
 function Home() {
-  const x = usePlayerDays()
-  console.log(x)
   return (
     <>
-      <WeeklySchedule toolbar={false} season={currentSeason.key} weekID={currentWeek} />
+    <MatchupScroller />
+    <TeamRankings />
     </>
   )
 }

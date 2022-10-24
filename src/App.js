@@ -13,6 +13,7 @@ import LeagueOffice from './pages/LeagueOffice/LeagueOffice';
 import LockerRoom from './pages/LockerRoom/LockerRoom';
 import ErrorPage from './utils/ErrorPage/ErrorPage'
 import ScrollToTop from './utils/ScrollToTop/ScrollToTop'
+import MatchupPage from './pages/MatchupPage/MatchupPage';
 
 
 
@@ -28,7 +29,7 @@ function App() {
           <Route path="/standings" element={<Standings />} />
           <Route path="/lockerroom" element={<LockerRoom />} />
           <Route path="/leagueoffice" element={<LeagueOffice />} />
-          <Route path="/matchup/:id" element={<LeagueOffice />} />
+          <Route path="/matchup/:id" element={<MatchupPage />} />
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </div>

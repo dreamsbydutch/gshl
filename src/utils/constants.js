@@ -128,6 +128,48 @@ export const awardInfo = [
     },
 ]
 export const categories = {
+    '2023': [
+        {
+            'id': 'G',
+            'content': 'Goals',
+        },
+        {
+            'id': 'A',
+            'content': 'Assists',
+        },
+        {
+            'id': 'P',
+            'content': 'Points',
+        },
+        {
+            'id': 'PPP',
+            'content': 'PPP',
+        },
+        {
+            'id': 'SOG',
+            'content': 'Shots',
+        },
+        {
+            'id': 'HIT',
+            'content': 'Hits',
+        },
+        {
+            'id': 'BLK',
+            'content': 'Blocks',
+        },
+        {
+            'id': 'W',
+            'content': 'Wins',
+        },
+        {
+            'id': 'GAA',
+            'content': 'GAA',
+        },
+        {
+            'id': 'SVP',
+            'content': 'SV%',
+        }
+    ],
     '2022': [
         {
             'id': 'G',
@@ -220,32 +262,12 @@ export const postions = {
             'content': 'Center',
         },
         {
-            'id': 'C',
-            'content': 'Center',
-        },
-        {
-            'id': 'LW',
-            'content': 'Left Wing',
-        },
-        {
             'id': 'LW',
             'content': 'Left Wing',
         },
         {
             'id': 'RW',
             'content': 'Right Wing',
-        },
-        {
-            'id': 'RW',
-            'content': 'Right Wing',
-        },
-        {
-            'id': 'D',
-            'content': 'Defense',
-        },
-        {
-            'id': 'D',
-            'content': 'Defense',
         },
         {
             'id': 'D',
@@ -258,18 +280,6 @@ export const postions = {
         {
             'id': 'G',
             'content': 'Goalie',
-        },
-        {
-            'id': 'BN',
-            'content': 'Bench',
-        },
-        {
-            'id': 'BN',
-            'content': 'Bench',
-        },
-        {
-            'id': 'BN',
-            'content': 'Bench',
         },
         {
             'id': 'BN',
@@ -359,4 +369,4 @@ export const currentSeason = {
     'content': '2022-23',
     'key': '2023'
 }
-export const currentWeek = '1'
+export const currentWeek = '2'

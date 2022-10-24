@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
-// import MatchupStats from './MatchupStats/MatchupStats'
+import React from 'react'
+// import { Link } from 'react-router-dom'
 import './ScheduleItem.css'
 
 function ScheduleItem(props) {
-  const [showInfo, setShowInfo] = useState(false)
   return (
-    <div className='matchup-container' onClick={() => setShowInfo(!showInfo)}>
+    // <Link className='matchup-container' to={"/matchup/"+props.data.id}>
+    <div className="matchup-container">
       <div className={'teaminfo ' + props.data.HomeWL}>
         <div className='teamlogo'><img src={props.data.AwayTeamData.LogoURL} alt='Away Team Logo' /></div>
         <div className={'teamname ' + props.data.AwayTeamData.Conference + ' ' + props.data.AwayWL}>{props.data.AwayTeamData.TeamName}</div>
@@ -15,10 +15,8 @@ function ScheduleItem(props) {
         <div className='teamlogo'><img src={props.data.HomeTeamData.LogoURL} alt='Home Team Logo' /></div>
         <div className={'teamname ' + props.data.HomeTeamData.Conference + ' ' + props.data.HomeWL}>{props.data.HomeTeamData.TeamName}</div>
       </div>
-      <div className='matchup-stats' style={showInfo ? { display: 'block' } : { display: 'none' }}>
-        {/* <MatchupStats data={props.data} /> */}
-      </div>
     </div>
+    // </Link>
   )
 }
 

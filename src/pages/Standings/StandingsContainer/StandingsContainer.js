@@ -5,7 +5,7 @@ import LoadingSpinner from '../../../utils/LoadingSpinner/LoadingSpinner'
 import './StandingsContainer.css'
 
 function StandingsContainer(props) {
-  const standingsData = useStandings()
+  const standingsData = useStandings(props.season)
 
   var standingsObj = {
     "SV": getConferenceStandings(standingsData.data.filter(obj => obj.Season === props.season), "SV"),

@@ -9,7 +9,7 @@ import './Standings.css'
 function Standings() {
   const [standingsType, setStandingsType] = useState("OVR")
   const [seasonID, setSeasonID] = useState(currentSeason.key)
-  var standingsData = useStandings();
+  var standingsData = useStandings(seasonID);
   if (standingsData.isLoading) { return <LoadingSpinner /> }
   const pageNavData = standingsNavData
 
