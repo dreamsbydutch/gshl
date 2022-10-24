@@ -369,4 +369,4 @@ export const currentSeason = {
     'content': '2022-23',
     'key': '2023'
 }
-export const currentWeek = '2'
+export const currentWeek = '3'
