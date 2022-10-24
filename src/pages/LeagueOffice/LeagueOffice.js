@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 // import PageNavbar from '../../components/Navbar/PageNavbar'
 // import { leagueOfficeNavData } from '../../utils/constants'
 import Awards from './components/Awards/Awards'
@@ -8,7 +8,8 @@ import Rulebook from './components/Rulebook/Rulebook'
 import TradeMarket from './components/TradeMarket/TradeMarket'
 
 function LeagueOffice() {
-  const [type, setType] = useState("Rulebook")
+  // const [type, setType] = useState("Rulebook")
+  const type = "Rulebook"
 
   return (
     <>
