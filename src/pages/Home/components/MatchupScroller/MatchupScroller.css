@@ -19,6 +19,7 @@
 }
 
 .matchup-scroller .label {
+    font-family: 'Oswald';
     text-align: left;
     padding: 0 1em;
     font-weight: 800;
