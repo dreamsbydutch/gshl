@@ -1,0 +1,40 @@
+.matchuppage-matchupheader {
+    display:flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+    margin-top: 2em;
+}
+.matchuppage-matchupheader>.teamheader {
+    display:flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5em;
+    width: 12em;
+}
+.matchuppage-matchupheader>.symbol {
+    font-size: 1.5em;
+    font-weight: 600;
+}
+
+.matchuppage-matchupheader>.teamheader>img {
+    width: 6em;
+    margin: 0 1em;
+}
+.matchuppage-matchupheader>.teamheader>.teamscore {
+    font-size: 2.5em;
+    font-weight: 600;
+}
+.matchuppage-matchupheader>.teamheader>.teamscore.W {
+    font-size: 2.75em;
+    font-weight: 700;
+    color: rgb(0,125,0)
+}
+.matchuppage-matchupheader>.teamheader>.teamscore.L {
+    font-size: 2.25em;
+    font-weight: 400;
+    color: rgb(125,0,0)
+}
+

@@ -1,4 +1,4 @@
-thead > tr > td {
+thead th {
     font-weight: 500;
     background-color: var(--mainDark);
     color: var(--mainLightGrey);

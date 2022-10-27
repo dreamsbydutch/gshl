@@ -39,14 +39,20 @@ export function useMatchup(id) {
     var gshlTeams = useGSHLTeams()
     var scheduleData = useEndpointQuery('useSchedule', 'MainInput', 'Schedule')
     var matchupData = scheduleData.data && scheduleData.data.filter(obj => obj.id === id)[0]
-    console.log(matchupData)
     var rawteamWeeks = useTeamWeeks((matchupData && matchupData.Season) || currentSeason.key)
-    if (!matchupData) {return {'data': null, 'isLoading': true}}
+    var rawplayerWeeks = usePlayerWeeks((matchupData && matchupData.Season) || currentSeason.key)
+    if (scheduleData.isLoading || rawteamWeeks.isLoading || rawplayerWeeks.isLoading) {return {'data': null, 'isLoading': true}}
     var teamStats = rawteamWeeks.seasonData && rawteamWeeks.playoffData && [...rawteamWeeks.seasonData,...rawteamWeeks.playoffData]
+    var playerStats = rawplayerWeeks.seasonData && rawplayerWeeks.playoffData && [...rawplayerWeeks.seasonData,...rawplayerWeeks.playoffData]
     matchupData.HomeTeamData = gshlTeams.data && gshlTeams.data.filter(team => team[matchupData.Season] === matchupData.HomeTeam)[0]
     matchupData.AwayTeamData = gshlTeams.data && gshlTeams.data.filter(team => team[matchupData.Season] === matchupData.AwayTeam)[0]
     matchupData.HomeTeamStats = teamStats && teamStats.filter(team => team.gshlTeam === matchupData.HomeTeam && team.Season === matchupData.Season && team.Week === matchupData.WeekNum)[0]
     matchupData.AwayTeamStats = teamStats && teamStats.filter(team => team.gshlTeam === matchupData.AwayTeam && team.Season === matchupData.Season && team.Week === matchupData.WeekNum)[0]
+    matchupData.HomePlayerStats = playerStats && playerStats.filter(player => player.gshlTeam === matchupData.HomeTeam && player.Season === matchupData.Season && player.Week === matchupData.WeekNum).sort((a, b) => b.Rating - a.Rating)
+    matchupData.AwayPlayerStats = playerStats && playerStats.filter(player => player.gshlTeam === matchupData.AwayTeam && player.Season === matchupData.Season && player.Week === matchupData.WeekNum).sort((a, b) => b.Rating - a.Rating)
+    matchupData.firstStar = playerStats && playerStats.filter(player => player.id === matchupData.FirstStar && player.Season === matchupData.Season && player.Week === matchupData.WeekNum)[0]
+    matchupData.secondStar = playerStats && playerStats.filter(player => player.id === matchupData.SecondStar && player.Season === matchupData.Season && player.Week === matchupData.WeekNum)[0]
+    matchupData.thirdStar = playerStats && playerStats.filter(player => player.id === matchupData.ThirdStar && player.Season === matchupData.Season && player.Week === matchupData.WeekNum)[0]
     return { 'data': matchupData, 'isLoading': matchupData.isLoading }
 }
 export function useContracts() {

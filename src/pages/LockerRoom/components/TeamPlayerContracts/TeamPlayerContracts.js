@@ -31,12 +31,12 @@ function TeamPlayerContracts(props) {
             <table className='contractTable'>
                 <thead>
                     <tr>
-                        <td>Name</td>
-                        <td>Pos</td>
-                        <td>2022-23</td>
-                        <td>2023-24</td>
-                        <td>2024-25</td>
-                        <td>2025-26</td>
+                        <th>Name</th>
+                        <th>Pos</th>
+                        <th>2022-23</th>
+                        <th>2023-24</th>
+                        <th>2024-25</th>
+                        <th>2025-26</th>
                     </tr>
                 </thead>
                 <tbody>

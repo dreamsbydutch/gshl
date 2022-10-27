@@ -15,9 +15,9 @@ function MatchupPage() {
 
   return (
     <>
-      <MatchupHeader />
+      <MatchupHeader matchupData={matchupData.data} />
       <MatchupStats matchupData={matchupData.data} />
-      <MatchupBoxscore />
+      <MatchupBoxscore matchupData={matchupData.data} />
     </>
   )
 }

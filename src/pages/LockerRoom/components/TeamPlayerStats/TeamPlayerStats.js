@@ -11,16 +11,16 @@ function TeamPlayerStats(props) {
         <table className='contractTable'>
             <thead>
                 <tr>
-                    <td>Name</td>
-                    <td>Pos</td>
-                    <td>Rtg</td>
-                    <td>G</td>
-                    <td>A</td>
-                    <td>P</td>
-                    <td>PPP</td>
-                    <td>SOG</td>
-                    <td>HIT</td>
-                    <td>BLK</td>
+                    <th>Name</th>
+                    <th>Pos</th>
+                    <th>Rtg</th>
+                    <th>G</th>
+                    <th>A</th>
+                    <th>P</th>
+                    <th>PPP</th>
+                    <th>SOG</th>
+                    <th>HIT</th>
+                    <th>BLK</th>
                 </tr>
             </thead>
             <tbody>
