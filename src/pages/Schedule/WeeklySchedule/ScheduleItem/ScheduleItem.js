@@ -4,12 +4,17 @@ import './ScheduleItem.css'
 
 function ScheduleItem(props) {
   return (
-    <Link className='matchup-container' to={"/matchup/"+props.data.id}>
+    <Link className='matchup-container' to={"/matchup/" + props.data.id}>
       <div className={'teaminfo ' + props.data.HomeWL}>
         <div className='teamlogo'><img src={props.data.AwayTeamData.LogoURL} alt='Away Team Logo' /></div>
         <div className={'teamname ' + props.data.AwayTeamData.Conference + ' ' + props.data.AwayWL}>{props.data.AwayTeamData.TeamName}</div>
       </div>
-      <div className='matchup-score'>{props.data.HomeScore || props.data.AwayScore ? props.data.AwayScore + ' - ' + props.data.HomeScore : '@'}</div>
+      <div className='matchup-score'>
+        {props.data.HomeScore || props.data.AwayScore ?
+        <><span className={props.data.AwayWL}>{props.data.AwayScore}</span> - <span className={props.data.HomeWL}>{props.data.HomeScore}</span></>
+          : '@'
+        }
+      </div>
       <div className={'teaminfo ' + props.data.HomeWL}>
         <div className='teamlogo'><img src={props.data.HomeTeamData.LogoURL} alt='Home Team Logo' /></div>
         <div className={'teamname ' + props.data.HomeTeamData.Conference + ' ' + props.data.HomeWL}>{props.data.HomeTeamData.TeamName}</div>

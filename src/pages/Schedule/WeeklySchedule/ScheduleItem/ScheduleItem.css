@@ -19,9 +19,16 @@
     font-size: 1.25em;
 }
 
-.matchup-container>.matchup-score {
+.matchup-container>.matchup-score,
+.matchup-container>.matchup-score>span {
     font-weight: 500;
-    font-size: 1.25em;
+    font-size: 1.15em;
+}
+.matchup-container>.matchup-score .W {
+    color: #247900;
+}
+.matchup-container>.matchup-score .L {
+    color: #900;
 }
 
 
