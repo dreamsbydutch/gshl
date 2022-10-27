@@ -8,12 +8,12 @@
 }
 .matchuppage-matchupboxscore>table th {
     width: 40em;
-    font-size: 0.9em;
+    font-size: 0.85em;
 	text-transform: uppercase;
 	letter-spacing: 0.075em;
 }
 .matchuppage-matchupboxscore>table td {
-    font-size: 1.25em;
+    font-size: 1.1em;
     padding: 0.125em 0.5em;
 }
 .matchuppage-matchupboxscore>table {
