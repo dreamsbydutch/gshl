@@ -63,42 +63,28 @@ export function useContracts() {
 
 
 export function usePlayerDays(season) {
-    var statsRS = useEndpointQuery('usePlayerDays'+season+'RS', season+'PlayerDay', 'SeasonData')
-    var statsPO = useEndpointQuery('usePlayerDays'+season+'PO', season+'PlayerDay', 'PlayoffData')
-    return { 'seasonData': !statsRS.isLoading && statsRS.data, 'playoffData': !statsPO.isLoading && statsPO.data, 'isLoading': statsRS.isLoading || statsPO.isLoading }
+    return useEndpointQuery('usePlayerDays'+season, season+'PlayerDay', 'Data')
 }
 export function usePlayerWeeks(season) {
-    var statsRS = useEndpointQuery('usePlayerWeeks'+season+'RS', season+'PlayerWeek', 'SeasonData')
-    var statsPO = useEndpointQuery('usePlayerWeeks'+season+'PO', season+'PlayerWeek', 'PlayoffData')
-    return { 'seasonData': !statsRS.isLoading && statsRS.data, 'playoffData': !statsPO.isLoading && statsPO.data, 'isLoading': statsRS.isLoading || statsPO.isLoading }
+    return useEndpointQuery('usePlayerWeeks'+season, season+'PlayerWeek', 'Data')
 }
 export function usePlayerSplits(season) {
-    var statsRS = useEndpointQuery('usePlayerSplits'+season+'RS', season+'PlayerSeason', 'SeasonSplitsData')
-    var statsPO = useEndpointQuery('usePlayerSplits'+season+'PO', season+'PlayerSeason', 'PlayoffSplitsData')
-    return { 'seasonData': !statsRS.isLoading && statsRS.data, 'playoffData': !statsPO.isLoading && statsPO.data, 'isLoading': statsRS.isLoading || statsPO.isLoading }
+    return useEndpointQuery('usePlayerSplits'+season, season+'PlayerSeason', 'SplitsData')
 }
 export function usePlayerTotals(season) {
-    var statsRS = useEndpointQuery('usePlayerTotals'+season+'RS', season+'PlayerSeason', 'SeasonTotalsData')
-    var statsPO = useEndpointQuery('usePlayerTotals'+season+'PO', season+'PlayerSeason', 'PlayoffTotalsData')
-    return { 'seasonData': !statsRS.isLoading && statsRS.data, 'playoffData': !statsPO.isLoading && statsPO.data, 'isLoading': statsRS.isLoading || statsPO.isLoading }
+    return useEndpointQuery('usePlayerTotals'+season, season+'PlayerSeason', 'TotalsData')
 }
 
 
 
 export function useTeamDays(season) {
-    var statsRS = useEndpointQuery('useTeamDays'+season+'RS', season+'TeamDay', 'SeasonData')
-    var statsPO = useEndpointQuery('useTeamDays'+season+'PO', season+'TeamDay', 'PlayoffData')
-    return { 'seasonData': !statsRS.isLoading && statsRS.data, 'playoffData': !statsPO.isLoading && statsPO.data, 'isLoading': statsRS.isLoading || statsPO.isLoading }
+    return useEndpointQuery('useTeamDays'+season, season+'TeamDay', 'Data')
 }
 export function useTeamWeeks(season) {
-    var statsRS = useEndpointQuery('useTeamWeeks'+season+'RS', season+'TeamWeek', 'SeasonData')
-    var statsPO = useEndpointQuery('useTeamWeeks'+season+'PO', season+'TeamWeek', 'PlayoffData')
-    return { 'seasonData': !statsRS.isLoading && statsRS.data, 'playoffData': !statsPO.isLoading && statsPO.data, 'isLoading': statsRS.isLoading || statsPO.isLoading }
+    return useEndpointQuery('useTeamWeeks'+season, season+'TeamWeek', 'Data')
 }
 export function useTeamSeasons(season) {
-    var statsRS = useEndpointQuery('useTeamSeasons'+season+'RS', season+'TeamSeason', 'SeasonData')
-    var statsPO = useEndpointQuery('useTeamSeasons'+season+'PO', season+'TeamSeason', 'PlayoffData')
-    return { 'seasonData': !statsRS.isLoading && statsRS.data, 'playoffData': !statsPO.isLoading && statsPO.data, 'isLoading': statsRS.isLoading || statsPO.isLoading }
+    return useEndpointQuery('useTeamSeasons'+season, season+'TeamSeason', 'Data')
 }
 
 
