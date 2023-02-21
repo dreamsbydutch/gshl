@@ -1,39 +1,40 @@
 import React from 'react';
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+import LoadingSpinner from './components/LoadingSpinner';
 
-import './App.css';
 
-import MobileNavbar from './components/Navbar/MobileNavbar';
-import Navbar from './components/Navbar/Navbar';
-import Footer from './components/Footer/Footer';
-import Home from './pages/Home/Home';
-import Standings from './pages/Standings/Standings';
-import Schedule from './pages/Schedule/Schedule';
-import LeagueOffice from './pages/LeagueOffice/LeagueOffice';
-import LockerRoom from './pages/LockerRoom/LockerRoom';
-import ErrorPage from './utils/ErrorPage/ErrorPage'
-import ScrollToTop from './utils/ScrollToTop/ScrollToTop'
-import MatchupPage from './pages/MatchupPage/MatchupPage';
+import MobileNavbar from './components/MobileNavbar';
+// import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import Home from './pages/Home';
+import { useCurrentWeek } from './utils/fetchData';
+import Standings from './pages/Standings';
+import Schedule from './pages/Schedule';
+// import LeagueOffice from './pages/LeagueOffice';
+// import LockerRoom from './pages/LockerRoom';
+import ErrorPage from './components/ErrorPage'
+import ScrollToTop from './utils/ScrollToTop'
+// import MatchupPage from './pages/MatchupPage';
 
 
 
 function App() {
+  const currentWeek = useCurrentWeek()
+  if (!currentWeek) { return <LoadingSpinner /> }
   return (
     <Router>
       <ScrollToTop />
-      {window.innerWidth < 801 ? <><MobileNavbar /></> : <Navbar />}
-      <div className='main-page-container'>
-      <Routes>
-          <Route exact path="/" element={<Home />} />
-          <Route path="/schedule" element={<Schedule />} />
-          <Route path="/standings" element={<Standings />} />
-          <Route path="/lockerroom" element={<LockerRoom />} />
-          <Route path="/leagueoffice" element={<LeagueOffice />} />
-          <Route path="/matchup/:id" element={<MatchupPage />} />
+      {window.innerWidth < 800 ? <MobileNavbar /> : <MobileNavbar />}
+        <Routes>
+          <Route exact path="/" element={<Home currentWeek={currentWeek} />} />
+          <Route path="/schedule" element={<Schedule currentWeek={currentWeek} />} />
+          <Route path="/standings" element={<Standings currentWeek={currentWeek} />} />
+          {/* <Route path="/lockerroom" element={<LockerRoom currentWeek={currentWeek} />} /> */}
+          {/* <Route path="/leagueoffice" element={<LeagueOffice currentWeek={currentWeek} />} /> */}
+          {/* <Route path="/matchup/:id" element={<MatchupPage />} /> */}
           <Route path="*" element={<ErrorPage />} />
         </Routes>
-      </div>
-      {window.innerWidth < 801 ? <div style={{ 'color': '#var(--mainWhite)' }}>.</div> : <Footer />}
+      {window.innerWidth < 850 ? <div className="mb-12 text-white">.</div> : <Footer />}
     </Router >
   );
 }

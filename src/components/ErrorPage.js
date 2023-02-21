@@ -1,14 +1,11 @@
 import React from 'react'
-import { Container } from 'react-bootstrap'
 
-function ErrorPage() {
+export default function ErrorPage() {
     return (
-        <Container fluid>
+        <div>
             <h1>
                 Error!! The Page you are looking for does not exist
             </h1>
-        </Container>
+        </div>
     )
 }
-
-export default ErrorPage
