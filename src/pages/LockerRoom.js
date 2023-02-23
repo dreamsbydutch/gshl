@@ -28,7 +28,7 @@ export default function LockerRoom(props) {
 
 
 function TeamPlayerContracts(props) {
-  let formatter = new Intl.NumberFormat(navigator.language, { style: 'currency', currency: 'CAD', minimumSignificantDigits: 1 })
+  let formatter = new Intl.NumberFormat(navigator.language, { style: 'currency', currency: 'USD', minimumSignificantDigits: 1 })
   return (
     <>
       <div className='mt-8 text-center mx-auto text-xl font-bold'>Current Contracts & Buyouts</div>
@@ -50,21 +50,21 @@ function TeamPlayerContracts(props) {
                 <tr key={i} className={`${obj.ExpiryType === "Buyout" ? 'text-gray-400' : 'text-gray-800'}`}>
                   <td className="sticky left-0 py-1 px-2 text-center text-xs border-t border-b border-gray-300 whitespace-nowrap bg-gray-50">{obj.Player}</td>
                   <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300">{obj.Pos}</td>
-                  <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300">{formatter.format(obj.CapHit)}</td>
+                  <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300">{formatter.format(obj.CapHit).replace("US","")}</td>
                   {+obj.YearsRemaining > 1 ?
-                    <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300">{formatter.format(obj.CapHit)}</td>
+                    <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300">{formatter.format(obj.CapHit).replace("US","")}</td>
                     : +obj.YearsRemaining === 1 ?
                       <td className={`my-1 mx-2 text-center text-2xs font-bold rounded-xl border-t border-b border-gray-300 ${obj.ExpiryType === "RFA" ? 'text-orange-700 bg-orange-100' : obj.ExpiryType === "UFA" ? 'text-rose-800 bg-rose-100' : ''}`}>{obj.ExpiryType === 'Buyout' ? '' : obj.ExpiryType}</td>
                       : <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300"></td>
                   }
                   {+obj.YearsRemaining > 2 ?
-                    <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300">{formatter.format(obj.CapHit)}</td>
+                    <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300">{formatter.format(obj.CapHit).replace("US","")}</td>
                     : +obj.YearsRemaining === 2 ?
                       <td className={`my-1 mx-2 text-center text-2xs font-bold rounded-xl border-t border-b border-gray-300 ${obj.ExpiryType === "RFA" ? 'text-orange-700 bg-orange-100' : obj.ExpiryType === "UFA" ? 'text-rose-800 bg-rose-100' : ''}`}>{obj.ExpiryType === 'Buyout' ? '' : obj.ExpiryType}</td>
                       : <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300"></td>
                   }
                   {+obj.YearsRemaining > 3 ?
-                    <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300">{formatter.format(obj.CapHit)}</td>
+                    <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300">{formatter.format(obj.CapHit).replace("US","")}</td>
                     : +obj.YearsRemaining === 3 ?
                       <td className={`my-1 mx-2 text-center text-2xs font-bold rounded-xl border-t border-b border-gray-300 ${obj.ExpiryType === "RFA" ? 'text-orange-700 bg-orange-100' : obj.ExpiryType === "UFA" ? 'text-rose-800 bg-rose-100' : ''}`}>{obj.ExpiryType === 'Buyout' ? '' : obj.ExpiryType}</td>
                       : <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300"></td>
