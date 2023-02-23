@@ -11,11 +11,10 @@ export default function LockerRoom(props) {
     setSeasonID(props.currentWeek.Season)
     setTeamInfo(lockerRoomInfo.data?.filter(obj => obj[seasonID] === teamID)[0])
   }, [props.currentWeek.Season, lockerRoomInfo, seasonID, teamID])
-  console.log(teamInfo)
   return (
     <div className="my-10 font-varela">
       <TeamsToggle setter={setTeamID} season={seasonID} activeKey={teamID} />
-      <div className="mt-16 font-bold text-3xl text-center">{teamInfo.TeamName}</div>
+      <div className="mt-16 font-bold text-3xl text-center">{teamInfo?.TeamName}</div>
       {teamID &&
         <>
           <TeamPlayerContracts data={teamInfo} />
