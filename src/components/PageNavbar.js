@@ -221,20 +221,20 @@ export function TeamsToggle(props) {
   if (teamData.isError) { return <div>Error</div> }
   return (
     <>
-      <div className="flex flex-wrap gap-2 max-w-lg my-3 mx-3">
+      <div className="flex flex-nowrap max-w-lg my-3 mx-auto">
         {teamData.data.filter(obj => obj.Conference === "SV").map(obj => {
           return (
-            <div className="mx-auto" onClick={() => props.setter(obj.id)}>
-              <img className=' w-8 xs:w-9 flex-auto p-0.5 rounded-lg shadow-emboss bg-sunview-50 bg-opacity-50' src={obj.LogoURL} alt={obj.TeamName} />
+            <div key={obj.id} className="mx-auto" onClick={() => props.setter(obj.id)}>
+              <img className=' w-10 xs:w-12 flex-auto p-0.5 rounded-lg shadow-emboss bg-sunview-50 bg-opacity-50' src={obj.LogoURL} alt={obj.TeamName} />
             </div>
           )
         })}
       </div>
-      <div className="flex flex-wrap gap-2 max-w-lg my-3 mx-3">
+      <div className="flex flex-nowrap max-w-lg my-3 mx-auto">
         {teamData.data.filter(obj => obj.Conference === "HH").map(obj => {
           return (
-            <div className="mx-auto" onClick={() => props.setter(obj.id)}>
-              <img className='w-8 xs:w-9 flex-auto p-0.5 rounded-lg shadow-emboss bg-hotel-50 bg-opacity-50' src={obj.LogoURL} alt={obj.TeamName} />
+            <div key={obj.id} className="mx-auto" onClick={() => props.setter(obj.id)}>
+              <img className='w-10 xs:w-12 flex-auto p-0.5 rounded-lg shadow-emboss bg-hotel-50 bg-opacity-50' src={obj.LogoURL} alt={obj.TeamName} />
             </div>
           )
         })}

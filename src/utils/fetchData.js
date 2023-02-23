@@ -31,23 +31,24 @@ async function queryFunc({ queryKey }) {
 export function useStandings(season) {
     const standings = useQuery(['standings', season + 'TeamData', 'Standings'], queryFunc)
     const teamData = useGSHLTeams(season)
+    const teamProbs = usePlayoffProbs(season)
     var output = {
         'data': [],
         'isLoading': standings.isLoading || teamData.isLoading,
         'isError': standings.isError || teamData.isError,
     }
     if (output.isLoading || output.isError || standings.data.error) { return output }
-    console.log(standings)
-    output.data = standings.data.map(obj => {
-        obj.teamInfo = teamData.data.filter(a => a[season] === obj.teamID)[0]
+    output.data = standings.data?.map(obj => {
+        obj.teamInfo = teamData.data?.filter(a => a[season] === obj.teamID)[0]
+        obj.playoffProb = teamProbs.data?.filter(a => a.teamID === obj.teamID)[0]
         return obj
     })
     return output
 }
 export function useSchedule(season) {
     const seasonSchedule = useQuery(['schedule', 'MainInput', 'Schedule'], queryFunc)
-    const teamWeeks = useTeamWeeks(2023)
-    const playerWeeks = usePlayerWeeks(2023)
+    const teamWeeks = useTeamWeeks(season)
+    const playerWeeks = usePlayerWeeks(season)
     const teamData = useGSHLTeams(season)
 
     var output = {
@@ -57,14 +58,36 @@ export function useSchedule(season) {
     }
 
     if (output.isLoading || output.isError) { return output }
-    output.data = seasonSchedule.data.filter(obj => obj.Season === season).map(obj => {
-        obj.homeTeamInfo = teamData.data.filter(a => a[season] === obj.HomeTeam)[0]
-        obj.awayTeamInfo = teamData.data.filter(a => a[season] === obj.AwayTeam)[0]
-        obj['homeTeamStats'] = teamWeeks.data ? teamWeeks.data.filter(a => a.WeekNum === obj.WeekNum && a.gshlTeam === obj.HomeTeam)[0] : null
-        obj['awayTeamStats'] = teamWeeks.data ? teamWeeks.data.filter(a => a.WeekNum === obj.WeekNum && a.gshlTeam === obj.AwayTeam)[0] : null
-        obj['homePlayerStats'] = playerWeeks.data ? playerWeeks.data.filter(a => a.WeekNum === obj.WeekNum && a.gshlTeam === obj.HomeTeam) : null
-        obj['awayPlayerStats'] = playerWeeks.data ? playerWeeks.data.filter(a => a.WeekNum === obj.WeekNum && a.gshlTeam === obj.AwayTeam) : null
+    output.data = seasonSchedule.data?.filter(obj => obj.Season === season).map(obj => {
+        obj.homeTeamInfo = teamData.data?.filter(a => a[season] === obj.HomeTeam)[0]
+        obj.awayTeamInfo = teamData.data?.filter(a => a[season] === obj.AwayTeam)[0]
+        obj['homeTeamStats'] = teamWeeks.data?.filter(a => a.WeekNum === obj.WeekNum && a.gshlTeam === obj.HomeTeam)[0]
+        obj['awayTeamStats'] = teamWeeks.data?.filter(a => a.WeekNum === obj.WeekNum && a.gshlTeam === obj.AwayTeam)[0]
+        obj['homePlayerStats'] = playerWeeks.data?.filter(a => a.WeekNum === obj.WeekNum && a.gshlTeam === obj.HomeTeam)
+        obj['awayPlayerStats'] = playerWeeks.data?.filter(a => a.WeekNum === obj.WeekNum && a.gshlTeam === obj.AwayTeam)
 
+        return obj
+    })
+
+    return output
+}
+export function useLockerRoom(season) {
+    const teamData = useGSHLTeams(season)
+    const contracts = useContracts()
+    const currRoster = useCurrentRosters(2023)
+    const playerSplits = usePlayerSeasonSplits(2023)
+
+    var output = {
+        'data': null,
+        'isLoading': teamData.isLoading || contracts.isLoading || currRoster.isLoading || playerSplits.isLoading,
+        'isError': teamData.isError || contracts.isError || currRoster.isError || playerSplits.isError
+    }
+
+    if (output.isLoading || output.isError) { return output }
+    output.data = teamData.data?.map(obj => {
+        obj['contracts'] = contracts.data?.filter(a => a.CurrentTeam === obj[season])
+        obj['roster'] = currRoster.data?.filter(a => a.gshlTeam === obj[season]).sort((a,b) => +b.Rating - +a.Rating)
+        obj['playerStats'] = playerSplits.data?.filter(a => a.gshlTeam === obj[season])
         return obj
     })
 
@@ -211,6 +234,14 @@ export function useGSHLTeams(season) {
     })
     return output
 }
+export function usePlayoffProbs(season) {
+    const playoffProb = useQuery(['PlayoffProb', season + 'TeamData', 'Probabilities'], queryFunc)
+    return {
+        'data': playoffProb.data || null,
+        'isLoading': playoffProb.isLoading,
+        'isError': playoffProb.isError,
+    }
+}
 export function useNHLTeams() {
     const nhlTeams = useQuery(['NHLTeams', 'MainInput', 'NHLTeams'], queryFunc)
     return {
@@ -238,10 +269,10 @@ export function useWeeks(season) {
 export function useMatchupByID(matchupID) {
     const matchups = useQuery(['schedule', 'MainInput', 'Schedule'], queryFunc)
     const matchup = matchups.data?.filter(obj => obj.id === matchupID)[0]
-    const teamWeeks = useQuery(['teamWeeks', matchup?.Season + 'TeamData', 'Weeks'], queryFunc,{enabled:!!matchup})
-    const playerWeeks = useQuery(['playerWeeks', matchup?.Season + 'PlayerData', 'Weeks'], queryFunc,{enabled:!!matchup})
-    const gshlTeams = useQuery(['GSHLTeams', 'MainInput', 'GSHLTeams'], queryFunc,{enabled:!!matchup})
-    const users = useQuery(['Users', 'MainInput', 'Users'], queryFunc,{enabled:!!matchup})
+    const teamWeeks = useQuery(['teamWeeks', matchup?.Season + 'TeamData', 'Weeks'], queryFunc, { enabled: !!matchup })
+    const playerWeeks = useQuery(['playerWeeks', matchup?.Season + 'PlayerData', 'Weeks'], queryFunc, { enabled: !!matchup })
+    const gshlTeams = useQuery(['GSHLTeams', 'MainInput', 'GSHLTeams'], queryFunc, { enabled: !!matchup })
+    const users = useQuery(['Users', 'MainInput', 'Users'], queryFunc, { enabled: !!matchup })
 
     var output = {
         'data': null,
@@ -273,11 +304,11 @@ export function useContracts() {
 export function useCurrentWeek() {
     var date = new Date()
     var hour = date.getHours()
-    date = new Date(date.getFullYear(),date.getMonth(),hour < 5 ? date.getDate()-1 : date.getDate())
+    date = new Date(date.getFullYear(), date.getMonth(), hour < 5 ? date.getDate() - 1 : date.getDate())
     const weeks = useWeeks(date.getFullYear())
     var output = {}
     if (weeks.isLoading || weeks.isError) { return output }
-    output = weeks.data.filter(obj => ((new Date(obj.StartDate+' 00:00:00')) <= date) && ((new Date(obj.EndDate+' 00:00:00')) >= date))[0]
+    output = weeks.data.filter(obj => ((new Date(obj.StartDate + ' 00:00:00')) <= date) && ((new Date(obj.EndDate + ' 00:00:00')) >= date))[0]
 
     return output
 }

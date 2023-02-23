@@ -11,7 +11,7 @@ import { useCurrentWeek } from './utils/fetchData';
 import Standings from './pages/Standings';
 import Schedule from './pages/Schedule';
 // import LeagueOffice from './pages/LeagueOffice';
-// import LockerRoom from './pages/LockerRoom';
+import LockerRoom from './pages/LockerRoom';
 import ErrorPage from './components/ErrorPage'
 import ScrollToTop from './utils/ScrollToTop'
 // import MatchupPage from './pages/MatchupPage';
@@ -29,7 +29,7 @@ function App() {
           <Route exact path="/" element={<Home currentWeek={currentWeek} />} />
           <Route path="/schedule" element={<Schedule currentWeek={currentWeek} />} />
           <Route path="/standings" element={<Standings currentWeek={currentWeek} />} />
-          {/* <Route path="/lockerroom" element={<LockerRoom currentWeek={currentWeek} />} /> */}
+          <Route path="/lockerroom" element={<LockerRoom currentWeek={currentWeek} />} />
           {/* <Route path="/leagueoffice" element={<LeagueOffice currentWeek={currentWeek} />} /> */}
           {/* <Route path="/matchup/:id" element={<MatchupPage />} /> */}
           <Route path="*" element={<ErrorPage />} />
