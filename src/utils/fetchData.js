@@ -34,10 +34,10 @@ export function useStandings(season) {
     const teamProbs = usePlayoffProbs(season)
     var output = {
         'data': [],
-        'isLoading': standings.isLoading || teamData.isLoading,
-        'isError': standings.isError || teamData.isError,
+        'isLoading': standings.isLoading || teamData.isLoading || teamProbs.isLoading,
+        'isError': standings.isError || teamData.isError || teamProbs.isError,
     }
-    if (output.isLoading || output.isError || standings.data.error) { return output }
+    if (output.isLoading || output.isError || standings.data.error || teamData.data.error || teamProbs.data.error) { return output }
     output.data = standings.data?.map(obj => {
         obj.teamInfo = teamData.data?.filter(a => a[season] === obj.teamID)[0]
         obj.playoffProb = teamProbs.data?.filter(a => a.teamID === obj.teamID)[0]
@@ -57,7 +57,7 @@ export function useSchedule(season) {
         'isError': seasonSchedule.isError || teamWeeks.isError || playerWeeks.isError
     }
 
-    if (output.isLoading || output.isError) { return output }
+    if (output.isLoading || output.isError || seasonSchedule.data.error || teamWeeks.data.error || playerWeeks.data.error) { return output }
     output.data = seasonSchedule.data?.filter(obj => obj.Season === season).map(obj => {
         obj.homeTeamInfo = teamData.data?.filter(a => a[season] === obj.HomeTeam)[0]
         obj.awayTeamInfo = teamData.data?.filter(a => a[season] === obj.AwayTeam)[0]
@@ -83,7 +83,7 @@ export function useLockerRoom(season) {
         'isError': teamData.isError || contracts.isError || currRoster.isError || playerSplits.isError
     }
 
-    if (output.isLoading || output.isError) { return output }
+    if (output.isLoading || output.isError || teamData.data.error || contracts.data.error || currRoster.data.error || playerSplits.data.error) { return output }
     output.data = teamData.data?.map(obj => {
         obj['contracts'] = contracts.data?.filter(a => a.CurrentTeam === obj[season])
         obj['roster'] = currRoster.data?.filter(a => a.gshlTeam === obj[season]).sort((a, b) => +b.Rating - +a.Rating)
@@ -111,9 +111,9 @@ export function useTeamDays(season) {
         'isLoading': teamDays.isLoading || teamData.isLoading,
         'isError': teamDays.isError || teamData.isError,
     }
-    if (output.isLoading || output.isError) { return output }
-    output.data = teamDays.map(obj => {
-        obj.teamInfo = teamData.filter(a => a[season] === obj.gshlTeam)[0]
+    if (output.isLoading || output.isError || teamDays.data.error || teamData.data.error) { return output }
+    output.data = teamDays?.map(obj => {
+        obj.teamInfo = teamData?.filter(a => a[season] === obj.gshlTeam)[0]
         return obj
     })
     return output
@@ -126,7 +126,7 @@ export function useTeamWeeks(season) {
         'isLoading': teamWeeks.isLoading || teamData.isLoading,
         'isError': teamWeeks.isError || teamData.isError,
     }
-    if (output.isLoading || output.isError) { return output }
+    if (output.isLoading || output.isError || teamWeeks.data.error || teamData.data.error) { return output }
     output.data = teamWeeks.data?.map(obj => {
         obj.teamInfo = teamData.data?.filter(a => a[season] === obj.gshlTeam)[0]
         return obj
@@ -141,9 +141,9 @@ export function useTeamSeasons(season) {
         'isLoading': teamSeasons.isLoading || teamData.isLoading,
         'isError': teamSeasons.isError || teamData.isError,
     }
-    if (output.isLoading || output.isError) { return output }
-    output.data = teamSeasons.map(obj => {
-        obj.teamInfo = teamData.filter(a => a[season] === obj.gshlTeam)[0]
+    if (output.isLoading || output.isError || teamSeasons.data.error || teamData.data.error) { return output }
+    output.data = teamSeasons?.data.map(obj => {
+        obj.teamInfo = teamData?.data.filter(a => a[season] === obj.gshlTeam)[0]
         return obj
     })
     return output
@@ -157,9 +157,9 @@ export function usePlayerDays(season) {
         'isLoading': playerDays.isLoading || teamData.isLoading,
         'isError': playerDays.isError || teamData.isError,
     }
-    if (output.isLoading || output.isError) { return output }
-    output.data = playerDays.data.map(obj => {
-        obj.teamInfo = teamData.data.filter(a => a[season] === obj.gshlTeam)[0]
+    if (output.isLoading || output.isError || playerDays.data.error || teamData.data.error) { return output }
+    output.data = playerDays.data?.map(obj => {
+        obj.teamInfo = teamData.data?.filter(a => a[season] === obj.gshlTeam)[0]
         return obj
     })
     return output
@@ -172,9 +172,9 @@ export function usePlayerWeeks(season) {
         'isLoading': playerWeeks.isLoading || teamData.isLoading,
         'isError': playerWeeks.isError || teamData.isError,
     }
-    if (output.isLoading || output.isError) { return output }
-    output.data = playerWeeks.data.map(obj => {
-        obj.teamInfo = teamData.data.filter(a => a[season] === obj.gshlTeam)[0]
+    if (output.isLoading || output.isError || playerWeeks.data.error || teamData.data.error) { return output }
+    output.data = playerWeeks.data?.map(obj => {
+        obj.teamInfo = teamData.data?.filter(a => a[season] === obj.gshlTeam)[0]
         return obj
     })
     return output
@@ -187,9 +187,9 @@ export function usePlayerSeasonSplits(season) {
         'isLoading': playerSeasons.isLoading || teamData.isLoading,
         'isError': playerSeasons.isError || teamData.isError,
     }
-    if (output.isLoading || output.isError) { return output }
-    output.data = playerSeasons.data.map(obj => {
-        obj.teamInfo = teamData.data.filter(a => a[season] === obj.gshlTeam)[0]
+    if (output.isLoading || output.isError || playerSeasons.data.error || teamData.data.error) { return output }
+    output.data = playerSeasons.data?.map(obj => {
+        obj.teamInfo = teamData.data?.filter(a => a[season] === obj.gshlTeam)[0]
         return obj
     })
     return output
@@ -202,9 +202,9 @@ export function usePlayerSeasonTotals(season) {
         'isLoading': playerSeasons.isLoading || teamData.isLoading,
         'isError': playerSeasons.isError || teamData.isError,
     }
-    if (output.isLoading || output.isError) { return output }
-    output.data = playerSeasons.data.map(obj => {
-        obj.teamInfo = teamData.data.filter(a => a[season] === obj.gshlTeam)[0]
+    if (output.isLoading || output.isError || playerSeasons.data.error || teamData.data.error) { return output }
+    output.data = playerSeasons.data?.map(obj => {
+        obj.teamInfo = teamData.data?.filter(a => a[season] === obj.gshlTeam)[0]
         return obj
     })
     return output
@@ -227,9 +227,9 @@ export function useGSHLTeams(season) {
         'isLoading': gshlTeams.isLoading || users.isLoading,
         'isError': gshlTeams.isError || users.isError,
     }
-    if (output.isLoading || output.isError) { return output }
-    output.data = gshlTeams.data.filter(obj => obj[season]).map(obj => {
-        obj.owner = users.data.filter(a => a.id === obj.OwnerID)[0]
+    if (output.isLoading || output.isError || gshlTeams.data.error || users.data.error) { return output }
+    output.data = gshlTeams.data?.filter(obj => obj[season]).map(obj => {
+        obj.owner = users.data?.filter(a => a.id === obj.OwnerID)[0]
         return obj
     })
     return output
@@ -280,7 +280,7 @@ export function useMatchupByID(matchupID) {
         'isError': matchups.isError || teamWeeks.isError || playerWeeks.isError || gshlTeams.isError || users.isError,
     }
 
-    if (output.isLoading || output.isError) { return output }
+    if (output.isLoading || output.isError || matchup.data.error || teamWeeks.data.error || playerWeeks.data.error || gshlTeams.data.error || users.data.error) { return output }
     matchup['HomeTeamStats'] = teamWeeks.data?.filter(obj => obj.gshlTeam === matchup['HomeTeam'] && obj.WeekNum === matchup['WeekNum'])[0]
     matchup['HomeTeamPlayers'] = playerWeeks.data?.filter(obj => obj.gshlTeam === matchup['HomeTeam'] && obj.WeekNum === matchup['WeekNum'])
     matchup['HomeTeamInfo'] = gshlTeams.data?.filter(obj => obj[matchup['Season']] === matchup['HomeTeam'])[0]

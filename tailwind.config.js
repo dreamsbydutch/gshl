@@ -40,7 +40,7 @@ module.exports = {
         oswald: 'Oswald',
       },
       translate: {
-        navbarActive: '-12px',
+        navbarActive: '-8px',
         navbarActiveLg: '-4px',
       },
       keyframes: {

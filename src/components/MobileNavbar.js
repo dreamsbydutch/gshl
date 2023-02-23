@@ -11,19 +11,19 @@ function NavBar() {
                 </NavLink>
                 <span className='h-4/6 border-1 border-gray-400' />
                 <NavLink to="/schedule" className={(navData) => navData.isActive ? "invert before:content-[''] before:inline-block before:absolute before:w-14 before:h-14 before:z-[-1] before:bg-gray-200 before:transform before:translate-x-navbarActive before:translate-y-navbarActive before:rounded-xl" : ""}>
-                    <img className="h-8" alt="Leaderboard logo" src="https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/ScheduleIcon.png" />
+                    <img className="h-10" alt="Leaderboard logo" src="https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/ScheduleIcon.png" />
                 </NavLink>
                 <span className='h-4/6 border-1 border-gray-400' />
                 <NavLink to="/standings" className={(navData) => navData.isActive ? "invert before:content-[''] before:inline-block before:absolute before:w-14 before:h-14 before:z-[-1] before:bg-gray-200 before:transform before:translate-x-navbarActive before:translate-y-navbarActive before:rounded-xl" : ""}>
-                    <img className="h-8" alt="Standings logo" src="https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/StandingsIcon.png" />
+                    <img className="h-10" alt="Standings logo" src="https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/StandingsIcon.png" />
                 </NavLink>
                 <span className='h-4/6 border-1 border-gray-400' />
                 <NavLink to="/lockerroom" className={(navData) => navData.isActive ? "invert before:content-[''] before:inline-block before:absolute before:w-14 before:h-14 before:z-[-1] before:bg-gray-200 before:transform before:translate-x-navbarActive before:translate-y-navbarActive before:rounded-xl" : ""}>
-                    <img className="h-8" alt="Golfer Stats logo" src="https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/LockerRoomIcon.png" />
+                    <img className="h-10" alt="Golfer Stats logo" src="https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/LockerRoomIcon.png" />
                 </NavLink>
                 <span className='h-4/6 border-1 border-gray-400' />
                 <NavLink to="/leagueoffice" className={(navData) => navData.isActive ? "invert before:content-[''] before:inline-block before:absolute before:w-14 before:h-14 before:z-[-1] before:bg-gray-200 before:transform before:translate-x-navbarActive before:translate-y-navbarActive before:rounded-xl" : ""}>
-                    <img className="h-8" alt="Rulebook logo" src="https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/LeagueOfficeIcon.png" />
+                    <img className="h-10" alt="Rulebook logo" src="https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/LeagueOfficeIcon.png" />
                 </NavLink>
             </div>
         </div>
