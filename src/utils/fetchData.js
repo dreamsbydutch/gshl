@@ -86,7 +86,7 @@ export function useLockerRoom(season) {
     if (output.isLoading || output.isError) { return output }
     output.data = teamData.data?.map(obj => {
         obj['contracts'] = contracts.data?.filter(a => a.CurrentTeam === obj[season])
-        obj['roster'] = currRoster.data?.filter(a => a.gshlTeam === obj[season]).sort((a,b) => +b.Rating - +a.Rating)
+        obj['roster'] = currRoster.data?.filter(a => a.gshlTeam === obj[season]).sort((a, b) => +b.Rating - +a.Rating)
         obj['playerStats'] = playerSplits.data?.filter(a => a.gshlTeam === obj[season])
         return obj
     })
@@ -127,8 +127,8 @@ export function useTeamWeeks(season) {
         'isError': teamWeeks.isError || teamData.isError,
     }
     if (output.isLoading || output.isError) { return output }
-    output.data = teamWeeks.data.map(obj => {
-        obj.teamInfo = teamData.data.filter(a => a[season] === obj.gshlTeam)[0]
+    output.data = teamWeeks.data?.map(obj => {
+        obj.teamInfo = teamData.data?.filter(a => a[season] === obj.gshlTeam)[0]
         return obj
     })
     return output

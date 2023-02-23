@@ -229,9 +229,9 @@ function TeamPlayerStats(props) {
             <tr>
               <th className='sticky left-0 p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>Name</th>
               <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>Pos</th>
-              <th colspan='2' className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>W</th>
-              <th colspan='2' className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>GAA</th>
-              <th colspan='2' className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>SV%</th>
+              <th colSpan='2' className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>W</th>
+              <th colSpan='2' className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>GAA</th>
+              <th colSpan='2' className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>SV%</th>
               <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'></th>
               <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>Rtg</th>
               <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>Days</th>
@@ -244,9 +244,9 @@ function TeamPlayerStats(props) {
                 <tr key={obj.id}>
                   <td className="sticky left-0 py-1 px-2 text-center text-xs border-t border-b border-gray-300 whitespace-nowrap bg-gray-50">{obj.PlayerName}</td>
                   <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300">{obj.nhlPos}</td>
-                  <td colspan='2' className="py-1 px-1.5 text-center text-xs border-t border-b border-gray-300">{obj.W}</td>
-                  <td colspan='2' className="py-1 px-1.5 text-center text-xs border-t border-b border-gray-300">{obj.GAA}</td>
-                  <td colspan='2' className="py-1 px-1.5 text-center text-xs border-t border-b border-gray-300">{obj.SVP}</td>
+                  <td colSpan='2' className="py-1 px-1.5 text-center text-xs border-t border-b border-gray-300">{obj.W}</td>
+                  <td colSpan='2' className="py-1 px-1.5 text-center text-xs border-t border-b border-gray-300">{obj.GAA}</td>
+                  <td colSpan='2' className="py-1 px-1.5 text-center text-xs border-t border-b border-gray-300">{obj.SVP}</td>
                   <td className="py-1 px-1.5 text-center text-xs border-t border-b border-gray-300"></td>
                   <td className="py-1 px-2 text-center text-xs font-bold border-t border-b border-gray-300 bg-gray-50">{Math.round(obj.Rating * 10) / 10}</td>
                   <td className="py-1 px-1.5 text-center text-xs border-t border-b border-gray-300">{obj.RosterDays}</td>

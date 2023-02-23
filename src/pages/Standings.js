@@ -80,7 +80,7 @@ function StandingsContainer(props) {
 
 function StandingsItem(props) {
   return (
-    <div className="grid grid-cols-12 mx-auto py-1 font-varela text-center items-center border-b border-dotted border-gray-400">
+    <div key={props.key} className="grid grid-cols-12 mx-auto py-1 font-varela text-center items-center border-b border-dotted border-gray-400">
       <div className="col-span-2 p-1"><img className="w-12" src={props.data.teamInfo?.LogoURL} alt="Team Logo" /></div>
       <div className="col-span-6 font-bold text-base">
         {+props.data.playoffProb?.OneSeed === 1 ? 'z - ' : +props.data.playoffProb?.OneConf === 1 ? 'y - ' : +props.data.playoffProb?.POPer === 1 ? 'x - ' : +props.data.playoffProb?.LBPer === 1 ? 'l - ' : +props.data.playoffProb?.POPer === 0 ? 'e - ' : ''}
