@@ -11,10 +11,11 @@ export default function LockerRoom(props) {
     setSeasonID(props.currentWeek.Season)
     setTeamInfo(lockerRoomInfo.data?.filter(obj => obj[seasonID] === teamID)[0])
   }, [props.currentWeek.Season, lockerRoomInfo, seasonID, teamID])
-
+  console.log(teamInfo)
   return (
-    <div className="my-10">
+    <div className="my-10 font-varela">
       <TeamsToggle setter={setTeamID} season={seasonID} activeKey={teamID} />
+      <div className="mt-16 font-bold text-3xl text-center">{teamInfo.TeamName}</div>
       {teamID &&
         <>
           <TeamPlayerContracts data={teamInfo} />
@@ -31,7 +32,7 @@ function TeamPlayerContracts(props) {
   let formatter = new Intl.NumberFormat(navigator.language, { style: 'currency', currency: 'CAD', minimumSignificantDigits: 1 })
   return (
     <>
-      <div className='mt-12 text-center mx-auto text-xl font-bold'>Current Contracts & Buyouts</div>
+      <div className='mt-8 text-center mx-auto text-xl font-bold'>Current Contracts & Buyouts</div>
       <div className='table-auto overflow-scroll'>
         <table className='mx-auto overflow-x-auto'>
           <thead>
