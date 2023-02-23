@@ -28,7 +28,7 @@ export default function LockerRoom(props) {
 
 
 function TeamPlayerContracts(props) {
-  let formatter = new Intl.NumberFormat(navigator.language, { style: 'currency', currency: 'USD', minimumSignificantDigits: 1 })
+  let formatter = new Intl.NumberFormat(navigator.language, { style: 'currency', currency: 'CAD', minimumSignificantDigits: 1 })
   return (
     <>
       <div className='mt-12 text-center mx-auto text-xl font-bold'>Current Contracts & Buyouts</div>
