@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/gshl/static/css/main.3ed55f60.css",
-    "main.js": "/gshl/static/js/main.990254a8.js",
+    "main.css": "/gshl/static/css/main.4a1ec794.css",
+    "main.js": "/gshl/static/js/main.2741bf69.js",
     "static/media/fontawesome-webfont.svg?v=4.7.0": "/gshl/static/media/fontawesome-webfont.c1e38fd9e0e74ba58f7a.svg",
     "static/media/fontawesome-webfont.eot": "/gshl/static/media/fontawesome-webfont.8b43027f47b20503057d.eot",
     "static/media/fontawesome-webfont.ttf?v=4.7.0": "/gshl/static/media/fontawesome-webfont.1e59d2330b4c6deb84b3.ttf",
     "static/media/fontawesome-webfont.woff?v=4.7.0": "/gshl/static/media/fontawesome-webfont.f691f37e57f04c152e23.woff",
     "static/media/fontawesome-webfont.woff2?v=4.7.0": "/gshl/static/media/fontawesome-webfont.20fd1704ea223900efa9.woff2",
     "index.html": "/gshl/index.html",
-    "main.3ed55f60.css.map": "/gshl/static/css/main.3ed55f60.css.map",
-    "main.990254a8.js.map": "/gshl/static/js/main.990254a8.js.map"
+    "main.4a1ec794.css.map": "/gshl/static/css/main.4a1ec794.css.map",
+    "main.2741bf69.js.map": "/gshl/static/js/main.2741bf69.js.map"
   },
   "entrypoints": [
-    "static/css/main.3ed55f60.css",
-    "static/js/main.990254a8.js"
+    "static/css/main.4a1ec794.css",
+    "static/js/main.2741bf69.js"
   ]
 }
