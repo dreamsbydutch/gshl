@@ -31,8 +31,8 @@ function App() {
           <Route path="/standings" element={<Standings currentWeek={currentWeek} />} />
           <Route path="/lockerroom" element={<LockerRoom currentWeek={currentWeek} />} />
           {/* <Route path="/leagueoffice" element={<LeagueOffice currentWeek={currentWeek} />} /> */}
-          <Route path="/matchup/:id" element={<MatchupPage />} />
-          <Route path="*" element={<ErrorPage />} />
+          <Route path="/matchup/:id" element={<MatchupPage currentWeek={currentWeek} />} />
+          <Route path="*" element={<ErrorPage currentWeek={currentWeek} />} />
         </Routes>
       {window.innerWidth < 850 ? <div className="mb-12 text-white">.</div> : <Footer />}
     </Router >

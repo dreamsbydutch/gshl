@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import LoadingSpinner from '../components/LoadingSpinner'
-import { useMatchupByID, usePlayerSeasonTotals } from '../utils/fetchData'
+import { useMatchupByID, usePlayerSeasonTotals, useSchedule, usePlayerDays } from '../utils/fetchData'
 
-export default function MatchupPage() {
+export default function MatchupPage(props) {
   const { id } = useParams()
   const matchupData = useMatchupByID(id)
   if (!matchupData.data) { return <LoadingSpinner /> }
@@ -11,8 +11,10 @@ export default function MatchupPage() {
 
   return (
     <>
+      <MatchupScroller matchupData={matchupData.data} currentWeek={props.currentWeek} />
       <MatchupHeader matchupData={matchupData.data} />
       <MatchupStats matchupData={matchupData.data} />
+      <PlayingToday matchupData={matchupData.data} />
       {matchupData.data.HomeWL === '' && matchupData.data.AwayWL === '' ?
         <WatchList matchupData={matchupData.data} />
         :
@@ -141,7 +143,7 @@ function WatchList(props) {
   firstStar = seasonStats.data?.filter(obj => obj.PlayerName === firstStar.PlayerName && obj.nhlPos === firstStar.nhlPos)[0]
   secondStar = seasonStats.data?.filter(obj => obj.PlayerName === secondStar.PlayerName && obj.nhlPos === secondStar.nhlPos)[0]
   thirdStar = seasonStats.data?.filter(obj => obj.PlayerName === thirdStar.PlayerName && obj.nhlPos === thirdStar.nhlPos)[0]
-  if (!firstStar || !secondStar || !thirdStar ) { return <LoadingSpinner /> }
+  if (!firstStar || !secondStar || !thirdStar) { return <LoadingSpinner /> }
   return (
     <div>
       <div className="mt-8 text-lg text-center font-bold">Players to Watch</div>
@@ -197,6 +199,41 @@ function WatchList(props) {
           </div>
         </div>
       }
+    </div>
+  )
+}
+function PlayingToday(props) {
+  const playerDays = usePlayerDays(props.matchupData.Season)
+  if (!playerDays.data) { return <LoadingSpinner /> }
+  let date = new Date()
+  date = date.getFullYear() + '-' + (+date.getMonth() < 9 ? '0' + ((+date.getMonth()) + 1) : ((+date.getMonth()) + 1)) + '-' + date.getDate()
+  let playerData = [playerDays.data?.filter(obj => obj.Date === date && obj.gshlTeam === props.matchupData.AwayTeam && obj.Opp), playerDays.data?.filter(obj => obj.Date === date && obj.gshlTeam === props.matchupData.HomeTeam && obj.Opp)]
+  return (
+    <div className='mb-8'>
+      <div className="mt-2 text-base text-center font-bold">Playing Today</div>
+      <div className="grid grid-cols-2 gap-2 w-11/12 mx-auto text-2xs font-medium text-center items-start">
+        {playerData.map(teamPlayerData => {
+          return (
+            <div className="">
+              {teamPlayerData.filter(player => player.dailyPos !== 'BN' && player.dailyPos !== 'IR+' && player.dailyPos !== 'IR').map(player => {
+                return (
+                  <div className='flex flex-col border-b border-gray-300'>
+                    <div className="inline-block text-xs">
+                      {player.PlayerName}
+                      <img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${player.nhlTeam}.png`} alt="" className='inline-block h-4 w-4 mx-1' />
+                    </div>
+                    <div className="inline-block">
+                      {player.Opp[0] === '@' ? '@' : 'v'}
+                      <img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${player.Opp[0] === '@' ? player.Opp.slice(1) : player.Opp}.png`} alt="" className='inline-block h-4 w-4 mx-1' />
+                      {(player.Score.includes('AM') || player.Score.includes('PM')) ? addHoursToTime(player.Score, 3) : player.Score}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          )
+        })}
+      </div>
     </div>
   )
 }
@@ -272,4 +309,101 @@ function MatchupBoxscore(props) {
       </div>
     </div>
   )
+}
+
+
+function MatchupScroller(props) {
+  const schedule = useSchedule(props.matchupData.Season)
+  return (
+    <>
+      <div className='mt-4 font-oswald text-left px-4 font-bold text-base'>Week {props.matchupData?.WeekNum}</div>
+      <div className='flex flex-row overflow-auto whitespace-nowrap mt-1 flex-nowrap'>
+        <div className='shrink-0'>
+          <div className="flex flex-row hover:text-grey-800">
+            {schedule.data &&
+              schedule.data
+                .filter(obj => obj.Season === props.matchupData.Season)
+                .filter(obj => obj.WeekNum === props.matchupData.WeekNum)
+                .sort((a, b) => a.MatchupNum - b.MatchupNum)
+                .map((obj, i) => <ScrollerItem data={obj} key={i} currentMatchup={props.matchupData} />)}
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
+function ScrollerItem(props) {
+  let conf = props.data.GameType + props.data.awayTeamInfo?.Conference + props.data.homeTeamInfo?.Conference, bgClass = ''
+
+  switch (conf) {
+    case 'CCSVSV':
+      bgClass = 'bg-sunview-50 bg-opacity-50'
+      break
+    case 'CCHHHH':
+      bgClass = 'bg-hotel-50 bg-opacity-50'
+      break
+    case 'NCSVHH':
+      bgClass = 'bg-gradient-to-b from-sunview-50 to-hotel-50 bg-opacity-10'
+      break
+    case 'NCHHSV':
+      bgClass = 'bg-gradient-to-b from-hotel-50 to-sunview-50 bg-opacity-10'
+      break
+    case 'QFSVSV':
+    case 'QFHHHH':
+    case 'QFHHSV':
+    case 'QFSVHH':
+      bgClass = 'bg-orange-200 bg-opacity-30'
+      break
+    case 'SFSVSV':
+    case 'SFHHHH':
+    case 'SFHHSV':
+    case 'SFSVHH':
+      bgClass = 'bg-slate-200 bg-opacity-30'
+      break
+    case 'FSVSV':
+    case 'FHHHH':
+    case 'FHHSV':
+    case 'FSVHH':
+      bgClass = 'bg-yellow-200 bg-opacity-30'
+      break
+    case 'LTSVSV':
+    case 'LTHHHH':
+    case 'LTHHSV':
+    case 'LTSVHH':
+      bgClass = 'bg-brown-200 bg-opacity-40'
+      break
+    default:
+      bgClass = 'bg-gray-100'
+      break
+  }
+  return (
+    <div className={`flex flex-col m-2 px-1 items-center ${props.data.id === props.currentMatchup.id ? (bgClass) : 'bg-gray-100'} shadow-emboss rounded-2xl shrink-0`}>
+      <Link to={"/matchup/" + props.data.id}>
+        <div className={`flex p-1 ${props.data.AwayWL === "W" ? 'font-bold text-emerald-800' : (props.data.AwayWL === "L" ? 'text-rose-800' : '')}`}>
+          {props.data.AwayRank <= 8 ? <div className='mx-auto px-1 text-xs xs:text-sm items-start font-bold'>#{props.data.AwayRank}</div> : <div className="pl-5"></div>}
+          <img className='w-8 my-1 mx-1' src={props.data.awayTeamStats ? props.data.awayTeamStats.teamInfo.LogoURL : ''} alt='Away Team Logo' />
+          <div className='mx-auto px-1 text-sm xs:text-base my-auto'>{props.data.AwayScore}</div>
+        </div>
+        <div className={`flex p-1 ${props.data.HomeWL === "W" ? 'font-bold text-emerald-800' : (props.data.HomeWL === "L" ? 'text-rose-800' : '')}`}>
+          {props.data.HomeRank <= 8 ? <div className='mx-auto px-1 text-xs xs:text-sm items-start font-bold'>#{props.data.HomeRank}</div> : <div className="pl-5"></div>}
+          <img className='w-8 my-1 mx-1' src={props.data.homeTeamStats && props.data.homeTeamStats.teamInfo.LogoURL} alt='Home Team Logo' />
+          <div className='mx-auto px-1 text-sm xs:text-base my-auto'>{props.data.HomeScore}</div>
+        </div>
+      </Link>
+    </div>
+  )
+}
+
+
+function addHoursToTime(timeString, hoursToAdd) {
+  // Convert time string to a Date object
+  let dateObj = new Date("January 1, 2022 " + timeString);
+
+  // Add hours to the Date object
+  dateObj.setHours(dateObj.getHours() + hoursToAdd);
+
+  // Format the Date object back into a string
+  let formattedTime = dateObj.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
+
+  return formattedTime;
 }
