@@ -222,7 +222,7 @@ function PlayingToday(props) {
                   <div key={player.id} className='flex flex-col border-b border-gray-300'>
                     <div className="inline-block text-xs">
                       {player.PlayerName}
-                      <img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${player.nhlTeam}.png`} alt="" className='inline-block h-4 w-4 mx-1' />
+                      {/* <img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${player.nhlTeam}.png`} alt="" className='inline-block h-4 w-4 mx-1' /> */}
                     </div>
                     <div className="inline-block">
                       {player.Opp[0] === '@' ? '@' : 'v'}
