@@ -14,9 +14,11 @@ export default function MatchupPage(props) {
       <MatchupScroller matchupData={matchupData.data} currentWeek={props.currentWeek} />
       <MatchupHeader matchupData={matchupData.data} />
       <MatchupStats matchupData={matchupData.data} />
-      <PlayingToday matchupData={matchupData.data} />
       {matchupData.data.HomeWL === '' && matchupData.data.AwayWL === '' ?
-        <WatchList matchupData={matchupData.data} />
+        <>
+          <PlayingToday matchupData={matchupData.data} />
+          <WatchList matchupData={matchupData.data} />
+        </>
         :
         <ThreeStars matchupData={matchupData.data} />
       }
@@ -212,7 +214,7 @@ function PlayingToday(props) {
     <div className='mb-8'>
       <div className="mt-2 text-base text-center font-bold">Playing Today</div>
       <div className="grid grid-cols-2 gap-2 w-11/12 mx-auto text-2xs font-medium text-center items-start">
-        {playerData.map((teamPlayerData,i) => {
+        {playerData.map((teamPlayerData, i) => {
           return (
             <div key={i} className="">
               {teamPlayerData.filter(player => player.dailyPos !== 'BN' && player.dailyPos !== 'IR+' && player.dailyPos !== 'IR').map(player => {
@@ -292,7 +294,7 @@ function MatchupBoxscore(props) {
               <th className="p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200" key="Space"></th>
               {['W', 'GAA', 'SVP'].map(obj => <><th className="p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200" key={obj}>{obj}</th><td className="p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200" key="Space"></td></>)}
               <th className="p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200" key="Rating">Rating</th>
-            <th className="p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200" key="Days">Days</th>
+              <th className="p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200" key="Days">Days</th>
             </tr>
           </thead>
           <tbody>
