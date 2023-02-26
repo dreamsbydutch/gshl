@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import LoadingSpinner from '../components/LoadingSpinner'
-import { useMatchupByID, usePlayerSeasonTotals, useSchedule, usePlayerDays } from '../utils/fetchData'
+import { useMatchupByID, usePlayerSeasonTotals, useSchedule, usePlayerDays, useCurrentRosters } from '../utils/fetchData'
 
 export default function MatchupPage(props) {
   const { id } = useParams()
@@ -29,7 +29,7 @@ function MatchupHeader(props) {
   return (
     <div className="flex flex-row justify-center items-center gap-4 mt-8">
       <div className="flex flex-row justify-center items-center gap-2 w-20">
-        <img src={props.matchupData.AwayTeamInfo.LogoURL} alt={props.matchupData.AwayTeamInfo.TeamName + "Logo"} />
+        <img src={props.matchupData.awayTeamInfo.LogoURL} alt={props.matchupData.awayTeamInfo.TeamName + "Logo"} />
         <div className={`text-4xl ${props.matchupData.AwayWL === "W" ? 'font-bold text-emerald-800' : props.matchupData.AwayWL === "L" ? 'text-rose-800' : ''}`}>
           {props.matchupData.AwayScore}
         </div>
@@ -39,7 +39,7 @@ function MatchupHeader(props) {
         <div className={`text-4xl ${props.matchupData.HomeWL === "W" ? 'font-bold text-emerald-800' : props.matchupData.HomeWL === "L" ? 'text-rose-800' : ''}`}>
           {props.matchupData.HomeScore}
         </div>
-        <img src={props.matchupData.HomeTeamInfo.LogoURL} alt={props.matchupData.HomeTeamInfo.TeamName + "Logo"} />
+        <img src={props.matchupData.homeTeamInfo.LogoURL} alt={props.matchupData.homeTeamInfo.TeamName + "Logo"} />
       </div>
     </div>
   )
@@ -50,8 +50,8 @@ function MatchupStats(props) {
   return (
     <div className="my-6 font-varela">
       {['G', 'A', 'P', 'PPP', 'SOG', 'HIT', 'BLK', 'W', 'GAA', 'SVP'].map((obj, i) => {
-        var home = props?.matchupData?.HomeTeamStats[obj]
-        var away = props?.matchupData?.AwayTeamStats[obj]
+        var home = props?.matchupData?.homeTeamStats[obj]
+        var away = props?.matchupData?.awayTeamStats[obj]
         return (
           <div className="w-4/6 mx-auto grid gap-2 grid-cols-5 p-0.5 text-sm text-center border-b border-gray-400 border-dotted" key={i}>
             <div className={`col-span-2 ${(away !== "") ? (home === "" || +away > +home) ? 'text-emerald-800 font-bold' : (+away < +home) ? 'text-rose-800' : "" : ""}`}>{away}</div>
@@ -65,9 +65,9 @@ function MatchupStats(props) {
 }
 
 function ThreeStars(props) {
-  let firstStar = [...props.matchupData.HomeTeamPlayers, ...props.matchupData.AwayTeamPlayers].filter(obj => obj.id === props.matchupData.FirstStar)[0]
-  let secondStar = [...props.matchupData.HomeTeamPlayers, ...props.matchupData.AwayTeamPlayers].filter(obj => obj.id === props.matchupData.SecondStar)[0]
-  let thirdStar = [...props.matchupData.HomeTeamPlayers, ...props.matchupData.AwayTeamPlayers].filter(obj => obj.id === props.matchupData.ThirdStar)[0]
+  let firstStar = [...props.matchupData.homeTeamPlayers, ...props.matchupData.awayTeamPlayers].filter(obj => obj.id === props.matchupData.FirstStar)[0]
+  let secondStar = [...props.matchupData.homeTeamPlayers, ...props.matchupData.awayTeamPlayers].filter(obj => obj.id === props.matchupData.SecondStar)[0]
+  let thirdStar = [...props.matchupData.homeTeamPlayers, ...props.matchupData.awayTeamPlayers].filter(obj => obj.id === props.matchupData.ThirdStar)[0]
   return (
     <div>
       <div className="mt-8 text-lg text-center font-bold">Three Stars</div>
@@ -79,7 +79,7 @@ function ThreeStars(props) {
             </div>
             <img
               className='my-auto'
-              src={props.matchupData.AwayTeam === firstStar.gshlTeam ? props.matchupData.AwayTeamInfo.LogoURL : props.matchupData.HomeTeamInfo.LogoURL}
+              src={props.matchupData.AwayTeam === firstStar.gshlTeam ? props.matchupData.awayTeamInfo.LogoURL : props.matchupData.homeTeamInfo.LogoURL}
               alt='First Star Team Logo'
             />
             <div className="text-lg font-normal col-span-5 m-auto items-center inline-block">
@@ -98,7 +98,7 @@ function ThreeStars(props) {
             </div>
             <img
               className='my-auto'
-              src={props.matchupData.AwayTeam === secondStar.gshlTeam ? props.matchupData.AwayTeamInfo.LogoURL : props.matchupData.HomeTeamInfo.LogoURL}
+              src={props.matchupData.AwayTeam === secondStar.gshlTeam ? props.matchupData.awayTeamInfo.LogoURL : props.matchupData.homeTeamInfo.LogoURL}
               alt='Second Star Team Logo'
             />
             <div className="text-lg font-normal col-span-5 m-auto items-center inline-block">
@@ -117,7 +117,7 @@ function ThreeStars(props) {
             </div>
             <img
               className='my-auto'
-              src={props.matchupData.AwayTeam === thirdStar.gshlTeam ? props.matchupData.AwayTeamInfo.LogoURL : props.matchupData.HomeTeamInfo.LogoURL}
+              src={props.matchupData.AwayTeam === thirdStar.gshlTeam ? props.matchupData.awayTeamInfo.LogoURL : props.matchupData.homeTeamInfo.LogoURL}
               alt='Third Star Team Logo'
             />
             <div className="text-lg font-normal col-span-5 m-auto items-center inline-block">
@@ -137,9 +137,9 @@ function ThreeStars(props) {
 }
 function WatchList(props) {
   const seasonStats = usePlayerSeasonTotals(props.matchupData.Season)
-  let firstStar = [...props.matchupData.HomeTeamPlayers, ...props.matchupData.AwayTeamPlayers].filter(obj => obj.id === props.matchupData.FirstStar)[0]
-  let secondStar = [...props.matchupData.HomeTeamPlayers, ...props.matchupData.AwayTeamPlayers].filter(obj => obj.id === props.matchupData.SecondStar)[0]
-  let thirdStar = [...props.matchupData.HomeTeamPlayers, ...props.matchupData.AwayTeamPlayers].filter(obj => obj.id === props.matchupData.ThirdStar)[0]
+  let firstStar = [...props.matchupData.homeTeamPlayers, ...props.matchupData.awayTeamPlayers].filter(obj => obj.id === props.matchupData.FirstStar)[0]
+  let secondStar = [...props.matchupData.homeTeamPlayers, ...props.matchupData.awayTeamPlayers].filter(obj => obj.id === props.matchupData.SecondStar)[0]
+  let thirdStar = [...props.matchupData.homeTeamPlayers, ...props.matchupData.awayTeamPlayers].filter(obj => obj.id === props.matchupData.ThirdStar)[0]
   firstStar = seasonStats.data?.filter(obj => obj.PlayerName === firstStar.PlayerName && obj.nhlPos === firstStar.nhlPos)[0]
   secondStar = seasonStats.data?.filter(obj => obj.PlayerName === secondStar.PlayerName && obj.nhlPos === secondStar.nhlPos)[0]
   thirdStar = seasonStats.data?.filter(obj => obj.PlayerName === thirdStar.PlayerName && obj.nhlPos === thirdStar.nhlPos)[0]
@@ -152,7 +152,7 @@ function WatchList(props) {
           <div className="grid grid-cols-6 m-auto w-11/12 text-center">
             <img
               className='my-auto'
-              src={props.matchupData.AwayTeam === firstStar.gshlTeam ? props.matchupData.AwayTeamInfo.LogoURL : props.matchupData.HomeTeamInfo.LogoURL}
+              src={props.matchupData.AwayTeam === firstStar.gshlTeam ? props.matchupData.awayTeamInfo.LogoURL : props.matchupData.homeTeamInfo.LogoURL}
               alt='First Star Team Logo'
             />
             <div className="text-lg font-normal col-span-5 m-auto items-center inline-block">
@@ -168,7 +168,7 @@ function WatchList(props) {
           <div className="grid grid-cols-6 m-auto w-11/12 text-center">
             <img
               className='my-auto'
-              src={props.matchupData.AwayTeam === secondStar.gshlTeam ? props.matchupData.AwayTeamInfo.LogoURL : props.matchupData.HomeTeamInfo.LogoURL}
+              src={props.matchupData.AwayTeam === secondStar.gshlTeam ? props.matchupData.awayTeamInfo.LogoURL : props.matchupData.homeTeamInfo.LogoURL}
               alt='Second Star Team Logo'
             />
             <div className="text-lg font-normal col-span-5 m-auto inline-block items-center">
@@ -184,7 +184,7 @@ function WatchList(props) {
           <div className="grid grid-cols-6 m-auto w-11/12 text-center">
             <img
               className='my-auto'
-              src={props.matchupData.AwayTeam === thirdStar.gshlTeam ? props.matchupData.AwayTeamInfo.LogoURL : props.matchupData.HomeTeamInfo.LogoURL}
+              src={props.matchupData.AwayTeam === thirdStar.gshlTeam ? props.matchupData.awayTeamInfo.LogoURL : props.matchupData.homeTeamInfo.LogoURL}
               alt='Third Star Team Logo'
             />
             <div className="text-lg font-normal col-span-5 m-auto inline-block items-center">
@@ -212,12 +212,12 @@ function PlayingToday(props) {
     <div className='mb-8'>
       <div className="mt-2 text-base text-center font-bold">Playing Today</div>
       <div className="grid grid-cols-2 gap-2 w-11/12 mx-auto text-2xs font-medium text-center items-start">
-        {playerData.map(teamPlayerData => {
+        {playerData.map((teamPlayerData,i) => {
           return (
-            <div className="">
+            <div key={i} className="">
               {teamPlayerData.filter(player => player.dailyPos !== 'BN' && player.dailyPos !== 'IR+' && player.dailyPos !== 'IR').map(player => {
                 return (
-                  <div className='flex flex-col border-b border-gray-300'>
+                  <div key={player.id} className='flex flex-col border-b border-gray-300'>
                     <div className="inline-block text-xs">
                       {player.PlayerName}
                       <img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${player.nhlTeam}.png`} alt="" className='inline-block h-4 w-4 mx-1' />
@@ -239,17 +239,18 @@ function PlayingToday(props) {
 }
 
 function MatchupBoxscore(props) {
-  const [boxscoreTeam, setBoxscoreTeam] = useState('Home')
+  const currentRoster = useCurrentRosters(props.matchupData.Season)
+  const [boxscoreTeam, setBoxscoreTeam] = useState('home')
   let teamStats = props.matchupData && props.matchupData[boxscoreTeam + "TeamPlayers"]
   return (
     <div className='mb-16 font-varela'>
       <div className="mt-12 mb-4 mx-1">
         <div className='flex flex-wrap gap-3 items-center justify-center list-none'>
-          <div key='Week' className={`min-w-min text-center font-bold py-1 px-3 rounded-md shadow-emboss text-xs sm:text-sm ${boxscoreTeam === 'Away' ? 'bg-gray-700 text-gray-100' : 'bg-gray-100 text-gray-700'}`} onClick={() => setBoxscoreTeam('Away')}>
-            {props.matchupData.AwayTeamInfo.TeamName}
+          <div key='Week' className={`min-w-min text-center font-bold py-1 px-3 rounded-md shadow-emboss text-xs sm:text-sm ${boxscoreTeam === 'away' ? 'bg-gray-700 text-gray-100' : 'bg-gray-100 text-gray-700'}`} onClick={() => setBoxscoreTeam('away')}>
+            {props.matchupData.awayTeamInfo.TeamName}
           </div>
-          <div key='Team' className={`min-w-min text-center font-bold py-1 px-3 rounded-md shadow-emboss text-xs sm:text-sm ${boxscoreTeam === 'Home' ? 'bg-gray-700 text-gray-100' : 'bg-gray-100 text-gray-700'}`} onClick={() => setBoxscoreTeam('Home')}>
-            {props.matchupData.HomeTeamInfo.TeamName}
+          <div key='Team' className={`min-w-min text-center font-bold py-1 px-3 rounded-md shadow-emboss text-xs sm:text-sm ${boxscoreTeam === 'home' ? 'bg-gray-700 text-gray-100' : 'bg-gray-100 text-gray-700'}`} onClick={() => setBoxscoreTeam('home')}>
+            {props.matchupData.homeTeamInfo.TeamName}
           </div>
         </div>
       </div>
@@ -263,18 +264,21 @@ function MatchupBoxscore(props) {
               <th className="p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200" key="GS">GS</th>
               {['G', 'A', 'P', 'PPP', 'SOG', 'HIT', 'BLK'].map(obj => <th className="p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200" key={obj}>{obj}</th>)}
               <th className="p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200" key="Rating">Rating</th>
+              <th className="p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200" key="Days">Days</th>
             </tr>
           </thead>
           <tbody>
-            {teamStats.filter(obj => obj.nhlPos !== "G").sort((a, b) => b.Rating - a.Rating).map(player => {
+            {teamStats?.filter(obj => obj.nhlPos !== "G").sort((a, b) => b.Rating - a.Rating).map(player => {
+              const active = currentRoster.data?.filter(obj => +obj.gshlTeam === +player.gshlTeam && player.nhlPos === obj.nhlPos && player.PlayerName === obj.PlayerName).length > 0
               return (
-                <tr key={player.id}>
+                <tr key={player.id} className={`${!active && 'text-gray-400 text-opacity-80'}`}>
                   <td className="sticky left-0 whitespace-nowrap py-1 px-2 text-center text-xs border-t border-b border-gray-300 bg-gray-50" key="Player">{player.PlayerName}</td>
                   <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300" key="Pos">{player.nhlPos}</td>
                   <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300" key="Team"><img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${player.nhlTeam}.png`} alt="" className='h-4 w-4' /></td>
                   <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300" key="GS">{player.GS}</td>
                   {['G', 'A', 'P', 'PPP', 'SOG', 'HIT', 'BLK'].map(obj => <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300" key={obj}>{player[obj]}</td>)}
                   <td className="py-1 px-2 text-center text-xs font-bold bg-gray-50 border-t border-b border-gray-300" key="Rating">{Math.round(player.Rating * 100) / 100}</td>
+                  <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300" key="Days">{player.RosterDays}</td>
                 </tr>
               )
             })}
@@ -288,12 +292,14 @@ function MatchupBoxscore(props) {
               <th className="p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200" key="Space"></th>
               {['W', 'GAA', 'SVP'].map(obj => <><th className="p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200" key={obj}>{obj}</th><td className="p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200" key="Space"></td></>)}
               <th className="p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200" key="Rating">Rating</th>
+            <th className="p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200" key="Days">Days</th>
             </tr>
           </thead>
           <tbody>
-            {teamStats.filter(obj => obj.nhlPos === "G").sort((a, b) => b.Rating - a.Rating).map(player => {
+            {teamStats?.filter(obj => obj.nhlPos === "G").sort((a, b) => b.Rating - a.Rating).map(player => {
+              const active = currentRoster.data?.filter(obj => +obj.gshlTeam === +player.gshlTeam && player.nhlPos === obj.nhlPos && player.PlayerName === obj.PlayerName).length > 0
               return (
-                <tr key={player.id}>
+                <tr key={player.id} className={`${!active && 'text-gray-400 text-opacity-80'}`}>
                   <td className="sticky left-0 py-1 px-2 text-center text-xs border-t border-b border-gray-300 bg-gray-50" key="Player">{player.PlayerName}</td>
                   <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300" key="Pos">{player.nhlPos}</td>
                   <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300" key="Team"><img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${player.nhlTeam}.png`} alt="" className='h-4 w-4' /></td>
@@ -301,6 +307,7 @@ function MatchupBoxscore(props) {
                   <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300" key="Space"></td>
                   {['W', 'GAA', 'SVP'].map(obj => <><td className="py-1 px-2 col-span-2 text-center text-xs border-t border-b border-gray-300" key={obj}>{player[obj]}</td><td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300" key="Space"></td></>)}
                   <td className="py-1 px-2 text-center text-xs font-bold bg-gray-50 border-t border-b border-gray-300" key="Rating">{Math.round(player.Rating * 100) / 100}</td>
+                  <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300" key="Days">{player.RosterDays}</td>
                 </tr>
               )
             })}

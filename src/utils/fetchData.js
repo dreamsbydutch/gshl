@@ -281,14 +281,14 @@ export function useMatchupByID(matchupID) {
     }
 
     if (output.isLoading || output.isError || matchup.data?.error || teamWeeks.data?.error || playerWeeks.data?.error || gshlTeams.data?.error || users.data?.error) { return output }
-    matchup['HomeTeamStats'] = teamWeeks.data?.filter(obj => obj.gshlTeam === matchup['HomeTeam'] && obj.WeekNum === matchup['WeekNum'])[0]
-    matchup['HomeTeamPlayers'] = playerWeeks.data?.filter(obj => obj.gshlTeam === matchup['HomeTeam'] && obj.WeekNum === matchup['WeekNum'])
-    matchup['HomeTeamInfo'] = gshlTeams.data?.filter(obj => obj[matchup['Season']] === matchup['HomeTeam'])[0]
-    matchup['HomeTeamOwner'] = users.data?.filter(obj => obj.id === matchup['HomeTeamInfo'][matchup['Season']])[0]
-    matchup['AwayTeamStats'] = teamWeeks.data?.filter(obj => obj.gshlTeam === matchup['AwayTeam'] && obj.WeekNum === matchup['WeekNum'])[0]
-    matchup['AwayTeamPlayers'] = playerWeeks.data?.filter(obj => obj.gshlTeam === matchup['AwayTeam'] && obj.WeekNum === matchup['WeekNum'])
-    matchup['AwayTeamInfo'] = gshlTeams.data?.filter(obj => obj[matchup['Season']] === matchup['AwayTeam'])[0]
-    matchup['AwayTeamOwner'] = users.data?.filter(obj => obj.id === matchup['AwayTeamInfo'][matchup['Season']])[0]
+    matchup['homeTeamStats'] = teamWeeks.data?.filter(obj => obj.gshlTeam === matchup['HomeTeam'] && obj.WeekNum === matchup['WeekNum'])[0]
+    matchup['homeTeamPlayers'] = playerWeeks.data?.filter(obj => obj.gshlTeam === matchup['HomeTeam'] && obj.WeekNum === matchup['WeekNum'])
+    matchup['homeTeamInfo'] = gshlTeams.data?.filter(obj => obj[matchup['Season']] === matchup['HomeTeam'])[0]
+    matchup['homeTeamOwner'] = users.data?.filter(obj => obj.id === matchup['homeTeamInfo'][matchup['Season']])[0]
+    matchup['awayTeamStats'] = teamWeeks.data?.filter(obj => obj.gshlTeam === matchup['AwayTeam'] && obj.WeekNum === matchup['WeekNum'])[0]
+    matchup['awayTeamPlayers'] = playerWeeks.data?.filter(obj => obj.gshlTeam === matchup['AwayTeam'] && obj.WeekNum === matchup['WeekNum'])
+    matchup['awayTeamInfo'] = gshlTeams.data?.filter(obj => obj[matchup['Season']] === matchup['AwayTeam'])[0]
+    matchup['awayTeamOwner'] = users.data?.filter(obj => obj.id === matchup['awayTeamInfo'][matchup['Season']])[0]
 
     output.data = matchup
     return output
