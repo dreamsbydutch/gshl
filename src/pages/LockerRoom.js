@@ -12,11 +12,14 @@ export default function LockerRoom(props) {
     setTeamInfo(lockerRoomInfo.data?.filter(obj => obj[seasonID] === teamID)[0])
   }, [props.currentWeek.Season, lockerRoomInfo, seasonID, teamID])
   return (
-    <div className="my-10 font-varela">
+    <div className="my-10 font-varela text-center">
       <TeamsToggle setter={setTeamID} season={seasonID} activeKey={teamID} />
-      <div className="mt-16 font-bold text-3xl text-center">{teamInfo?.TeamName}</div>
       {teamID &&
         <>
+          <div className="mx-3 mt-16 font-bold text-4xl flex flex-row items-center justify-center">
+            <img className='w-12 h-12 mx-3' src={teamInfo?.LogoURL} alt="Team Logo" />
+            {teamInfo?.TeamName}
+          </div>
           <TeamPlayerContracts data={teamInfo} />
           <TeamRoster data={teamInfo} />
           <TeamPlayerStats data={teamInfo} />
@@ -50,21 +53,21 @@ function TeamPlayerContracts(props) {
                 <tr key={i} className={`${obj.ExpiryType === "Buyout" ? 'text-gray-400' : 'text-gray-800'}`}>
                   <td className="sticky left-0 py-1 px-2 text-center text-xs border-t border-b border-gray-300 whitespace-nowrap bg-gray-50">{obj.Player}</td>
                   <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300">{obj.Pos}</td>
-                  <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300">{formatter.format(obj.CapHit).replace("US","")}</td>
+                  <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300">{formatter.format(obj.CapHit).replace("US", "")}</td>
                   {+obj.YearsRemaining > 1 ?
-                    <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300">{formatter.format(obj.CapHit).replace("US","")}</td>
+                    <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300">{formatter.format(obj.CapHit).replace("US", "")}</td>
                     : +obj.YearsRemaining === 1 ?
                       <td className={`my-1 mx-2 text-center text-2xs font-bold rounded-xl border-t border-b border-gray-300 ${obj.ExpiryType === "RFA" ? 'text-orange-700 bg-orange-100' : obj.ExpiryType === "UFA" ? 'text-rose-800 bg-rose-100' : ''}`}>{obj.ExpiryType === 'Buyout' ? '' : obj.ExpiryType}</td>
                       : <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300"></td>
                   }
                   {+obj.YearsRemaining > 2 ?
-                    <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300">{formatter.format(obj.CapHit).replace("US","")}</td>
+                    <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300">{formatter.format(obj.CapHit).replace("US", "")}</td>
                     : +obj.YearsRemaining === 2 ?
                       <td className={`my-1 mx-2 text-center text-2xs font-bold rounded-xl border-t border-b border-gray-300 ${obj.ExpiryType === "RFA" ? 'text-orange-700 bg-orange-100' : obj.ExpiryType === "UFA" ? 'text-rose-800 bg-rose-100' : ''}`}>{obj.ExpiryType === 'Buyout' ? '' : obj.ExpiryType}</td>
                       : <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300"></td>
                   }
                   {+obj.YearsRemaining > 3 ?
-                    <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300">{formatter.format(obj.CapHit).replace("US","")}</td>
+                    <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300">{formatter.format(obj.CapHit).replace("US", "")}</td>
                     : +obj.YearsRemaining === 3 ?
                       <td className={`my-1 mx-2 text-center text-2xs font-bold rounded-xl border-t border-b border-gray-300 ${obj.ExpiryType === "RFA" ? 'text-orange-700 bg-orange-100' : obj.ExpiryType === "UFA" ? 'text-rose-800 bg-rose-100' : ''}`}>{obj.ExpiryType === 'Buyout' ? '' : obj.ExpiryType}</td>
                       : <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300"></td>
@@ -75,10 +78,10 @@ function TeamPlayerContracts(props) {
             <tr>
               <td className="sticky left-0 font-bold py-1 px-2 text-center text-xs border-t border-gray-800 bg-gray-200">Cap Space</td>
               <td className="py-1 px-2 text-center text-xs border-t border-gray-800 bg-gray-200"></td>
-              <td className="py-1 px-2 text-center text-xs border-t border-gray-800 bg-gray-200">{formatter.format(22500000 - props.data?.contracts.filter(obj => obj.YearsRemaining > 0).reduce((acc, obj) => acc + +obj.CapHit, 0)).replace("US","")}</td>
-              <td className="py-1 px-2 text-center text-xs border-t border-gray-800 bg-gray-200">{formatter.format(22500000 - props.data?.contracts.filter(obj => obj.YearsRemaining > 1).reduce((acc, obj) => acc + +obj.CapHit, 0)).replace("US","")}</td>
-              <td className="py-1 px-2 text-center text-xs border-t border-gray-800 bg-gray-200">{formatter.format(27500000 - props.data?.contracts.filter(obj => obj.YearsRemaining > 2).reduce((acc, obj) => acc + +obj.CapHit, 0)).replace("US","")}</td>
-              <td className="py-1 px-2 text-center text-xs border-t border-gray-800 bg-gray-200">{formatter.format(27500000 - props.data?.contracts.filter(obj => obj.YearsRemaining > 3).reduce((acc, obj) => acc + +obj.CapHit, 0)).replace("US","")}</td>
+              <td className="py-1 px-2 text-center text-xs border-t border-gray-800 bg-gray-200">{formatter.format(22500000 - props.data?.contracts.filter(obj => obj.YearsRemaining > 0).reduce((acc, obj) => acc + +obj.CapHit, 0)).replace("US", "")}</td>
+              <td className="py-1 px-2 text-center text-xs border-t border-gray-800 bg-gray-200">{formatter.format(22500000 - props.data?.contracts.filter(obj => obj.YearsRemaining > 1).reduce((acc, obj) => acc + +obj.CapHit, 0)).replace("US", "")}</td>
+              <td className="py-1 px-2 text-center text-xs border-t border-gray-800 bg-gray-200">{formatter.format(27500000 - props.data?.contracts.filter(obj => obj.YearsRemaining > 2).reduce((acc, obj) => acc + +obj.CapHit, 0)).replace("US", "")}</td>
+              <td className="py-1 px-2 text-center text-xs border-t border-gray-800 bg-gray-200">{formatter.format(27500000 - props.data?.contracts.filter(obj => obj.YearsRemaining > 3).reduce((acc, obj) => acc + +obj.CapHit, 0)).replace("US", "")}</td>
             </tr>
           </tbody>
         </table>
@@ -93,90 +96,151 @@ function TeamRoster(props) {
       <div className='mt-12 text-center mx-auto text-xl font-bold'>Current Roster</div>
       <div className="flex flex-col max-w-md mx-auto border rounded-xl bg-gray-50">
         <div className="grid grid-cols-3 items-center py-2">
-          <div className="grid grid-cols-2 text-center px-2">
-            <div className="col-span-2 text-sm">{props.data?.roster.filter(obj => obj.LineupPos === "LW")[0]['PlayerName']}</div>
-            <div className="text-2xs">{props.data?.roster.filter(obj => obj.LineupPos === "LW")[0]['nhlPos']}</div>
-            <div className={`text-2xs rounded-lg px-2 max-w-fit place-self-center ${props.data?.roster.filter(obj => obj.LineupPos === "LW")[0]['Rank'] < 76 ? 'bg-emerald-200' : props.data?.roster.filter(obj => obj.LineupPos === "LW")[0]['Rank'] < 151 ? 'bg-yellow-200' : props.data?.roster.filter(obj => obj.LineupPos === "LW")[0]['Rank'] < 226 ? 'bg-orange-200' : 'bg-rose-200'}`}>{Math.round(+(props.data?.roster.filter(obj => obj.LineupPos === "LW")[0]['Rating']) * 100) / 100}</div>
-          </div>
-          <div className="grid grid-cols-2 text-center px-2">
-            <div className="col-span-2 text-sm">{props.data?.roster.filter(obj => obj.LineupPos === "C")[0]['PlayerName']}</div>
-            <div className="text-2xs">{props.data?.roster.filter(obj => obj.LineupPos === "C")[0]['nhlPos']}</div>
-            <div className={`text-2xs rounded-lg px-2 max-w-fit place-self-center ${props.data?.roster.filter(obj => obj.LineupPos === "C")[0]['Rank'] < 76 ? 'bg-emerald-200' : props.data?.roster.filter(obj => obj.LineupPos === "C")[0]['Rank'] < 151 ? 'bg-yellow-200' : props.data?.roster.filter(obj => obj.LineupPos === "C")[0]['Rank'] < 226 ? 'bg-orange-200' : 'bg-rose-200'}`}>{Math.round(+(props.data?.roster.filter(obj => obj.LineupPos === "C")[0]['Rating']) * 100) / 100}</div>
-          </div>
-          <div className="grid grid-cols-2 text-center px-2">
-            <div className="col-span-2 text-sm">{props.data?.roster.filter(obj => obj.LineupPos === "RW")[0]['PlayerName']}</div>
-            <div className="text-2xs">{props.data?.roster.filter(obj => obj.LineupPos === "RW")[0]['nhlPos']}</div>
-            <div className={`text-2xs rounded-lg px-2 max-w-fit place-self-center ${props.data?.roster.filter(obj => obj.LineupPos === "RW")[0]['Rank'] < 76 ? 'bg-emerald-200' : props.data?.roster.filter(obj => obj.LineupPos === "RW")[0]['Rank'] < 151 ? 'bg-yellow-200' : props.data?.roster.filter(obj => obj.LineupPos === "RW")[0]['Rank'] < 226 ? 'bg-orange-200' : 'bg-rose-200'}`}>{Math.round(+(props.data?.roster.filter(obj => obj.LineupPos === "RW")[0]['Rating']) * 100) / 100}</div>
-          </div>
+          {props.data?.roster.filter(obj => obj.LineupPos === "LW")[0] ?
+            <div className="grid grid-cols-2 text-center px-2">
+              <div className="col-span-3 text-sm">{props.data?.roster.filter(obj => obj.LineupPos === "LW")[0]?.PlayerName}</div>
+              <div className="text-2xs">{props.data?.roster.filter(obj => obj.LineupPos === "LW")[0]?.nhlPos}</div>
+              <div><img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${props.data?.roster.filter(obj => obj.LineupPos === "LW")[0]?.nhlTeam.split(",").slice(-1)}.png`} alt="NHL Team Logo" className='h-4 w-4 mx-auto' /></div>
+              <div className={`text-2xs rounded-lg px-2 max-w-fit place-self-center ${props.data?.roster.filter(obj => obj.LineupPos === "LW")[0]?.Rank < 76 ? 'bg-emerald-200' : props.data?.roster.filter(obj => obj.LineupPos === "LW")[0]?.Rank < 151 ? 'bg-yellow-200' : props.data?.roster.filter(obj => obj.LineupPos === "LW")[0]?.Rank < 226 ? 'bg-orange-200' : 'bg-rose-200'}`}>{Math.round(+(props.data?.roster.filter(obj => obj.LineupPos === "LW")[0]?.Rating) * 100) / 100}</div>
+            </div>
+            : <div></div>}
+          {props.data?.roster.filter(obj => obj.LineupPos === "C")[0] ?
+            <div className="grid grid-cols-2 text-center px-2">
+              <div className="col-span-3 text-sm">{props.data?.roster.filter(obj => obj.LineupPos === "C")[0]?.PlayerName}</div>
+              <div className="text-2xs">{props.data?.roster.filter(obj => obj.LineupPos === "C")[0]?.nhlPos}</div>
+              <div><img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${props.data?.roster.filter(obj => obj.LineupPos === "C")[0]?.nhlTeam.split(",").slice(-1)}.png`} alt="NHL Team Logo" className='h-4 w-4 mx-auto' /></div>
+              <div className={`text-2xs rounded-lg px-2 max-w-fit place-self-center ${props.data?.roster.filter(obj => obj.LineupPos === "C")[0]?.Rank < 76 ? 'bg-emerald-200' : props.data?.roster.filter(obj => obj.LineupPos === "C")[0]?.Rank < 151 ? 'bg-yellow-200' : props.data?.roster.filter(obj => obj.LineupPos === "C")[0]?.Rank < 226 ? 'bg-orange-200' : 'bg-rose-200'}`}>{Math.round(+(props.data?.roster.filter(obj => obj.LineupPos === "C")[0]?.Rating) * 100) / 100}</div>
+            </div>
+            : <div></div>}
+          {props.data?.roster.filter(obj => obj.LineupPos === "RW")[0] ?
+            <div className="grid grid-cols-2 text-center px-2">
+              <div className="col-span-3 text-sm">{props.data?.roster.filter(obj => obj.LineupPos === "RW")[0]?.PlayerName}</div>
+              <div className="text-2xs">{props.data?.roster.filter(obj => obj.LineupPos === "RW")[0]?.nhlPos}</div>
+              <div><img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${props.data?.roster.filter(obj => obj.LineupPos === "RW")[0]?.nhlTeam.split(",").slice(-1)}.png`} alt="NHL Team Logo" className='h-4 w-4 mx-auto' /></div>
+              <div className={`text-2xs rounded-lg px-2 max-w-fit place-self-center ${props.data?.roster.filter(obj => obj.LineupPos === "RW")[0]?.Rank < 76 ? 'bg-emerald-200' : props.data?.roster.filter(obj => obj.LineupPos === "RW")[0]?.Rank < 151 ? 'bg-yellow-200' : props.data?.roster.filter(obj => obj.LineupPos === "RW")[0]?.Rank < 226 ? 'bg-orange-200' : 'bg-rose-200'}`}>{Math.round(+(props.data?.roster.filter(obj => obj.LineupPos === "RW")[0]?.Rating) * 100) / 100}</div>
+            </div>
+            : <div></div>}
         </div>
         <div className="grid grid-cols-3 items-center py-2">
-          <div className="grid grid-cols-2 text-center px-2">
-            <div className="col-span-2 text-sm">{props.data?.roster.filter(obj => obj.LineupPos === "LW")[1]['PlayerName']}</div>
-            <div className="text-2xs">{props.data?.roster.filter(obj => obj.LineupPos === "LW")[1]['nhlPos']}</div>
-            <div className={`text-2xs rounded-lg px-2 max-w-fit place-self-center ${props.data?.roster.filter(obj => obj.LineupPos === "LW")[1]['Rank'] < 76 ? 'bg-emerald-200' : props.data?.roster.filter(obj => obj.LineupPos === "LW")[1]['Rank'] < 151 ? 'bg-yellow-200' : props.data?.roster.filter(obj => obj.LineupPos === "LW")[1]['Rank'] < 226 ? 'bg-orange-200' : 'bg-rose-200'}`}>{Math.round(+(props.data?.roster.filter(obj => obj.LineupPos === "LW")[1]['Rating']) * 100) / 100}</div>
-          </div>
-          <div className="grid grid-cols-2 text-center px-2">
-            <div className="col-span-2 text-sm">{props.data?.roster.filter(obj => obj.LineupPos === "C")[1]['PlayerName']}</div>
-            <div className="text-2xs">{props.data?.roster.filter(obj => obj.LineupPos === "C")[1]['nhlPos']}</div>
-            <div className={`text-2xs rounded-lg px-2 max-w-fit place-self-center ${props.data?.roster.filter(obj => obj.LineupPos === "C")[1]['Rank'] < 76 ? 'bg-emerald-200' : props.data?.roster.filter(obj => obj.LineupPos === "C")[1]['Rank'] < 151 ? 'bg-yellow-200' : props.data?.roster.filter(obj => obj.LineupPos === "C")[1]['Rank'] < 226 ? 'bg-orange-200' : 'bg-rose-200'}`}>{Math.round(+(props.data?.roster.filter(obj => obj.LineupPos === "C")[1]['Rating']) * 100) / 100}</div>
-          </div>
-          <div className="grid grid-cols-2 text-center px-2">
-            <div className="col-span-2 text-sm">{props.data?.roster.filter(obj => obj.LineupPos === "RW")[1]['PlayerName']}</div>
-            <div className="text-2xs">{props.data?.roster.filter(obj => obj.LineupPos === "RW")[1]['nhlPos']}</div>
-            <div className={`text-2xs rounded-lg px-2 max-w-fit place-self-center ${props.data?.roster.filter(obj => obj.LineupPos === "RW")[1]['Rank'] < 76 ? 'bg-emerald-200' : props.data?.roster.filter(obj => obj.LineupPos === "RW")[1]['Rank'] < 151 ? 'bg-yellow-200' : props.data?.roster.filter(obj => obj.LineupPos === "RW")[1]['Rank'] < 226 ? 'bg-orange-200' : 'bg-rose-200'}`}>{Math.round(+(props.data?.roster.filter(obj => obj.LineupPos === "RW")[1]['Rating']) * 100) / 100}</div>
-          </div>
+          {props.data?.roster.filter(obj => obj.LineupPos === "LW")[1] ?
+            <div className="grid grid-cols-2 text-center px-2">
+              <div className="col-span-3 text-sm">{props.data?.roster.filter(obj => obj.LineupPos === "LW")[1]?.PlayerName}</div>
+              <div className="text-2xs">{props.data?.roster.filter(obj => obj.LineupPos === "LW")[1]?.nhlPos}</div>
+              <div><img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${props.data?.roster.filter(obj => obj.LineupPos === "LW")[1]?.nhlTeam.split(",").slice(-1)}.png`} alt="NHL Team Logo" className='h-4 w-4 mx-auto' /></div>
+              <div className={`text-2xs rounded-lg px-2 max-w-fit place-self-center ${props.data?.roster.filter(obj => obj.LineupPos === "LW")[1]?.Rank < 76 ? 'bg-emerald-200' : props.data?.roster.filter(obj => obj.LineupPos === "LW")[1]?.Rank < 151 ? 'bg-yellow-200' : props.data?.roster.filter(obj => obj.LineupPos === "LW")[1]?.Rank < 226 ? 'bg-orange-200' : 'bg-rose-200'}`}>{Math.round(+(props.data?.roster.filter(obj => obj.LineupPos === "LW")[1]?.Rating) * 100) / 100}</div>
+            </div>
+            : <div></div>}
+          {props.data?.roster.filter(obj => obj.LineupPos === "C")[1] ?
+            <div className="grid grid-cols-2 text-center px-2">
+              <div className="col-span-3 text-sm">{props.data?.roster.filter(obj => obj.LineupPos === "C")[1]?.PlayerName}</div>
+              <div className="text-2xs">{props.data?.roster.filter(obj => obj.LineupPos === "C")[1]?.nhlPos}</div>
+              <div><img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${props.data?.roster.filter(obj => obj.LineupPos === "C")[1]?.nhlTeam.split(",").slice(-1)}.png`} alt="NHL Team Logo" className='h-4 w-4 mx-auto' /></div>
+              <div className={`text-2xs rounded-lg px-2 max-w-fit place-self-center ${props.data?.roster.filter(obj => obj.LineupPos === "C")[1]?.Rank < 76 ? 'bg-emerald-200' : props.data?.roster.filter(obj => obj.LineupPos === "C")[1]?.Rank < 151 ? 'bg-yellow-200' : props.data?.roster.filter(obj => obj.LineupPos === "C")[1]?.Rank < 226 ? 'bg-orange-200' : 'bg-rose-200'}`}>{Math.round(+(props.data?.roster.filter(obj => obj.LineupPos === "C")[1]?.Rating) * 100) / 100}</div>
+            </div>
+            : <div></div>}
+          {props.data?.roster.filter(obj => obj.LineupPos === "RW")[1] ?
+            <div className="grid grid-cols-2 text-center px-2">
+              <div className="col-span-3 text-sm">{props.data?.roster.filter(obj => obj.LineupPos === "RW")[1]?.PlayerName}</div>
+              <div className="text-2xs">{props.data?.roster.filter(obj => obj.LineupPos === "RW")[1]?.nhlPos}</div>
+              <div><img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${props.data?.roster.filter(obj => obj.LineupPos === "RW")[1]?.nhlTeam.split(",").slice(-1)}.png`} alt="NHL Team Logo" className='h-4 w-4 mx-auto' /></div>
+              <div className={`text-2xs rounded-lg px-2 max-w-fit place-self-center ${props.data?.roster.filter(obj => obj.LineupPos === "RW")[1]?.Rank < 76 ? 'bg-emerald-200' : props.data?.roster.filter(obj => obj.LineupPos === "RW")[1]?.Rank < 151 ? 'bg-yellow-200' : props.data?.roster.filter(obj => obj.LineupPos === "RW")[1]?.Rank < 226 ? 'bg-orange-200' : 'bg-rose-200'}`}>{Math.round(+(props.data?.roster.filter(obj => obj.LineupPos === "RW")[1]?.Rating) * 100) / 100}</div>
+            </div>
+            : <div></div>}
         </div>
-        <div className="grid grid-cols-3 items-center py-2 border-b">
-          <div></div>
-          <div className="grid grid-cols-2 text-center px-2">
-            <div className="col-span-2 text-sm">{props.data?.roster.filter(obj => obj.LineupPos === "Util")[0]['PlayerName']}</div>
-            <div className="text-2xs">{props.data?.roster.filter(obj => obj.LineupPos === "Util")[0]['nhlPos']}</div>
-            <div className={`text-2xs rounded-lg px-2 max-w-fit place-self-center ${props.data?.roster.filter(obj => obj.LineupPos === "Util")[0]['Rank'] < 76 ? 'bg-emerald-200' : props.data?.roster.filter(obj => obj.LineupPos === "Util")[0]['Rank'] < 151 ? 'bg-yellow-200' : props.data?.roster.filter(obj => obj.LineupPos === "Util")[0]['Rank'] < 226 ? 'bg-orange-200' : 'bg-rose-200'}`}>{Math.round(+(props.data?.roster.filter(obj => obj.LineupPos === "Util")[0]['Rating']) * 100) / 100}</div>
+        {props.data?.roster.filter(obj => obj.LineupPos === "Util")[0]?.nhlPos === "D" ?
+          <div className="grid grid-cols-3 items-center py-2 border-b"></div>
+          :
+          <div className="grid grid-cols-3 items-center py-2 border-b">
+            <div></div>
+            {props.data?.roster.filter(obj => obj.LineupPos === "Util")[0] ?
+              <div className="grid grid-cols-2 text-center px-2">
+                <div className="col-span-3 text-sm">{props.data?.roster.filter(obj => obj.LineupPos === "Util")[0]?.PlayerName}</div>
+                <div className="text-2xs">{props.data?.roster.filter(obj => obj.LineupPos === "Util")[0]?.nhlPos}</div>
+                <div><img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${props.data?.roster.filter(obj => obj.LineupPos === "Util")[0]?.nhlTeam.split(",").slice(-1)}.png`} alt="NHL Team Logo" className='h-4 w-4 mx-auto' /></div>
+                <div className={`text-2xs rounded-lg px-2 max-w-fit place-self-center ${props.data?.roster.filter(obj => obj.LineupPos === "Util")[0]?.Rank < 76 ? 'bg-emerald-200' : props.data?.roster.filter(obj => obj.LineupPos === "Util")[0]?.Rank < 151 ? 'bg-yellow-200' : props.data?.roster.filter(obj => obj.LineupPos === "Util")[0]?.Rank < 226 ? 'bg-orange-200' : 'bg-rose-200'}`}>{Math.round(+(props.data?.roster.filter(obj => obj.LineupPos === "Util")[0]?.Rating) * 100) / 100}</div>
+              </div>
+              : <div></div>}
+            <div></div>
           </div>
-          <div></div>
-        </div>
+        }
         <div className="grid grid-cols-2 items-center my-2">
-          <div className="grid grid-cols-2 text-center px-2">
-            <div className="col-span-2 text-sm">{props.data?.roster.filter(obj => obj.LineupPos === "D")[0]['PlayerName']}</div>
-            <div className="text-2xs">{props.data?.roster.filter(obj => obj.LineupPos === "D")[0]['nhlPos']}</div>
-            <div className={`text-2xs rounded-lg px-2 max-w-fit place-self-center ${props.data?.roster.filter(obj => obj.LineupPos === "D")[0]['Rank'] < 76 ? 'bg-emerald-200' : props.data?.roster.filter(obj => obj.LineupPos === "D")[0]['Rank'] < 151 ? 'bg-yellow-200' : props.data?.roster.filter(obj => obj.LineupPos === "D")[0]['Rank'] < 226 ? 'bg-orange-200' : 'bg-rose-200'}`}>{Math.round(+(props.data?.roster.filter(obj => obj.LineupPos === "D")[0]['Rating']) * 100) / 100}</div>
-          </div>
-          <div className="grid grid-cols-2 text-center px-2">
-            <div className="col-span-2 text-sm">{props.data?.roster.filter(obj => obj.LineupPos === "D")[1]['PlayerName']}</div>
-            <div className="text-2xs">{props.data?.roster.filter(obj => obj.LineupPos === "D")[1]['nhlPos']}</div>
-            <div className={`text-2xs rounded-lg px-2 max-w-fit place-self-center ${props.data?.roster.filter(obj => obj.LineupPos === "D")[1]['Rank'] < 76 ? 'bg-emerald-200' : props.data?.roster.filter(obj => obj.LineupPos === "D")[1]['Rank'] < 151 ? 'bg-yellow-200' : props.data?.roster.filter(obj => obj.LineupPos === "D")[1]['Rank'] < 226 ? 'bg-orange-200' : 'bg-rose-200'}`}>{Math.round(+(props.data?.roster.filter(obj => obj.LineupPos === "D")[1]['Rating']) * 100) / 100}</div>
-          </div>
+          {props.data?.roster.filter(obj => obj.LineupPos === "D")[0] ?
+            <div className="grid grid-cols-2 text-center px-2">
+              <div className="col-span-3 text-sm">{props.data?.roster.filter(obj => obj.LineupPos === "D")[0]?.PlayerName}</div>
+              <div className="text-2xs">{props.data?.roster.filter(obj => obj.LineupPos === "D")[0]?.nhlPos}</div>
+              <div><img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${props.data?.roster.filter(obj => obj.LineupPos === "D")[0]?.nhlTeam.split(",").slice(-1)}.png`} alt="NHL Team Logo" className='h-4 w-4 mx-auto' /></div>
+              <div className={`text-2xs rounded-lg px-2 max-w-fit place-self-center ${props.data?.roster.filter(obj => obj.LineupPos === "D")[0]?.Rank < 76 ? 'bg-emerald-200' : props.data?.roster.filter(obj => obj.LineupPos === "D")[0]?.Rank < 151 ? 'bg-yellow-200' : props.data?.roster.filter(obj => obj.LineupPos === "D")[0]?.Rank < 226 ? 'bg-orange-200' : 'bg-rose-200'}`}>{Math.round(+(props.data?.roster.filter(obj => obj.LineupPos === "D")[0]?.Rating) * 100) / 100}</div>
+            </div>
+            : <div></div>}
+          {props.data?.roster.filter(obj => obj.LineupPos === "D")[1] ?
+            <div className="grid grid-cols-2 text-center px-2">
+              <div className="col-span-3 text-sm">{props.data?.roster.filter(obj => obj.LineupPos === "D")[1]?.PlayerName}</div>
+              <div className="text-2xs">{props.data?.roster.filter(obj => obj.LineupPos === "D")[1]?.nhlPos}</div>
+              <div><img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${props.data?.roster.filter(obj => obj.LineupPos === "D")[1]?.nhlTeam.split(",").slice(-1)}.png`} alt="NHL Team Logo" className='h-4 w-4 mx-auto' /></div>
+              <div className={`text-2xs rounded-lg px-2 max-w-fit place-self-center ${props.data?.roster.filter(obj => obj.LineupPos === "D")[1]?.Rank < 76 ? 'bg-emerald-200' : props.data?.roster.filter(obj => obj.LineupPos === "D")[1]?.Rank < 151 ? 'bg-yellow-200' : props.data?.roster.filter(obj => obj.LineupPos === "D")[1]?.Rank < 226 ? 'bg-orange-200' : 'bg-rose-200'}`}>{Math.round(+(props.data?.roster.filter(obj => obj.LineupPos === "D")[1]?.Rating) * 100) / 100}</div>
+            </div>
+            : <div></div>}
         </div>
-        <div className="grid grid-cols-3 items-center py-2 border-b">
-          <div></div>
-          <div className="grid grid-cols-2 text-center px-2">
-            <div className="col-span-2 text-sm">{props.data?.roster.filter(obj => obj.LineupPos === "D")[2]['PlayerName']}</div>
-            <div className="text-2xs">{props.data?.roster.filter(obj => obj.LineupPos === "D")[2]['nhlPos']}</div>
-            <div className={`text-2xs rounded-lg px-2 max-w-fit place-self-center ${props.data?.roster.filter(obj => obj.LineupPos === "D")[2]['Rank'] < 76 ? 'bg-emerald-200' : props.data?.roster.filter(obj => obj.LineupPos === "D")[2]['Rank'] < 151 ? 'bg-yellow-200' : props.data?.roster.filter(obj => obj.LineupPos === "D")[2]['Rank'] < 226 ? 'bg-orange-200' : 'bg-rose-200'}`}>{Math.round(+(props.data?.roster.filter(obj => obj.LineupPos === "D")[2]['Rating']) * 100) / 100}</div>
+        {props.data?.roster.filter(obj => obj.LineupPos === "Util")[0]?.nhlPos === "D" ?
+          <div className="grid grid-cols-2 items-center py-2 border-b">
+            {props.data?.roster.filter(obj => obj.LineupPos === "D")[2] ?
+              <div className="grid grid-cols-2 text-center px-2">
+                <div className="col-span-3 text-sm">{props.data?.roster.filter(obj => obj.LineupPos === "D")[2]?.PlayerName}</div>
+                <div className="text-2xs">{props.data?.roster.filter(obj => obj.LineupPos === "D")[2]?.nhlPos}</div>
+                <div><img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${props.data?.roster.filter(obj => obj.LineupPos === "D")[2]?.nhlTeam.split(",").slice(-1)}.png`} alt="NHL Team Logo" className='h-4 w-4 mx-auto' /></div>
+                <div className={`text-2xs rounded-lg px-2 max-w-fit place-self-center ${props.data?.roster.filter(obj => obj.LineupPos === "D")[2]?.Rank < 76 ? 'bg-emerald-200' : props.data?.roster.filter(obj => obj.LineupPos === "D")[2]?.Rank < 151 ? 'bg-yellow-200' : props.data?.roster.filter(obj => obj.LineupPos === "D")[2]?.Rank < 226 ? 'bg-orange-200' : 'bg-rose-200'}`}>{Math.round(+(props.data?.roster.filter(obj => obj.LineupPos === "D")[2]?.Rating) * 100) / 100}</div>
+              </div>
+              : <div></div>}
+            {props.data?.roster.filter(obj => obj.LineupPos === "Util")[0] ?
+              <div className="grid grid-cols-2 text-center px-2">
+                <div className="col-span-3 text-sm">{props.data?.roster.filter(obj => obj.LineupPos === "Util")[0]?.PlayerName}</div>
+                <div className="text-2xs">{props.data?.roster.filter(obj => obj.LineupPos === "Util")[0]?.nhlPos}</div>
+                <div><img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${props.data?.roster.filter(obj => obj.LineupPos === "Util")[0]?.nhlTeam.split(",").slice(-1)}.png`} alt="NHL Team Logo" className='h-4 w-4 mx-auto' /></div>
+                <div className={`text-2xs rounded-lg px-2 max-w-fit place-self-center ${props.data?.roster.filter(obj => obj.LineupPos === "Util")[0]?.Rank < 76 ? 'bg-emerald-200' : props.data?.roster.filter(obj => obj.LineupPos === "Util")[0]?.Rank < 151 ? 'bg-yellow-200' : props.data?.roster.filter(obj => obj.LineupPos === "Util")[0]?.Rank < 226 ? 'bg-orange-200' : 'bg-rose-200'}`}>{Math.round(+(props.data?.roster.filter(obj => obj.LineupPos === "Util")[0]?.Rating) * 100) / 100}</div>
+              </div>
+              : <div></div>}
           </div>
-          <div></div>
-        </div>
+          :
+          <div className="grid grid-cols-3 items-center py-2 border-b">
+            <div></div>
+            {props.data?.roster.filter(obj => obj.LineupPos === "D")[2] ?
+              <div className="grid grid-cols-2 text-center px-2">
+                <div className="col-span-3 text-sm">{props.data?.roster.filter(obj => obj.LineupPos === "D")[2]?.PlayerName}</div>
+                <div className="text-2xs">{props.data?.roster.filter(obj => obj.LineupPos === "D")[2]?.nhlPos}</div>
+                <div><img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${props.data?.roster.filter(obj => obj.LineupPos === "D")[2]?.nhlTeam.split(",").slice(-1)}.png`} alt="NHL Team Logo" className='h-4 w-4 mx-auto' /></div>
+                <div className={`text-2xs rounded-lg px-2 max-w-fit place-self-center ${props.data?.roster.filter(obj => obj.LineupPos === "D")[2]?.Rank < 76 ? 'bg-emerald-200' : props.data?.roster.filter(obj => obj.LineupPos === "D")[2]?.Rank < 151 ? 'bg-yellow-200' : props.data?.roster.filter(obj => obj.LineupPos === "D")[2]?.Rank < 226 ? 'bg-orange-200' : 'bg-rose-200'}`}>{Math.round(+(props.data?.roster.filter(obj => obj.LineupPos === "D")[2]?.Rating) * 100) / 100}</div>
+              </div>
+              : <div></div>}
+            <div></div>
+          </div>
+        }
         <div className="grid grid-cols-3 items-center my-2">
           <div></div>
-          <div className="grid grid-cols-2 text-center px-2">
-            <div className="col-span-2 text-sm">{props.data?.roster.filter(obj => obj.LineupPos === "G")[0]['PlayerName']}</div>
-            <div className="text-2xs">{props.data?.roster.filter(obj => obj.LineupPos === "G")[0]['nhlPos']}</div>
-            <div className={`text-2xs rounded-lg px-2 max-w-fit place-self-center ${props.data?.roster.filter(obj => obj.LineupPos === "G")[0]['Rank'] < 76 ? 'bg-emerald-200' : props.data?.roster.filter(obj => obj.LineupPos === "G")[0]['Rank'] < 151 ? 'bg-yellow-200' : props.data?.roster.filter(obj => obj.LineupPos === "G")[0]['Rank'] < 226 ? 'bg-orange-200' : 'bg-rose-200'}`}>{Math.round(+(props.data?.roster.filter(obj => obj.LineupPos === "G")[0]['Rating']) * 100) / 100}</div>
-          </div>
+          {props.data?.roster.filter(obj => obj.LineupPos === "G")[0] ?
+            <div className="grid grid-cols-2 text-center px-2">
+              <div className="col-span-3 text-sm">{props.data?.roster.filter(obj => obj.LineupPos === "G")[0]?.PlayerName}</div>
+              <div className="text-2xs">{props.data?.roster.filter(obj => obj.LineupPos === "G")[0]?.nhlPos}</div>
+              <div><img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${props.data?.roster.filter(obj => obj.LineupPos === "G")[0]?.nhlTeam.split(",").slice(-1)}.png`} alt="NHL Team Logo" className='h-4 w-4 mx-auto' /></div>
+              <div className={`text-2xs rounded-lg px-2 max-w-fit place-self-center ${props.data?.roster.filter(obj => obj.LineupPos === "G")[0]?.Rank < 76 ? 'bg-emerald-200' : props.data?.roster.filter(obj => obj.LineupPos === "G")[0]?.Rank < 151 ? 'bg-yellow-200' : props.data?.roster.filter(obj => obj.LineupPos === "G")[0]?.Rank < 226 ? 'bg-orange-200' : 'bg-rose-200'}`}>{Math.round(+(props.data?.roster.filter(obj => obj.LineupPos === "G")[0]?.Rating) * 100) / 100}</div>
+            </div>
+            : <div></div>}
           <div></div>
         </div>
       </div>
       <div className="flex flex-col max-w-md mx-auto border rounded-xl bg-brown-50 mt-2">
         <div className="grid grid-cols-2 items-center my-2 mx-2">
-          {props.data?.roster.filter(obj => obj.LineupPos === "BN").map(obj => {
+          {props.data?.roster.filter(obj => obj.LineupPos === "BN").map((obj,i) => {
             return (
-              <div className="grid grid-cols-2 text-center px-2 my-2">
-                <div className="col-span-2 text-sm">{obj['PlayerName']}</div>
-                <div className="text-2xs">{obj['nhlPos']}</div>
-                <div className={`text-2xs rounded-lg px-2 max-w-fit place-self-center ${obj['Rank'] < 76 ? 'bg-emerald-200' : obj['Rank'] < 151 ? 'bg-yellow-200' : obj['Rank'] < 226 ? 'bg-orange-200' : 'bg-rose-200'}`}>{Math.round(+(obj['Rating']) * 100) / 100}</div>
+              <div key={i} className="grid grid-cols-2 text-center px-2 my-2">
+                <div className="col-span-3 text-sm">{obj?.PlayerName}</div>
+                <div className="text-2xs">{obj?.nhlPos}</div>
+                <div><img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${obj?.nhlTeam.split(",").slice(-1)}.png`} alt="NHL Team Logo" className='h-4 w-4 mx-auto' /></div>
+                <div className={`text-2xs rounded-lg px-2 max-w-fit place-self-center ${obj?.Rank < 76 ? 'bg-emerald-200' : obj?.Rank < 151 ? 'bg-yellow-200' : obj?.Rank < 226 ? 'bg-orange-200' : 'bg-rose-200'}`}>{Math.round(+(obj?.Rating) * 100) / 100}</div>
               </div>
             )
-          })}
+          }
+          )
+          }
         </div>
       </div>
     </>
@@ -193,6 +257,7 @@ function TeamPlayerStats(props) {
             <tr>
               <th className='sticky left-0 p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>Name</th>
               <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>Pos</th>
+              <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>Team</th>
               <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>G</th>
               <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>A</th>
               <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>P</th>
@@ -211,6 +276,7 @@ function TeamPlayerStats(props) {
                 <tr key={obj.id}>
                   <td className="sticky left-0 py-1 px-2 text-center text-xs border-t border-b border-gray-300 whitespace-nowrap bg-gray-50">{obj.PlayerName}</td>
                   <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300">{obj.nhlPos}</td>
+                  <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300"><img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${obj?.nhlTeam.split(",").slice(-1)}.png`} alt="NHL Team Logo" className='h-4 w-4 mx-auto' /></td>
                   <td className="py-1 px-1.5 text-center text-xs border-t border-b border-gray-300">{obj.G}</td>
                   <td className="py-1 px-1.5 text-center text-xs border-t border-b border-gray-300">{obj.A}</td>
                   <td className="py-1 px-1.5 text-center text-xs border-t border-b border-gray-300">{obj.P}</td>
@@ -229,6 +295,7 @@ function TeamPlayerStats(props) {
             <tr>
               <th className='sticky left-0 p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>Name</th>
               <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>Pos</th>
+              <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>Team</th>
               <th colSpan='2' className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>W</th>
               <th colSpan='2' className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>GAA</th>
               <th colSpan='2' className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>SV%</th>
@@ -244,6 +311,7 @@ function TeamPlayerStats(props) {
                 <tr key={obj.id}>
                   <td className="sticky left-0 py-1 px-2 text-center text-xs border-t border-b border-gray-300 whitespace-nowrap bg-gray-50">{obj.PlayerName}</td>
                   <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300">{obj.nhlPos}</td>
+                  <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300"><img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${obj?.nhlTeam.split(",").slice(-1)}.png`} alt="NHL Team Logo" className='h-4 w-4 mx-auto' /></td>
                   <td colSpan='2' className="py-1 px-1.5 text-center text-xs border-t border-b border-gray-300">{obj.W}</td>
                   <td colSpan='2' className="py-1 px-1.5 text-center text-xs border-t border-b border-gray-300">{obj.GAA}</td>
                   <td colSpan='2' className="py-1 px-1.5 text-center text-xs border-t border-b border-gray-300">{obj.SVP}</td>

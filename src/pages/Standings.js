@@ -61,9 +61,9 @@ function StandingsContainer(props) {
 
   return (
     <>
-      {standings.map(obj => {
+      {standings.map((obj,i) => {
         return (
-          <>
+          <div key={i}>
             <div className='font-bold mt-8 text-center text-sm font-varela'>{obj[0]}</div>
             <div className={'mb-4 p-2 rounded-xl shadow-md [&>*:last-child]:border-none ' + obj[1]} >
               {obj[2].map(team => {
@@ -71,7 +71,7 @@ function StandingsContainer(props) {
                 )
               })}
             </div>
-          </>
+          </div>
         )
       })}
     </>
