@@ -4,12 +4,12 @@ import { WeeksToggle } from './PageNavbar'
 
 
 export default function WeeklySchedule(props) {
-  const [weekID, setWeekID] = useState(1)
+  const [weekID, setWeekID] = useState(null)
   const [seasonID, setSeasonID] = useState(null)
   useEffect(() => {
-    setSeasonID(props.data.currentWeek.Season)
-    setWeekID(props.data.currentWeek.WeekNum)
-  }, [props.data.currentWeek])
+    setSeasonID(props.currentWeek?.Season)
+    setWeekID(props.currentWeek?.WeekNum)
+  }, [props.currentWeek])
 
   return (
     <>
@@ -21,17 +21,20 @@ export default function WeeklySchedule(props) {
         <div className='text-xs'>Score</div>
         <div className='text-xs col-span-3'>Home Team</div>
       </div>
-      {props.data.schedule
+      {props.schedule
         .filter(obj => obj.WeekNum === String(weekID))
         .sort((a, b) => a.MatchupNum - b.MatchupNum)
-        .map(obj => obj.homeTeamInfo && obj.awayTeamInfo && <ScheduleItem data={obj} key={obj.id} />)}
+        .map(obj => <ScheduleItem {...{'matchupData':obj, 'key':obj.id, 'currentWeek':props.currentWeek, 'gshlTeams':props.gshlTeams}} />)}
     </>
   )
 }
 
 
 function ScheduleItem(props) {
-  let conf = props.data.GameType + props.data.awayTeamInfo.Conference + props.data.homeTeamInfo.Conference, bgClass = ''
+  const homeTeamInfo = props.gshlTeams?.filter(obj => obj[props.currentWeek.Season] === props.matchupData.HomeTeam)[0]
+  const awayTeamInfo = props.gshlTeams?.filter(obj => obj[props.currentWeek.Season] === props.matchupData.AwayTeam)[0]
+
+  let conf = props.matchupData.GameType + awayTeamInfo?.Conference + homeTeamInfo?.Conference, bgClass = ''
 
   switch (conf) {
     case 'CCSVSV':
@@ -75,43 +78,44 @@ function ScheduleItem(props) {
       break
   }
 
+  if (!props.gshlTeams) { return <></> }
   return (
-    <Link className={`grid grid-cols-7 my-3 py-2 mx-2 items-center shadow-md rounded-xl ${bgClass}`} to={"/matchup/" + props.data.id}>
-      <div className={'col-span-3 flex flex-col whitespace-nowrap text-center p-2 gap-2 items-center justify-center ' + props.data.HomeWL}>
-        {+props.data.AwayRank <= 8 && props.data.AwayRank ?
+    <Link className={`grid grid-cols-7 my-3 py-2 mx-2 items-center shadow-md rounded-xl ${bgClass}`} to={"/matchup/" + props.matchupData.id}>
+      <div className={'col-span-3 flex flex-col whitespace-nowrap text-center p-2 gap-2 items-center justify-center ' + props.matchupData.HomeWL}>
+        {+props.matchupData.AwayRank <= 8 && props.matchupData.AwayRank ?
           <div className='flex flex-row'>
-            <span className='text-sm xs:text-base text-black font-bold font-oswald pr-1'>{'#' + props.data.AwayRank}</span>
-            <img className='w-12 xs:w-16' src={props.data.awayTeamInfo.LogoURL} alt='Away Team Logo' />
+            <span className='text-sm xs:text-base text-black font-bold font-oswald pr-1'>{'#' + props.matchupData.AwayRank}</span>
+            <img className='w-12 xs:w-16' src={awayTeamInfo?.LogoURL} alt='Away Team Logo' />
           </div>
           :
-          <img className='w-12 xs:w-16' src={props.data.awayTeamInfo.LogoURL} alt='Away Team Logo' />
+          <img className='w-12 xs:w-16' src={awayTeamInfo?.LogoURL} alt='Away Team Logo' />
         }
-        <div className={'text-base xs:text-lg font-oswald'}>{props.data.awayTeamInfo.TeamName}</div>
+        <div className={'text-base xs:text-lg font-oswald'}>{awayTeamInfo?.TeamName}</div>
       </div>
       <div className='text-lg xs:text-xl font-oswald text-center'>
-        {props.data.HomeScore || props.data.AwayScore ?
+        {props.matchupData.HomeScore || props.matchupData.AwayScore ?
           <>
-            <span className={props.data.AwayWL === "W" ? 'text-emerald-700 font-bold' : props.data.AwayWL === "L" ? 'text-rose-800' : ''}>
-              {props.data.AwayScore}
+            <span className={props.matchupData.AwayWL === "W" ? 'text-emerald-700 font-bold' : props.matchupData.AwayWL === "L" ? 'text-rose-800' : ''}>
+              {props.matchupData.AwayScore}
             </span>
             {' - '}
-            <span className={props.data.HomeWL === "W" ? 'text-emerald-700 font-bold' : props.data.HomeWL === "L" ? 'text-rose-800' : ''}>
-              {props.data.HomeScore}
+            <span className={props.matchupData.HomeWL === "W" ? 'text-emerald-700 font-bold' : props.matchupData.HomeWL === "L" ? 'text-rose-800' : ''}>
+              {props.matchupData.HomeScore}
             </span>
           </>
           : '@'
         }
       </div>
-      <div className={'col-span-3 flex flex-col whitespace-nowrap text-center p-2 gap-2 items-center justify-center ' + props.data.HomeWL}>
-        {+props.data.HomeRank <= 8 && props.data.HomeRank ?
+      <div className={'col-span-3 flex flex-col whitespace-nowrap text-center p-2 gap-2 items-center justify-center ' + props.matchupData.HomeWL}>
+        {+props.matchupData.HomeRank <= 8 && props.matchupData.HomeRank ?
           <div className='flex flex-row'>
-            <span className='text-sm xs:text-base text-black font-bold font-oswald pr-1'>{'#' + props.data.HomeRank}</span>
-            <img className='w-12 xs:w-16' src={props.data.homeTeamInfo.LogoURL} alt='Home Team Logo' />
+            <span className='text-sm xs:text-base text-black font-bold font-oswald pr-1'>{'#' + props.matchupData.HomeRank}</span>
+            <img className='w-12 xs:w-16' src={homeTeamInfo.LogoURL} alt='Home Team Logo' />
           </div>
           :
-          <img className='w-12 xs:w-16' src={props.data.homeTeamInfo.LogoURL} alt='Home Team Logo' />
+          <img className='w-12 xs:w-16' src={homeTeamInfo.LogoURL} alt='Home Team Logo' />
         }
-        <div className={'text-base xs:text-lg font-oswald'}>{props.data.homeTeamInfo.TeamName}</div>
+        <div className={'text-base xs:text-lg font-oswald'}>{homeTeamInfo.TeamName}</div>
       </div>
     </Link>
   )

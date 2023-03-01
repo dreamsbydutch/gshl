@@ -21,7 +21,7 @@ const sheetIDs = {
     '2015PlayerData': '',
     '2015TeamData': ''
 }
-async function queryFunc({ queryKey }) {
+export async function queryFunc({ queryKey }) {
     const [, sheetsKey, pageID] = queryKey
     const data = await fetch('https://opensheet.elk.sh/' + sheetIDs[sheetsKey] + '/' + pageID)
     return data.json()

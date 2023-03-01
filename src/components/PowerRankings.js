@@ -17,15 +17,13 @@ export default function PowerRankings() {
     const standingsData = useQuery([['PowerRankings', 'Standings'], season + 'TeamData', 'Standings'], queryFunc)
     const scheduleData = useQuery([['PowerRankings', 'Schedule'], 'MainInput', 'Schedule'], queryFunc)
 
-    if (weeks.isLoading || gshlTeams.isLoading || scheduleData.isLoading || standingsData.isLoading) { return <LoadingSpinner /> }
-    if (weeks.error || gshlTeams.error || scheduleData.error || standingsData.error || weeks.data?.error || gshlTeams.data?.error || scheduleData.data?.error || standingsData.data?.error) { return <ErrorPage /> }
-
-    const teamInfo = gshlTeams.data?.filter(obj => obj[season])
     const currentWeek = weeks.data?.filter(obj => (obj.Season === season) && ((new Date(obj.StartDate + ' 00:00:00')) <= date) && ((new Date(obj.EndDate + ' 00:00:00')) >= date))[0]
+    const teamInfo = gshlTeams.data?.filter(obj => obj[season])
     const standings = standingsData.data
     const schedule = scheduleData.data?.filter(obj => obj.Season === season)
-
-
+    
+    if (weeks.isLoading || gshlTeams.isLoading || scheduleData.isLoading || standingsData.isLoading) { return <LoadingSpinner /> }
+    if (weeks.error || gshlTeams.error || scheduleData.error || standingsData.error || weeks.data?.error || gshlTeams.data?.error || scheduleData.data?.error || standingsData.data?.error) { return <ErrorPage /> }
     return (
         <div className="mx-3 max-w-3xl my-8 py-4 px-1 rounded-2xl bg-gray-100 hover:text-gray-800 shadow-md">
             <div className="font-oswald text-4xl font-extrabold text-center mt-2 mb-2">GSHL Power Rankings</div>
@@ -41,8 +39,8 @@ export default function PowerRankings() {
 
 function RankingItem(props) {
     if (!props.teamData || !props.currentWeek || !props.schedule || !props.teamInfo || !props.season) { return <LoadingSpinner /> }
-    let lastweek = props.schedule.filter(obj => (obj.HomeTeam === props.teamData.teamID || obj.AwayTeam === props.teamData.teamID) && obj.WeekNum === String(props.currentWeek.WeekNum - 1))[0]
-    let lastWkTeam = props.teamInfo.filter(team => team[props.season] === (props.teamData.teamID === lastweek.HomeTeam ? lastweek.AwayTeam : lastweek.HomeTeam))[0]
+    let lastweek = props.schedule?.filter(obj => (obj.HomeTeam === props.teamData.teamID || obj.AwayTeam === props.teamData.teamID) && obj.WeekNum === String(props.currentWeek.WeekNum - 1))[0]
+    let lastWkTeam = props.teamInfo?.filter(team => team[props.season] === (props.teamData.teamID === lastweek.HomeTeam ? lastweek.AwayTeam : lastweek.HomeTeam))[0]
     let rankChange = []
     if (props.teamData.RkCh > 0) {
         rankChange = [Math.abs(props.teamData.RkCh), "RkUp"]
@@ -51,7 +49,6 @@ function RankingItem(props) {
     } else {
         rankChange = [Math.abs(props.teamData.RkCh), "Even"]
     }
-    console.log(props)
     return (
         <li className="border-b border-gray-600 py-2.5 flex items-center" key={props.teamData.teamID}>
             <div className="font-oswald text-base xs:text-lg font-bold w-4 mx-2 flex flex-row justify-around">
