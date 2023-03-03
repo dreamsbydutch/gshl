@@ -27,6 +27,10 @@ export async function queryFunc({ queryKey }) {
     return data.json()
 }
 
+export function formatDate(date) {
+    date = new Date(date)
+    return date.toISOString().slice(0,10)
+  }
 
 export function useStandings(season) {
     const standings = useQuery(['standings', season + 'TeamData', 'Standings'], queryFunc)
