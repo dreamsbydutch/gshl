@@ -42,14 +42,20 @@ function MissedStarts(props) {
   if (props.missedStarts?.length === 0) { return <div></div> }
   return (
     <div className="bg-rose-100 text-rose-900 mx-3 my-4 py-2 rounded-xl shadow-md font-varela">
-      <div className="text-center py-1 text-xl font-bold">Yesterday's Missed Starts</div>
-      {props.missedStarts?.map(obj => {
-        const team = props.gshlTeams?.filter(a => a[props.currentWeek?.Season] === obj.gshlTeam)[0]
-        console.log(team)
+      <div className="text-center py-1 text-2xl font-bold">Yesterday's Missed Starts</div>
+      {props.gshlTeams?.map(team => {
+        const missedStarts = props.missedStarts?.filter(a => +a.gshlTeam === +team[props.currentWeek.Season])
+        if (missedStarts.length === 0) { return <></> }
         return (
-          <div className='px-3 py-1 flex items-center justify-center text-lg'>
-            <img className="w-10 xs:w-10 mx-2" src={team.LogoURL} alt={team.teamName + " Logo"} />
-            {obj.PlayerName}, {obj.nhlPos} - {Math.round(obj.Rating * 10) / 10}
+          <div key={team[props.currentWeek.Season]} className='px-3 py-1 flex items-center justify-center text-lg border-t border-rose-800'>
+            <img className="w-12 xs:w-12 mx-2" src={team.LogoURL} alt={team.teamName + " Logo"} />
+            <div className='px-3 py-1 flex flex-col items-center justify-center text-lg'>
+              {missedStarts?.map(b => {
+                return (
+                  <span className={b.nhlPos === 'G' ? 'opacity-70' : ''}>{b.PlayerName}, {b.nhlPos}</span>
+                )
+              })}
+            </div>
           </div>
         )
       })}
