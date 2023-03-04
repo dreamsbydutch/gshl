@@ -12,7 +12,7 @@ import Schedule from './pages/Schedule';
 import LockerRoom from './pages/LockerRoom';
 import ErrorPage from './components/ErrorPage'
 import ScrollToTop from './utils/ScrollToTop'
-import MatchupPage from './pages/MatchupPage';
+// import MatchupPage from './pages/MatchupPage';
 
 
 
