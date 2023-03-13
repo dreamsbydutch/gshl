@@ -236,7 +236,7 @@ const PlayoffBracket = ({ seasonID }) => {
           matchup={scheduleData.data?.filter(obj => obj.Season === seasonID && obj.MatchupNum === '2' && obj.GameType === 'SF')[0]}
         />
       </div>
-      <div className="flex flex-col place-content-around [&>*]:bg-yellow-200 [&>*]:bg-opacity-30">
+      <div className="flex flex-col place-content-around [&>*]:bg-yellow-200 [&>*]:bg-opacity-50">
         {/* Finals */}
         <BracketLine
           matchup={scheduleData.data?.filter(obj => obj.Season === seasonID && obj.MatchupNum === '1' && obj.GameType === 'F')[0]}
@@ -249,7 +249,7 @@ const BracketLine = ({ matchup }) => {
   const gshlTeams = useTeams()
   const homeTeam = gshlTeams.filter(obj => obj.id === matchup.HomeTeam)[0]
   const awayTeam = gshlTeams.filter(obj => obj.id === matchup.AwayTeam)[0]
-  if (!matchup) {
+  if (!homeTeam && !awayTeam) {
     return (
       <div className='flex flex-col m-2 px-2 py-4 text-gray-600 font-bold items-center bg-gray-100 shadow-emboss rounded-2xl shrink-0 min-w-max'>
         {matchup.GameType === "LT" ? " Losers TBD" : matchup.GameType === "QF" ? "First Round" : matchup.GameType === "SF" ? "Conf. Finals" : "Cup Finals"}
@@ -266,7 +266,7 @@ const BracketLine = ({ matchup }) => {
             </div>
             :
             <div className={`flex p-1 ${matchup.HomeWL === "W" ? 'font-bold text-emerald-800' : (matchup.HomeWL === "L" ? 'text-rose-800' : '')}`}>
-              <div className='mx-auto px-1 text-xs xs:text-sm items-start font-bold'>#{matchup.HomeRank}</div>
+              <div className='mx-auto px-1 text-xs xs:text-sm items-start font-bold'>{matchup.HomeRank && "#"+matchup.HomeRank}</div>
               <img className='w-8 my-1 mx-1' src={homeTeam.LogoURL} alt='Home Team Logo' />
               <div className='mx-auto px-1 text-sm xs:text-base my-auto'>{homeTeam.TeamName}</div>
               <div className='mx-auto px-1 text-sm xs:text-base my-auto'>{matchup.HomeScore}</div>
@@ -278,7 +278,7 @@ const BracketLine = ({ matchup }) => {
             </div>
             :
             <div className={`flex p-1 ${matchup.AwayWL === "W" ? 'font-bold text-emerald-800' : (matchup.AwayWL === "L" ? 'text-rose-800' : '')}`}>
-              <div className='mx-auto px-1 text-xs xs:text-sm items-start font-bold'>#{matchup.AwayRank}</div>
+              <div className='mx-auto px-1 text-xs xs:text-sm items-start font-bold'>{matchup.AwayRank && "#"+matchup.AwayRank}</div>
               <img className='w-8 my-1 mx-1' src={awayTeam.LogoURL} alt='Away Team Logo' />
               <div className='mx-auto px-1 text-sm xs:text-base my-auto'>{awayTeam.TeamName}</div>
               <div className='mx-auto px-1 text-sm xs:text-base my-auto'>{matchup.AwayScore}</div>
