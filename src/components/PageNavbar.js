@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react'
 import { Popover, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
-import { useGSHLTeams, useWeeks } from '../utils/fetchData'
 import LoadingSpinner from './LoadingSpinner'
+import { useTeams, useWeeks } from '../utils/context'
 
 export function StandingsToggleNavbar(props) {
   return (
@@ -11,11 +11,11 @@ export function StandingsToggleNavbar(props) {
         <div key='OVR' className={`min-w-min text-center font-bold py-1 px-3 rounded-md shadow-emboss text-xs sm:text-sm ${props.activeKey === 'OVR' ? 'bg-gray-700 text-gray-100' : 'bg-gray-100 text-gray-700'}`} onClick={() => props.setter('OVR')}>
           Overall
         </div>
-        <div key='SV' className={`min-w-min text-center font-bold py-1 px-3 rounded-md shadow-emboss text-xs sm:text-sm ${props.activeKey === 'SV' ? 'bg-gray-700 text-gray-100' : 'bg-gray-100 text-gray-700'}`} onClick={() => props.setter('SV')}>
-          Sunview
+        <div key='Conf' className={`min-w-min text-center font-bold py-1 px-3 rounded-md shadow-emboss text-xs sm:text-sm ${props.activeKey === 'Conf' ? 'bg-gray-700 text-gray-100' : 'bg-gray-100 text-gray-700'}`} onClick={() => props.setter('Conf')}>
+          Conference
         </div>
-        <div key='HH' className={`min-w-min text-center font-bold py-1 px-3 rounded-md shadow-emboss text-xs sm:text-sm ${props.activeKey === 'HH' ? 'bg-gray-700 text-gray-100' : 'bg-gray-100 text-gray-700'}`} onClick={() => props.setter('HH')}>
-          Hickory Hotel
+        <div key='WC' className={`min-w-min text-center font-bold py-1 px-3 rounded-md shadow-emboss text-xs sm:text-sm ${props.activeKey === 'WC' ? 'bg-gray-700 text-gray-100' : 'bg-gray-100 text-gray-700'}`} onClick={() => props.setter('WC')}>
+          Wildcard
         </div>
         <div key='PO' className={`min-w-min text-center font-bold py-1 px-3 rounded-md shadow-emboss text-xs sm:text-sm ${props.activeKey === 'PO' ? 'bg-gray-700 text-gray-100' : 'bg-gray-100 text-gray-700'}`} onClick={() => props.setter('PO')}>
           Playoffs
@@ -40,7 +40,7 @@ export function ScheduleToggleNavbar(props) {
 }
 export function SeasonToggleNavbar(props) {
 
-  const solutions = [
+  const seasons = [
     { key: '2023', name: '2022-23', },
     { key: '2022', name: '2021-22', },
     { key: '2021', name: '2020-21', },
@@ -78,7 +78,7 @@ export function SeasonToggleNavbar(props) {
               <Popover.Panel className="absolute right-0 z-10 mt-3 transform px-4 sm:px-0 lg:max-w-3xl">
                 <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
                   <div className="relative grid gap-8 bg-white p-7 lg:grid-cols-2">
-                    {solutions.map((item) => (
+                    {seasons.map((item) => (
                       <Popover.Button
                         key={item.key}
                         onClick={() => props.setter(item.key)}
@@ -102,10 +102,8 @@ export function SeasonToggleNavbar(props) {
   )
 }
 export function WeeksToggle(props) {
-  const weeksData = useWeeks(props.season)
-  if (weeksData.isLoading) { return <LoadingSpinner /> }
-  if (weeksData.isError) { return <div>Error</div> }
-  console.log(props.activeKey)
+  const weeks = useWeeks()
+  if (!weeks) { return <LoadingSpinner /> }
   return (
     <div className="flex gap-4 justify-center">
 
@@ -140,7 +138,7 @@ export function WeeksToggle(props) {
               <Popover.Panel className="absolute right-0 z-10 mt-3 transform px-4 sm:px-0 lg:max-w-3xl">
                 <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
                   <div className="relative flex flex-wrap gap-3 bg-white p-4 whitespace-nowrap">
-                    {weeksData.data.filter(obj => obj.WeekType !== "PO").map((item) => (
+                    {weeks.seasonWeeks?.map((item) => (
                       <Popover.Button
                         key={item.WeekNum}
                         onClick={() => props.setter(item.WeekNum)}
@@ -216,13 +214,11 @@ export function WeeksToggle(props) {
   )
 }
 export function TeamsToggle(props) {
-  const teamData = useGSHLTeams(props.season)
-  if (teamData.isLoading) { return <LoadingSpinner /> }
-  if (teamData.isError) { return <div>Error</div> }
+  const teamData = useTeams()
   return (
     <>
       <div className="flex flex-nowrap max-w-lg my-3 mx-auto">
-        {teamData.data.filter(obj => obj.Conference === "SV").map(obj => {
+        {teamData?.filter(obj => obj.Conference === "SV").map(obj => {
           return (
             <div key={obj.id} className="mx-auto" onClick={() => props.setter(obj.id)}>
               <img className=' w-10 xs:w-12 flex-auto p-0.5 rounded-lg shadow-emboss bg-sunview-50 bg-opacity-50' src={obj.LogoURL} alt={obj.TeamName} />
@@ -231,7 +227,7 @@ export function TeamsToggle(props) {
         })}
       </div>
       <div className="flex flex-nowrap max-w-lg my-3 mx-auto">
-        {teamData.data.filter(obj => obj.Conference === "HH").map(obj => {
+        {teamData?.filter(obj => obj.Conference === "HH").map(obj => {
           return (
             <div key={obj.id} className="mx-auto" onClick={() => props.setter(obj.id)}>
               <img className='w-10 xs:w-12 flex-auto p-0.5 rounded-lg shadow-emboss bg-hotel-50 bg-opacity-50' src={obj.LogoURL} alt={obj.TeamName} />
