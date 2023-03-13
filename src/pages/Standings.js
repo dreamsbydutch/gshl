@@ -3,7 +3,7 @@ import { queryFunc } from '../utils/fetchData'
 import { SeasonToggleNavbar, StandingsToggleNavbar } from '../components/PageNavbar'
 import LoadingSpinner from '../components/LoadingSpinner'
 import { useQuery } from 'react-query'
-import { useTeams, useWeeks } from '../utils/context'
+import { useTeams } from '../utils/context'
 import { Link } from 'react-router-dom'
 
 export default function Standings() {
