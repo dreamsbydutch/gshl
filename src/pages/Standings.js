@@ -102,7 +102,17 @@ const StandingsItem = ({ teamInfo, team, teamProb, standingsType }) => {
         <div className="col-span-7 font-bold text-base">{team.teamName}</div>
         <div className="col-span-2 text-sm">{team.LTW} - {team.LTL}</div>
         <div className={`col-span-1 text-sm ${team.LTDiff > 0 ? 'text-emerald-800' : team.LTDiff < 0 ? 'text-rose-800' : 'text-gray-500'}`}>{team.LTDiff > 0 ? '+' + team.LTDiff : team.LTDiff < 0 ? team.LTDiff : "-"}</div>
-        {showInfo ? <TeamInfo {...{ teamProb, standingsType }} /> : <></>}
+        {showInfo ?
+          <>
+          <div className='col-span-12 mb-0.5 flex flex-row justify-center flex-wrap'>
+            <div className="text-2xs font-bold pr-2">Tiebreak Pts:</div>
+            <div className="text-2xs">{team.LTPTS + ' pts'}</div>
+          </div>
+            <TeamInfo {...{ teamProb, standingsType }} />
+          </>
+          :
+          <></>
+        }
       </div>
     )
   } else {
@@ -115,7 +125,17 @@ const StandingsItem = ({ teamInfo, team, teamProb, standingsType }) => {
         </div>
         <div className="col-span-2 text-sm">{team.W} - {team.L}</div>
         <div className={`text-xs ${team.Stk.includes("W") ? 'text-emerald-800' : 'text-rose-800'}`}>{team.Stk}</div>
-        {showInfo ? <TeamInfo {...{ teamProb, standingsType }} /> : <></>}
+        {showInfo ?
+          <>
+            <div className='col-span-12 mb-0.5 flex flex-row justify-center flex-wrap'>
+              <div className="text-2xs font-bold pr-2">Tiebreak Pts:</div>
+              <div className="text-2xs">{team.PTS + ' pts'}</div>
+            </div>
+            <TeamInfo {...{ teamProb, standingsType }} />
+          </>
+          :
+          <></>
+        }
       </div>
     )
   }
@@ -266,7 +286,7 @@ const BracketLine = ({ matchup }) => {
             </div>
             :
             <div className={`flex p-1 ${matchup.HomeWL === "W" ? 'font-bold text-emerald-800' : (matchup.HomeWL === "L" ? 'text-rose-800' : '')}`}>
-              <div className='mx-auto px-1 text-xs xs:text-sm items-start font-bold'>{matchup.HomeRank && "#"+matchup.HomeRank}</div>
+              <div className='mx-auto px-1 text-xs xs:text-sm items-start font-bold'>{matchup.HomeRank && "#" + matchup.HomeRank}</div>
               <img className='w-8 my-1 mx-1' src={homeTeam.LogoURL} alt='Home Team Logo' />
               <div className='mx-auto px-1 text-sm xs:text-base my-auto'>{homeTeam.TeamName}</div>
               <div className='mx-auto px-1 text-sm xs:text-base my-auto'>{matchup.HomeScore}</div>
@@ -278,7 +298,7 @@ const BracketLine = ({ matchup }) => {
             </div>
             :
             <div className={`flex p-1 ${matchup.AwayWL === "W" ? 'font-bold text-emerald-800' : (matchup.AwayWL === "L" ? 'text-rose-800' : '')}`}>
-              <div className='mx-auto px-1 text-xs xs:text-sm items-start font-bold'>{matchup.AwayRank && "#"+matchup.AwayRank}</div>
+              <div className='mx-auto px-1 text-xs xs:text-sm items-start font-bold'>{matchup.AwayRank && "#" + matchup.AwayRank}</div>
               <img className='w-8 my-1 mx-1' src={awayTeam.LogoURL} alt='Away Team Logo' />
               <div className='mx-auto px-1 text-sm xs:text-base my-auto'>{awayTeam.TeamName}</div>
               <div className='mx-auto px-1 text-sm xs:text-base my-auto'>{matchup.AwayScore}</div>

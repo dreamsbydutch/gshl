@@ -36,7 +36,7 @@ export default function LockerRoom() {
 }
 
 
-function TeamPlayerContracts({ teamInfo, season }) {
+function TeamPlayerContracts({ teamInfo }) {
   const contractData = useQuery(['MainInput', 'Contracts'], queryFunc)
 
   const teamContracts = contractData.data?.filter(obj => obj.CurrentTeam === teamInfo?.id)
@@ -124,7 +124,6 @@ function TeamPlayerContracts({ teamInfo, season }) {
     </>
   )
 }
-
 
 function TeamPlayerStats({ teamInfo, season }) {
   const playerSeasonData = useQuery([season + 'PlayerData', 'Splits'], queryFunc)

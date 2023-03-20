@@ -1,79 +1,161 @@
 import React, { useState } from 'react'
+import { useQuery } from 'react-query'
 import { Link, useParams } from 'react-router-dom'
 import LoadingSpinner from '../components/LoadingSpinner'
-import { useMatchupByID, usePlayerSeasonTotals, useSchedule, usePlayerDays, useCurrentRosters } from '../utils/fetchData'
+import { useTeams } from '../utils/context'
+import { queryFunc } from '../utils/fetchData'
 
-export default function MatchupPage(props) {
+export default function MatchupPage() {
   const { id } = useParams()
-  const matchupData = useMatchupByID(id)
-  if (!matchupData.data) { return <LoadingSpinner /> }
 
+  const scheduleData = useQuery(['MainInput', 'Schedule'], queryFunc)
+  const matchup = scheduleData.data?.filter(obj => obj.id === id)[0]
+
+  const playerWeekStats = useQuery([matchup?.Season + 'PlayerData', 'Weeks'], queryFunc, { enabled: !!matchup })
+  const teamWeekStats = useQuery([matchup?.Season + 'TeamData', 'Weeks'], queryFunc, { enabled: !!matchup })
+
+  const weeklyMatchups = scheduleData.data?.filter(obj => obj.Season === matchup.Season && obj.WeekNum === matchup.WeekNum)
+  var teams = useTeams()
+  const matchupTeams = {
+    'homeTeam': teams?.filter(obj => obj.id === matchup?.HomeTeam)[0],
+    'awayTeam': teams?.filter(obj => obj.id === matchup?.AwayTeam)[0],
+  }
+  const matchupStats = {
+    'homePlayers': playerWeekStats.data?.filter(obj => obj.WeekNum === matchup.WeekNum && obj.gshlTeam === matchupTeams.homeTeam?.id),
+    'homeTeam': teamWeekStats.data?.filter(obj => obj.WeekNum === matchup.WeekNum && obj.gshlTeam === matchupTeams.homeTeam?.id)[0],
+    'awayPlayers': playerWeekStats.data?.filter(obj => obj.WeekNum === matchup.WeekNum && obj.gshlTeam === matchupTeams.awayTeam?.id),
+    'awayTeam': teamWeekStats.data?.filter(obj => obj.WeekNum === matchup.WeekNum && obj.gshlTeam === matchupTeams.awayTeam?.id)[0],
+  }
+
+  if (!teams || !matchupTeams.homeTeam || !matchupTeams.awayTeam || !weeklyMatchups || !matchup) { return <LoadingSpinner /> }
 
   return (
     <>
-      <MatchupScroller matchupData={matchupData.data} currentWeek={props.currentWeek} />
-      <MatchupHeader matchupData={matchupData.data} />
-      <MatchupStats matchupData={matchupData.data} />
-      {matchupData.data.HomeWL === '' && matchupData.data.AwayWL === '' ?
+      <MatchupPageScroller {...{ weeklyMatchups, teams, id }} />
+      <MatchupHeader {...{ matchup, matchupTeams }} />
+      <MatchupStats {...{ matchupStats }} />
+      {matchup.HomeWL === '' && matchup.AwayWL === '' ?
         <>
-          <PlayingToday matchupData={matchupData.data} />
-          <WatchList matchupData={matchupData.data} />
+          <PlayingToday {...{ matchup, matchupTeams }} />
+          <WatchList {...{ matchup, matchupStats, matchupTeams }} />
         </>
         :
-        <ThreeStars matchupData={matchupData.data} />
+        <ThreeStars {...{ matchup, matchupStats, matchupTeams }} />
       }
-      <MatchupBoxscore matchupData={matchupData.data} />
+      <MatchupBoxscore {...{ matchup, matchupStats, matchupTeams }} />
     </>
   )
 }
 
-function MatchupHeader(props) {
+function MatchupHeader({ matchup, matchupTeams }) {
+  if (!matchup || !matchupTeams) { return <LoadingSpinner /> }
   return (
-    <div className="flex flex-row justify-center items-center gap-4 mt-8">
-      <div className="flex flex-row justify-center items-center gap-2 w-20">
-        <img src={props.matchupData.awayTeamInfo.LogoURL} alt={props.matchupData.awayTeamInfo.TeamName + "Logo"} />
-        <div className={`text-4xl ${props.matchupData.AwayWL === "W" ? 'font-bold text-emerald-800' : props.matchupData.AwayWL === "L" ? 'text-rose-800' : ''}`}>
-          {props.matchupData.AwayScore}
+    <div className="grid grid-cols-11 w-5/6 mx-auto justify-center items-center mt-8">
+      <div className="col-span-5 flex flex-row justify-center">
+        {matchup.AwayRank <= 8 ? <div className="text-sm mt-2 mr-0.5 font-bold">#{matchup.AwayRank}</div> : <></>}
+        <img className='h-20' src={matchupTeams.awayTeam.LogoURL} alt={matchupTeams.awayTeam.TeamName + "Logo"} />
+        <div className={`place-self-center ml-4 text-4xl ${matchup.AwayWL === "W" ? 'font-bold text-emerald-800' : matchup.AwayWL === "L" ? 'text-rose-800' : ''}`}>
+          {matchup.AwayScore}
         </div>
       </div>
-      <div className="symbol">@</div>
-      <div className="flex flex-row justify-center items-center gap-2 w-20">
-        <div className={`text-4xl ${props.matchupData.HomeWL === "W" ? 'font-bold text-emerald-800' : props.matchupData.HomeWL === "L" ? 'text-rose-800' : ''}`}>
-          {props.matchupData.HomeScore}
+      <div className="text-center font-bold text-lg">@</div>
+      <div className="col-span-5 flex flex-row justify-center">
+        <div className={`place-self-center mr-4 text-4xl ${matchup.HomeWL === "W" ? 'font-bold text-emerald-800' : matchup.HomeWL === "L" ? 'text-rose-800' : ''}`}>
+          {matchup.HomeScore}
         </div>
-        <img src={props.matchupData.homeTeamInfo.LogoURL} alt={props.matchupData.homeTeamInfo.TeamName + "Logo"} />
+        {matchup.HomeRank <= 8 ? <div className="text-sm mt-2 mr-0.5 font-bold">#{matchup.HomeRank}</div> : <></>}
+        <img className='h-20' src={matchupTeams.homeTeam.LogoURL} alt={matchupTeams.homeTeam.TeamName + "Logo"} />
       </div>
     </div>
   )
 }
 
-
-function MatchupStats(props) {
+function MatchupStats({ matchupStats }) {
+  if (!matchupStats.homeTeam || !matchupStats.awayTeam) { return <></> }
   return (
     <div className="my-6 font-varela">
       {['G', 'A', 'P', 'PPP', 'SOG', 'HIT', 'BLK', 'W', 'GAA', 'SVP'].map((obj, i) => {
-        var home = props?.matchupData?.homeTeamStats[obj]
-        var away = props?.matchupData?.awayTeamStats[obj]
+        var home = matchupStats?.homeTeam[obj]
+        var away = matchupStats?.awayTeam[obj]
         return (
-          <div className="w-4/6 mx-auto grid gap-2 grid-cols-5 p-0.5 text-sm text-center border-b border-gray-400 border-dotted" key={i}>
-            <div className={`col-span-2 ${(away !== "") ? (home === "" || +away > +home) ? 'text-emerald-800 font-bold' : (+away < +home) ? 'text-rose-800' : "" : ""}`}>{away}</div>
-            <div className="text-xs font-bold">{obj === 'SVP' ? 'SV%' : obj}</div>
-            <div className={`col-span-2 ${(home !== "") ? (away === "" || +home > +away) ? 'text-emerald-800 font-bold' : (+home < +away) ? 'text-rose-800' : "" : ""}`}>{home}</div>
-          </div>
+          <>
+            {obj === 'GAA' ?
+              <div className="w-4/6 mx-auto grid gap-2 grid-cols-5 p-0.5 text-center items-center border-b border-gray-400 border-dotted" key={i}>
+                <div className={`col-span-2 ${(away !== "") ? (home === "" || +away < +home) ? 'text-emerald-800 font-bold' : (+away > +home) ? 'text-rose-800 text-sm' : "" : ""}`}>{away}</div>
+                <div className="text-xs font-bold">{obj}</div>
+                <div className={`col-span-2 ${(home !== "") ? (away === "" || +home < +away) ? 'text-emerald-800 font-bold' : (+home > +away) ? 'text-rose-800 text-sm' : "" : ""}`}>{home}</div>
+              </div>
+              :
+              <div className="w-4/6 mx-auto grid gap-2 grid-cols-5 p-0.5 text-center items-center border-b border-gray-400 border-dotted" key={i}>
+                <div className={`col-span-2 ${(away !== "") ? (home === "" || +away > +home) ? 'text-emerald-800 font-bold' : (+away < +home) ? 'text-rose-800 text-sm' : "" : ""}`}>{away}</div>
+                <div className="text-xs font-bold">{obj === 'SVP' ? 'SV%' : obj}</div>
+                <div className={`col-span-2 ${(home !== "") ? (away === "" || +home > +away) ? 'text-emerald-800 font-bold' : (+home < +away) ? 'text-rose-800 text-sm' : "" : ""}`}>{home}</div>
+              </div>
+            }
+          </>
+        )
+      })}
+      <div className="my-4"></div>
+      {['Rating', 'GS', 'MS', 'BS'].map((obj, i) => {
+        var home = obj === 'Rating' ?
+          Math.round(matchupStats?.homeTeam.Rating * 10) / 10 :
+          obj === 'BS' ?
+            [matchupStats?.homeTeam[obj],
+            (((+matchupStats?.homeTeam.GP + +matchupStats?.homeTeam.GPg) - (+matchupStats?.homeTeam.GS + +matchupStats?.homeTeam.GSg)) - (+matchupStats?.homeTeam.MS + +matchupStats?.homeTeam.MSg))
+            ] :
+            matchupStats?.homeTeam[obj]
+        var away = obj === 'Rating' ?
+          Math.round(matchupStats?.awayTeam.Rating * 10) / 10 :
+          obj === 'BS' ?
+            [matchupStats?.awayTeam[obj],
+            (((+matchupStats?.awayTeam.GP + +matchupStats?.awayTeam.GPg) - (+matchupStats?.awayTeam.GS + +matchupStats?.awayTeam.GSg)) - (+matchupStats?.awayTeam.MS + +matchupStats?.awayTeam.MSg))
+            ] :
+            matchupStats?.awayTeam[obj]
+        return (
+          <>
+            {obj === 'Rating' ?
+              <div className="w-4/6 mx-auto grid gap-2 grid-cols-5 p-0.5 text-center items-center border-b border-gray-400 border-dotted" key={i}>
+                <div className={`col-span-2 ${(away !== "") ? (home === "" || +away > +home) ? 'text-emerald-800 font-bold' : (+away < +home) ? 'text-rose-800 text-sm' : "" : ""}`}>{away}</div>
+                <div className="text-xs font-bold">{obj === 'SVP' ? 'SV%' : obj}</div>
+                <div className={`col-span-2 ${(home !== "") ? (away === "" || +home > +away) ? 'text-emerald-800 font-bold' : (+home < +away) ? 'text-rose-800 text-sm' : "" : ""}`}>{home}</div>
+              </div>
+              :
+              obj === 'GS' ?
+                <div className="w-4/6 mx-auto grid gap-2 grid-cols-5 p-0.5 text-center items-center border-b border-gray-400 border-dotted text-2xs" key={i}>
+                  <div className={`col-span-2 ${(away !== "") ? (home === "" || +away > +home) ? 'text-emerald-800 font-bold text-xs' : (+away < +home) ? 'text-rose-800' : "" : ""}`}>{away}</div>
+                  <div className="font-bold">Starts</div>
+                  <div className={`col-span-2 ${(home !== "") ? (away === "" || +home > +away) ? 'text-emerald-800 font-bold text-xs' : (+home < +away) ? 'text-rose-800' : "" : ""}`}>{home}</div>
+                </div>
+                :
+                obj === 'BS' ?
+                  <div className="w-4/6 mx-auto grid gap-2 grid-cols-5 p-0.5 text-center items-center border-b border-gray-400 border-dotted text-2xs" key={i}>
+                    <div className={`col-span-2 ${(away !== "") ? (home === "" || +away > +home) ? 'text-emerald-800 font-bold text-xs' : (+away < +home) ? 'text-rose-800' : "" : ""}`}>{away[1] - away[0] + " / " + away[1]}</div>
+                    <div className="font-bold">Lineup Decisions</div>
+                    <div className={`col-span-2 ${(home !== "") ? (away === "" || +home > +away) ? 'text-emerald-800 font-bold text-xs' : (+home < +away) ? 'text-rose-800' : "" : ""}`}>{home[1] - home[0] + " / " + home[1]}</div>
+                  </div>
+                  :
+                  <div className="w-4/6 mx-auto grid gap-2 grid-cols-5 p-0.5 text-center items-center border-b border-gray-400 border-dotted text-2xs" key={i}>
+                    <div className={`col-span-2 ${(away !== "") ? (home === "" || +away < +home) ? 'text-emerald-800 font-bold text-xs' : (+away > +home) ? 'text-rose-800' : "" : ""}`}>{away}</div>
+                    <div className="font-bold">{obj === "MS" ? "Missed Starts" : obj}</div>
+                    <div className={`col-span-2 ${(home !== "") ? (away === "" || +home < +away) ? 'text-emerald-800 font-bold text-xs' : (+home > +away) ? 'text-rose-800' : "" : ""}`}>{home}</div>
+                  </div>
+
+            }
+          </>
         )
       })}
     </div>
   )
 }
 
-function ThreeStars(props) {
-  let firstStar = [...props.matchupData.homeTeamPlayers, ...props.matchupData.awayTeamPlayers].filter(obj => obj.id === props.matchupData.FirstStar)[0]
-  let secondStar = [...props.matchupData.homeTeamPlayers, ...props.matchupData.awayTeamPlayers].filter(obj => obj.id === props.matchupData.SecondStar)[0]
-  let thirdStar = [...props.matchupData.homeTeamPlayers, ...props.matchupData.awayTeamPlayers].filter(obj => obj.id === props.matchupData.ThirdStar)[0]
+function ThreeStars({ matchup, matchupStats, matchupTeams }) {
+  let firstStar = [...matchupStats.homePlayers, ...matchupStats.awayPlayers].filter(obj => obj.id === matchup.FirstStar)[0]
+  let secondStar = [...matchupStats.homePlayers, ...matchupStats.awayPlayers].filter(obj => obj.id === matchup.SecondStar)[0]
+  let thirdStar = [...matchupStats.homePlayers, ...matchupStats.awayPlayers].filter(obj => obj.id === matchup.ThirdStar)[0]
   return (
     <div>
       <div className="mt-8 text-lg text-center font-bold">Three Stars</div>
-      {props.matchupData.FirstStar &&
+      {matchup.FirstStar &&
         <div className="w-11/12 mt-2 mx-auto flex flex-col p-1 gap-4 items-center font-varela">
           <div className="grid grid-cols-7 m-auto w-11/12 text-center">
             <div className="text-3xl text-yellow-300 m-auto">
@@ -81,7 +163,7 @@ function ThreeStars(props) {
             </div>
             <img
               className='my-auto'
-              src={props.matchupData.AwayTeam === firstStar.gshlTeam ? props.matchupData.awayTeamInfo.LogoURL : props.matchupData.homeTeamInfo.LogoURL}
+              src={matchup.AwayTeam === firstStar.gshlTeam ? matchupTeams.awayTeam.LogoURL : matchupTeams.homeTeam.LogoURL}
               alt='First Star Team Logo'
             />
             <div className="text-lg font-normal col-span-5 m-auto items-center inline-block">
@@ -100,7 +182,7 @@ function ThreeStars(props) {
             </div>
             <img
               className='my-auto'
-              src={props.matchupData.AwayTeam === secondStar.gshlTeam ? props.matchupData.awayTeamInfo.LogoURL : props.matchupData.homeTeamInfo.LogoURL}
+              src={matchup.AwayTeam === secondStar.gshlTeam ? matchupTeams.awayTeam.LogoURL : matchupTeams.homeTeam.LogoURL}
               alt='Second Star Team Logo'
             />
             <div className="text-lg font-normal col-span-5 m-auto items-center inline-block">
@@ -119,7 +201,7 @@ function ThreeStars(props) {
             </div>
             <img
               className='my-auto'
-              src={props.matchupData.AwayTeam === thirdStar.gshlTeam ? props.matchupData.awayTeamInfo.LogoURL : props.matchupData.homeTeamInfo.LogoURL}
+              src={matchup.AwayTeam === thirdStar.gshlTeam ? matchupTeams.awayTeam.LogoURL : matchupTeams.homeTeam.LogoURL}
               alt='Third Star Team Logo'
             />
             <div className="text-lg font-normal col-span-5 m-auto items-center inline-block">
@@ -137,24 +219,26 @@ function ThreeStars(props) {
     </div>
   )
 }
-function WatchList(props) {
-  const seasonStats = usePlayerSeasonTotals(props.matchupData.Season)
-  let firstStar = [...props.matchupData.homeTeamPlayers, ...props.matchupData.awayTeamPlayers].filter(obj => obj.id === props.matchupData.FirstStar)[0]
-  let secondStar = [...props.matchupData.homeTeamPlayers, ...props.matchupData.awayTeamPlayers].filter(obj => obj.id === props.matchupData.SecondStar)[0]
-  let thirdStar = [...props.matchupData.homeTeamPlayers, ...props.matchupData.awayTeamPlayers].filter(obj => obj.id === props.matchupData.ThirdStar)[0]
-  firstStar = seasonStats.data?.filter(obj => obj.PlayerName === firstStar.PlayerName && obj.nhlPos === firstStar.nhlPos)[0]
-  secondStar = seasonStats.data?.filter(obj => obj.PlayerName === secondStar.PlayerName && obj.nhlPos === secondStar.nhlPos)[0]
-  thirdStar = seasonStats.data?.filter(obj => obj.PlayerName === thirdStar.PlayerName && obj.nhlPos === thirdStar.nhlPos)[0]
+function WatchList({ matchup, matchupStats, matchupTeams }) {
+  const playerSeasonStats = useQuery([matchup.Season + 'PlayerData', 'Totals'], queryFunc, { enabled: !!matchup })
+  if (!matchup || !matchupStats.homePlayers || !matchupStats.awayPlayers || !matchupTeams) { return <LoadingSpinner /> }
+  let firstStar = [...matchupStats.homePlayers, ...matchupStats.awayPlayers].filter(obj => obj.id === matchup.FirstStar)[0]
+  let secondStar = [...matchupStats.homePlayers, ...matchupStats.awayPlayers].filter(obj => obj.id === matchup.SecondStar)[0]
+  let thirdStar = [...matchupStats.homePlayers, ...matchupStats.awayPlayers].filter(obj => obj.id === matchup.ThirdStar)[0]
+  if (!firstStar || !secondStar || !thirdStar) { return <></> }
+  firstStar = playerSeasonStats.data?.filter(obj => obj.PlayerName === firstStar.PlayerName && obj.nhlPos === firstStar.nhlPos)[0]
+  secondStar = playerSeasonStats.data?.filter(obj => obj.PlayerName === secondStar.PlayerName && obj.nhlPos === secondStar.nhlPos)[0]
+  thirdStar = playerSeasonStats.data?.filter(obj => obj.PlayerName === thirdStar.PlayerName && obj.nhlPos === thirdStar.nhlPos)[0]
   if (!firstStar || !secondStar || !thirdStar) { return <LoadingSpinner /> }
   return (
     <div>
       <div className="mt-8 text-lg text-center font-bold">Players to Watch</div>
-      {props.matchupData.FirstStar &&
+      {matchup.FirstStar &&
         <div className="w-11/12 mt-2 mx-auto flex flex-col p-1 gap-4 items-center text-center font-varela">
           <div className="grid grid-cols-6 m-auto w-11/12 text-center">
             <img
               className='my-auto'
-              src={props.matchupData.AwayTeam === firstStar.gshlTeam ? props.matchupData.awayTeamInfo.LogoURL : props.matchupData.homeTeamInfo.LogoURL}
+              src={matchup.AwayTeam === firstStar.gshlTeam.split(',').slice(-1)[0] ? matchupTeams.awayTeam.LogoURL : matchupTeams.homeTeam.LogoURL}
               alt='First Star Team Logo'
             />
             <div className="text-lg font-normal col-span-5 m-auto items-center inline-block">
@@ -170,7 +254,7 @@ function WatchList(props) {
           <div className="grid grid-cols-6 m-auto w-11/12 text-center">
             <img
               className='my-auto'
-              src={props.matchupData.AwayTeam === secondStar.gshlTeam ? props.matchupData.awayTeamInfo.LogoURL : props.matchupData.homeTeamInfo.LogoURL}
+              src={matchup.AwayTeam === secondStar.gshlTeam.split(',').slice(-1)[0] ? matchupTeams.awayTeam.LogoURL : matchupTeams.homeTeam.LogoURL}
               alt='Second Star Team Logo'
             />
             <div className="text-lg font-normal col-span-5 m-auto inline-block items-center">
@@ -186,7 +270,7 @@ function WatchList(props) {
           <div className="grid grid-cols-6 m-auto w-11/12 text-center">
             <img
               className='my-auto'
-              src={props.matchupData.AwayTeam === thirdStar.gshlTeam ? props.matchupData.awayTeamInfo.LogoURL : props.matchupData.homeTeamInfo.LogoURL}
+              src={matchup.AwayTeam === thirdStar.gshlTeam.split(',').slice(-1)[0] ? matchupTeams.awayTeam.LogoURL : matchupTeams.homeTeam.LogoURL}
               alt='Third Star Team Logo'
             />
             <div className="text-lg font-normal col-span-5 m-auto inline-block items-center">
@@ -204,55 +288,67 @@ function WatchList(props) {
     </div>
   )
 }
-function PlayingToday(props) {
-  const playerDays = usePlayerDays(props.matchupData.Season)
-  if (!playerDays.data) { return <LoadingSpinner /> }
+function PlayingToday({ matchup, matchupTeams }) {
   let date = new Date()
-  date = date.getFullYear() + '-' + (+date.getMonth() < 9 ? '0' + ((+date.getMonth()) + 1) : ((+date.getMonth()) + 1)) + '-' + date.getDate()
-  let playerData = [playerDays.data?.filter(obj => obj.Date === date && obj.gshlTeam === props.matchupData.AwayTeam && obj.Opp), playerDays.data?.filter(obj => obj.Date === date && obj.gshlTeam === props.matchupData.HomeTeam && obj.Opp)]
+  date = String(date.getFullYear()) + '-' + String(date.getMonth() < 9 ? '0' + String(date.getMonth() + 1) : date.getMonth() + 1) + '-' + String(date.getHours() < 4 ? date.getDate() - 1 : date.getDate())
+  const playerDayStats = useQuery([matchup?.Season + 'PlayerData', 'Days'], queryFunc, { enabled: !!matchup })
   return (
     <div className='mb-8'>
       <div className="mt-2 text-base text-center font-bold">Playing Today</div>
       <div className="grid grid-cols-2 gap-2 w-11/12 mx-auto text-2xs font-medium text-center items-start">
-        {playerData.map((teamPlayerData, i) => {
-          return (
-            <div key={i} className="">
-              {teamPlayerData.filter(player => player.dailyPos !== 'BN' && player.dailyPos !== 'IR+' && player.dailyPos !== 'IR').map(player => {
-                return (
-                  <div key={player.id} className='flex flex-col border-b border-gray-300'>
-                    <div className="inline-block text-xs">
-                      {player.PlayerName}
-                      {/* <img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${player.nhlTeam}.png`} alt="" className='inline-block h-4 w-4 mx-1' /> */}
-                    </div>
-                    <div className="inline-block">
-                      {player.Opp[0] === '@' ? '@' : 'v'}
-                      <img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${player.Opp[0] === '@' ? player.Opp.slice(1) : player.Opp}.png`} alt="" className='inline-block h-4 w-4 mx-1' />
-                      {(player.Score.includes('AM') || player.Score.includes('PM')) ? addHoursToTime(player.Score, 3) : player.Score}
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
-          )
-        })}
+        <div className="grid grid-cols-1 gap-2 w-11/12 mx-auto text-2xs font-medium text-center items-start">
+          {playerDayStats.data?.filter(player => player.Date === date && player.gshlTeam === matchupTeams.awayTeam.id && player.dailyPos !== 'BN' && player.dailyPos !== 'IR+' && player.dailyPos !== 'IR' && player.GS === '1').map(player => {
+            return (
+              <div key={player.id} className='flex flex-col border-b border-gray-300'>
+                <div className="inline-block text-xs">
+                  {player.PlayerName}
+                  <img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${player.nhlTeam}.png`} alt="" className='inline-block h-4 w-4 mx-1' />
+                </div>
+                <div className="inline-block">
+                  {player.Opp[0] === '@' ? '@' : 'v'}
+                  <img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${player.Opp[0] === '@' ? player.Opp.slice(1) : player.Opp}.png`} alt="" className='inline-block h-4 w-4 mx-1' />
+                  {(player.Score.includes('AM') || player.Score.includes('PM')) ? addHoursToTime(player.Score, 3) : player.Score}
+                </div>
+              </div>
+            )
+          })}
+        </div>
+        <div className="grid grid-cols-1 gap-2 w-11/12 mx-auto text-2xs font-medium text-center items-start">
+          {playerDayStats.data?.filter(player => player.Date === date && player.gshlTeam === matchupTeams.homeTeam.id && player.dailyPos !== 'BN' && player.dailyPos !== 'IR+' && player.dailyPos !== 'IR' && player.GS === '1').map(player => {
+            return (
+              <div key={player.id} className='flex flex-col border-b border-gray-300'>
+                <div className="inline-block text-xs">
+                  {player.PlayerName}
+                  <img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${player.nhlTeam}.png`} alt="" className='inline-block h-4 w-4 mx-1' />
+                </div>
+                <div className="inline-block">
+                  {player.Opp[0] === '@' ? '@' : 'v'}
+                  <img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${player.Opp[0] === '@' ? player.Opp.slice(1) : player.Opp}.png`} alt="" className='inline-block h-4 w-4 mx-1' />
+                  {(player.Score.includes('AM') || player.Score.includes('PM')) ? addHoursToTime(player.Score, 3) : player.Score}
+                </div>
+              </div>
+            )
+          })}
+        </div>
       </div>
     </div>
   )
 }
 
-function MatchupBoxscore(props) {
-  const currentRoster = useCurrentRosters(props.matchupData.Season)
+function MatchupBoxscore({ matchup, matchupStats, matchupTeams }) {
+  const currentRoster = useQuery([matchup?.Season + 'PlayerData', 'CurrentRosters'], queryFunc, { enabled: !!matchup })
   const [boxscoreTeam, setBoxscoreTeam] = useState('home')
-  let teamStats = props.matchupData && props.matchupData[boxscoreTeam + "TeamPlayers"]
+  let teamStats = matchupStats && matchupStats[boxscoreTeam + "Players"]
+  if (!teamStats || !currentRoster.data) { return <LoadingSpinner /> }
   return (
     <div className='mb-16 font-varela'>
       <div className="mt-12 mb-4 mx-1">
         <div className='flex flex-wrap gap-3 items-center justify-center list-none'>
           <div key='Week' className={`min-w-min text-center font-bold py-1 px-3 rounded-md shadow-emboss text-xs sm:text-sm ${boxscoreTeam === 'away' ? 'bg-gray-700 text-gray-100' : 'bg-gray-100 text-gray-700'}`} onClick={() => setBoxscoreTeam('away')}>
-            {props.matchupData.awayTeamInfo.TeamName}
+            {matchupTeams.awayTeam.TeamName}
           </div>
           <div key='Team' className={`min-w-min text-center font-bold py-1 px-3 rounded-md shadow-emboss text-xs sm:text-sm ${boxscoreTeam === 'home' ? 'bg-gray-700 text-gray-100' : 'bg-gray-100 text-gray-700'}`} onClick={() => setBoxscoreTeam('home')}>
-            {props.matchupData.homeTeamInfo.TeamName}
+            {matchupTeams.homeTeam.TeamName}
           </div>
         </div>
       </div>
@@ -321,88 +417,63 @@ function MatchupBoxscore(props) {
 }
 
 
-function MatchupScroller(props) {
-  const schedule = useSchedule(props.matchupData.Season)
-  return (
-    <>
-      <div className='mt-4 font-oswald text-left px-4 font-bold text-base'>Week {props.matchupData?.WeekNum}</div>
-      <div className='flex flex-row overflow-auto whitespace-nowrap mt-1 flex-nowrap'>
-        <div className='shrink-0'>
-          <div className="flex flex-row hover:text-grey-800">
-            {schedule.data &&
-              schedule.data
-                .filter(obj => obj.Season === props.matchupData.Season)
-                .filter(obj => obj.WeekNum === props.matchupData.WeekNum)
-                .sort((a, b) => a.MatchupNum - b.MatchupNum)
-                .map((obj, i) => <ScrollerItem data={obj} key={i} currentMatchup={props.matchupData} />)}
+function MatchupPageScroller({ weeklyMatchups, teams, id }) {
+
+  function ScrollerItem({ matchup, teams, id }) {
+    let homeTeam = teams?.filter(obj => obj.id === matchup?.HomeTeam)[0]
+    let awayTeam = teams?.filter(obj => obj.id === matchup?.AwayTeam)[0]
+    if (!teams || !matchup) { return <LoadingSpinner /> }
+
+    return (
+      <>
+        {id === matchup.id ?
+          <div key={matchup.id} className='flex flex-col m-2 px-1 items-center shadow-emboss rounded-2xl shrink-0 bg-zinc-300'>
+            <Link to={"/matchup/" + matchup.id}>
+              <div className={`flex p-1 ${matchup.AwayWL === "W" ? 'font-bold text-emerald-800' : (matchup.AwayWL === "L" ? 'text-rose-800' : '')}`}>
+                {matchup.AwayRank <= 8 ? <div className='mx-auto px-1 text-xs xs:text-sm items-start font-bold'>#{matchup.AwayRank}</div> : <div className="pl-5"></div>}
+                <img className='w-8 my-1 mx-1' src={awayTeam.LogoURL} alt='Away Team Logo' />
+                <div className='mx-auto px-1 text-sm xs:text-base my-auto'>{matchup.AwayScore}</div>
+              </div>
+              <div className={`flex p-1 ${matchup.HomeWL === "W" ? 'font-bold text-emerald-800' : (matchup.HomeWL === "L" ? 'text-rose-800' : '')}`}>
+                {matchup.HomeRank <= 8 ? <div className='mx-auto px-1 text-xs xs:text-sm items-start font-bold'>#{matchup.HomeRank}</div> : <div className="pl-5"></div>}
+                <img className='w-8 my-1 mx-1' src={homeTeam.LogoURL} alt='Home Team Logo' />
+                <div className='mx-auto px-1 text-sm xs:text-base my-auto'>{matchup.HomeScore}</div>
+              </div>
+            </Link>
           </div>
+          :
+          <div key={matchup.id} className='flex flex-col m-2 px-1 items-center shadow-emboss rounded-2xl shrink-0 bg-gray-100'>
+            <Link to={"/matchup/" + matchup.id}>
+              <div className={`flex p-1 ${matchup.AwayWL === "W" ? 'font-bold text-emerald-800' : (matchup.AwayWL === "L" ? 'text-rose-800' : '')}`}>
+                {matchup.AwayRank <= 8 ? <div className='mx-auto px-1 text-xs xs:text-sm items-start font-bold'>#{matchup.AwayRank}</div> : <div className="pl-5"></div>}
+                <img className='w-8 my-1 mx-1' src={awayTeam.LogoURL} alt='Away Team Logo' />
+                <div className='mx-auto px-1 text-sm xs:text-base my-auto'>{matchup.AwayScore}</div>
+              </div>
+              <div className={`flex p-1 ${matchup.HomeWL === "W" ? 'font-bold text-emerald-800' : (matchup.HomeWL === "L" ? 'text-rose-800' : '')}`}>
+                {matchup.HomeRank <= 8 ? <div className='mx-auto px-1 text-xs xs:text-sm items-start font-bold'>#{matchup.HomeRank}</div> : <div className="pl-5"></div>}
+                <img className='w-8 my-1 mx-1' src={homeTeam.LogoURL} alt='Home Team Logo' />
+                <div className='mx-auto px-1 text-sm xs:text-base my-auto'>{matchup.HomeScore}</div>
+              </div>
+            </Link>
+          </div>
+        }
+      </>
+    )
+  }
+
+  if (!weeklyMatchups) { return <LoadingSpinner /> }
+  return (
+    <div className='flex flex-row overflow-auto whitespace-nowrap mt-2 flex-nowrap'>
+      <div className='shrink-0'>
+        <div className='font-oswald text-left px-4 font-bold text-base'>Week {weeklyMatchups[0].WeekNum}</div>
+        <div className="flex flex-row">
+          {weeklyMatchups?.sort((a, b) => a.MatchupNum - b.MatchupNum)
+            .map(matchup => <ScrollerItem {...{ matchup, teams, id }} />)}
         </div>
       </div>
-    </>
-  )
-}
-function ScrollerItem(props) {
-  let conf = props.data.GameType + props.data.awayTeamInfo?.Conference + props.data.homeTeamInfo?.Conference, bgClass = ''
-
-  switch (conf) {
-    case 'CCSVSV':
-      bgClass = 'bg-sunview-50 bg-opacity-50'
-      break
-    case 'CCHHHH':
-      bgClass = 'bg-hotel-50 bg-opacity-50'
-      break
-    case 'NCSVHH':
-      bgClass = 'bg-gradient-to-b from-sunview-50 to-hotel-50 bg-opacity-10'
-      break
-    case 'NCHHSV':
-      bgClass = 'bg-gradient-to-b from-hotel-50 to-sunview-50 bg-opacity-10'
-      break
-    case 'QFSVSV':
-    case 'QFHHHH':
-    case 'QFHHSV':
-    case 'QFSVHH':
-      bgClass = 'bg-orange-200 bg-opacity-30'
-      break
-    case 'SFSVSV':
-    case 'SFHHHH':
-    case 'SFHHSV':
-    case 'SFSVHH':
-      bgClass = 'bg-slate-200 bg-opacity-30'
-      break
-    case 'FSVSV':
-    case 'FHHHH':
-    case 'FHHSV':
-    case 'FSVHH':
-      bgClass = 'bg-yellow-200 bg-opacity-30'
-      break
-    case 'LTSVSV':
-    case 'LTHHHH':
-    case 'LTHHSV':
-    case 'LTSVHH':
-      bgClass = 'bg-brown-200 bg-opacity-40'
-      break
-    default:
-      bgClass = 'bg-gray-100'
-      break
-  }
-  return (
-    <div className={`flex flex-col m-2 px-1 items-center ${props.data.id === props.currentMatchup.id ? (bgClass) : 'bg-gray-100'} shadow-emboss rounded-2xl shrink-0`}>
-      <Link to={"/matchup/" + props.data.id}>
-        <div className={`flex p-1 ${props.data.AwayWL === "W" ? 'font-bold text-emerald-800' : (props.data.AwayWL === "L" ? 'text-rose-800' : '')}`}>
-          {props.data.AwayRank <= 8 ? <div className='mx-auto px-1 text-xs xs:text-sm items-start font-bold'>#{props.data.AwayRank}</div> : <div className="pl-5"></div>}
-          <img className='w-8 my-1 mx-1' src={props.data.awayTeamStats ? props.data.awayTeamStats.teamInfo.LogoURL : ''} alt='Away Team Logo' />
-          <div className='mx-auto px-1 text-sm xs:text-base my-auto'>{props.data.AwayScore}</div>
-        </div>
-        <div className={`flex p-1 ${props.data.HomeWL === "W" ? 'font-bold text-emerald-800' : (props.data.HomeWL === "L" ? 'text-rose-800' : '')}`}>
-          {props.data.HomeRank <= 8 ? <div className='mx-auto px-1 text-xs xs:text-sm items-start font-bold'>#{props.data.HomeRank}</div> : <div className="pl-5"></div>}
-          <img className='w-8 my-1 mx-1' src={props.data.homeTeamStats && props.data.homeTeamStats.teamInfo.LogoURL} alt='Home Team Logo' />
-          <div className='mx-auto px-1 text-sm xs:text-base my-auto'>{props.data.HomeScore}</div>
-        </div>
-      </Link>
     </div>
   )
 }
-
 
 function addHoursToTime(timeString, hoursToAdd) {
   // Convert time string to a Date object
