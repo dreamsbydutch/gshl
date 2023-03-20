@@ -149,6 +149,7 @@ function MatchupStats({ matchupStats }) {
 }
 
 function ThreeStars({ matchup, matchupStats, matchupTeams }) {
+  if (!matchupStats.homePlayers && !matchupStats.awayPlayers) { return <LoadingSpinner /> }
   let firstStar = [...matchupStats.homePlayers, ...matchupStats.awayPlayers].filter(obj => obj.id === matchup.FirstStar)[0]
   let secondStar = [...matchupStats.homePlayers, ...matchupStats.awayPlayers].filter(obj => obj.id === matchup.SecondStar)[0]
   let thirdStar = [...matchupStats.homePlayers, ...matchupStats.awayPlayers].filter(obj => obj.id === matchup.ThirdStar)[0]
@@ -291,13 +292,14 @@ function WatchList({ matchup, matchupStats, matchupTeams }) {
 function PlayingToday({ matchup, matchupTeams }) {
   let date = new Date()
   date = String(date.getFullYear()) + '-' + String(date.getMonth() < 9 ? '0' + String(date.getMonth() + 1) : date.getMonth() + 1) + '-' + String(date.getHours() < 4 ? date.getDate() - 1 : date.getDate())
+  console.log(date)
   const playerDayStats = useQuery([matchup?.Season + 'PlayerData', 'Days'], queryFunc, { enabled: !!matchup })
   return (
     <div className='mb-8'>
       <div className="mt-2 text-base text-center font-bold">Playing Today</div>
       <div className="grid grid-cols-2 gap-2 w-11/12 mx-auto text-2xs font-medium text-center items-start">
         <div className="grid grid-cols-1 gap-2 w-11/12 mx-auto text-2xs font-medium text-center items-start">
-          {playerDayStats.data?.filter(player => player.Date === date && player.gshlTeam === matchupTeams.awayTeam.id && player.dailyPos !== 'BN' && player.dailyPos !== 'IR+' && player.dailyPos !== 'IR' && player.GS === '1').map(player => {
+          {playerDayStats.data?.filter(player => player.Date === date && player.gshlTeam === matchupTeams.awayTeam.id && player.dailyPos !== 'BN' && player.dailyPos !== 'IR+' && player.dailyPos !== 'IR' && player.Opp !== '').map(player => {
             return (
               <div key={player.id} className='flex flex-col border-b border-gray-300'>
                 <div className="inline-block text-xs">
@@ -314,7 +316,7 @@ function PlayingToday({ matchup, matchupTeams }) {
           })}
         </div>
         <div className="grid grid-cols-1 gap-2 w-11/12 mx-auto text-2xs font-medium text-center items-start">
-          {playerDayStats.data?.filter(player => player.Date === date && player.gshlTeam === matchupTeams.homeTeam.id && player.dailyPos !== 'BN' && player.dailyPos !== 'IR+' && player.dailyPos !== 'IR' && player.GS === '1').map(player => {
+          {playerDayStats.data?.filter(player => player.Date === date && player.gshlTeam === matchupTeams.homeTeam.id && player.dailyPos !== 'BN' && player.dailyPos !== 'IR+' && player.dailyPos !== 'IR' && player.Opp !== '').map(player => {
             return (
               <div key={player.id} className='flex flex-col border-b border-gray-300'>
                 <div className="inline-block text-xs">
