@@ -299,7 +299,7 @@ function PlayingToday({ matchup, matchupTeams }) {
       <div className="mt-2 text-base text-center font-bold">Playing Today</div>
       <div className="grid grid-cols-2 gap-2 w-11/12 mx-auto text-2xs font-medium text-center items-start">
         <div className="grid grid-cols-1 gap-2 w-11/12 mx-auto text-2xs font-medium text-center items-start">
-          {playerDayStats.data?.filter(player => player.Date === date && player.gshlTeam === matchupTeams.awayTeam.id && player.dailyPos !== 'BN' && player.dailyPos !== 'IR+' && player.dailyPos !== 'IR' && player.Opp !== '').map(player => {
+          {playerDayStats.data?.filter(player => player.Date === date && player.gshlTeam === matchupTeams.awayTeam.id && player.dailyPos !== 'BN' && player.dailyPos !== 'IR+' && player.dailyPos !== 'IR' && player.Opp !== '').sort((a,b) => a.Score - b.Score).map(player => {
             return (
               <div key={player.id} className='flex flex-col border-b border-gray-300'>
                 <div className="inline-block text-xs">
