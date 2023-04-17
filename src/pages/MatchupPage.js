@@ -153,6 +153,7 @@ function ThreeStars({ matchup, matchupStats, matchupTeams }) {
   let firstStar = [...matchupStats.homePlayers, ...matchupStats.awayPlayers].filter(obj => obj.id === matchup.FirstStar)[0]
   let secondStar = [...matchupStats.homePlayers, ...matchupStats.awayPlayers].filter(obj => obj.id === matchup.SecondStar)[0]
   let thirdStar = [...matchupStats.homePlayers, ...matchupStats.awayPlayers].filter(obj => obj.id === matchup.ThirdStar)[0]
+  if (!firstStar || !secondStar || !thirdStar) { return <LoadingSpinner /> }
   return (
     <div>
       <div className="mt-8 text-lg text-center font-bold">Three Stars</div>
@@ -169,7 +170,7 @@ function ThreeStars({ matchup, matchupStats, matchupTeams }) {
             />
             <div className="text-lg font-normal col-span-5 m-auto items-center inline-block">
               {firstStar.PlayerName}, {firstStar.nhlPos}
-              <img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${firstStar.nhlTeam}.png`} alt="" className='inline-block h-5 w-5 mx-1.5' />
+              <img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${firstStar.nhlTeam.split(",").slice(-1)[0]}.png`} alt="" className='inline-block h-5 w-5 mx-1.5' />
               {firstStar.nhlPos === 'G' ?
                 <div className='text-2xs mx-1'>{`${firstStar.W} W / ${firstStar.GAA} GAA / ${firstStar.SVP} SV% / ${Math.round(firstStar.Rating * 100) / 100} Rtg`}</div>
                 :
@@ -188,7 +189,7 @@ function ThreeStars({ matchup, matchupStats, matchupTeams }) {
             />
             <div className="text-lg font-normal col-span-5 m-auto items-center inline-block">
               {secondStar.PlayerName}, {secondStar.nhlPos}
-              <img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${secondStar.nhlTeam}.png`} alt="" className='inline-block h-5 w-5 mx-1.5' />
+              <img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${secondStar.nhlTeam.split(",").slice(-1)[0]}.png`} alt="" className='inline-block h-5 w-5 mx-1.5' />
               {secondStar.nhlPos === 'G' ?
                 <div className='text-2xs mx-1'>{`${secondStar.W} W / ${secondStar.GAA} GAA / ${secondStar.SVP} SV% / ${Math.round(secondStar.Rating * 100) / 100} Rtg`}</div>
                 :
@@ -207,7 +208,7 @@ function ThreeStars({ matchup, matchupStats, matchupTeams }) {
             />
             <div className="text-lg font-normal col-span-5 m-auto items-center inline-block">
               {thirdStar.PlayerName}, {thirdStar.nhlPos}
-              <img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${thirdStar.nhlTeam}.png`} alt="" className='inline-block h-5 w-5 mx-1.5' />
+              <img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${thirdStar.nhlTeam.split(",").slice(-1)[0]}.png`} alt="" className='inline-block h-5 w-5 mx-1.5' />
               {thirdStar.nhlPos === 'G' ?
                 <div className='text-2xs mx-1'>{`${thirdStar.W} W / ${thirdStar.GAA} GAA / ${thirdStar.SVP} SV% / ${Math.round(thirdStar.Rating * 100) / 100} Rtg`}</div>
                 :
@@ -244,7 +245,7 @@ function WatchList({ matchup, matchupStats, matchupTeams }) {
             />
             <div className="text-lg font-normal col-span-5 m-auto items-center inline-block">
               {firstStar.PlayerName}, {firstStar.nhlPos}
-              <img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${firstStar.nhlTeam}.png`} alt="" className='inline-block h-5 w-5 mx-1.5' />
+              <img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${firstStar.nhlTeam.split(",").slice(-1)[0]}.png`} alt="" className='inline-block h-5 w-5 mx-1.5' />
               {firstStar.nhlPos === 'G' ?
                 <div className='text-2xs mx-1'>{`${firstStar.W} W / ${firstStar.GAA} GAA / ${firstStar.SVP} SV% / ${Math.round(firstStar.Rating * 100) / 100} Rtg`}</div>
                 :
@@ -260,7 +261,7 @@ function WatchList({ matchup, matchupStats, matchupTeams }) {
             />
             <div className="text-lg font-normal col-span-5 m-auto inline-block items-center">
               {secondStar.PlayerName}, {secondStar.nhlPos}
-              <img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${secondStar.nhlTeam}.png`} alt="" className='inline-block h-5 w-5 ml-1.5' />
+              <img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${secondStar.nhlTeam.split(",").slice(-1)[0]}.png`} alt="" className='inline-block h-5 w-5 ml-1.5' />
               {secondStar.nhlPos === 'G' ?
                 <div className='text-2xs mx-1'>{`${secondStar.W} W / ${secondStar.GAA} GAA / ${secondStar.SVP} SV% / ${Math.round(secondStar.Rating * 100) / 100} Rtg`}</div>
                 :
@@ -276,7 +277,7 @@ function WatchList({ matchup, matchupStats, matchupTeams }) {
             />
             <div className="text-lg font-normal col-span-5 m-auto inline-block items-center">
               {thirdStar.PlayerName}, {thirdStar.nhlPos}
-              <img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${thirdStar.nhlTeam}.png`} alt="" className='inline-block h-5 w-5 ml-1.5' />
+              <img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${thirdStar.nhlTeam.split(",").slice(-1)[0]}.png`} alt="" className='inline-block h-5 w-5 ml-1.5' />
               {thirdStar.nhlPos === 'G' ?
                 <div className='text-2xs mx-1'>{`${thirdStar.W} W / ${thirdStar.GAA} GAA / ${thirdStar.SVP} SV% / ${Math.round(thirdStar.Rating * 100) / 100} Rtg`}</div>
                 :
@@ -291,9 +292,10 @@ function WatchList({ matchup, matchupStats, matchupTeams }) {
 }
 function PlayingToday({ matchup, matchupTeams }) {
   let date = new Date()
-  date = String(date.getFullYear()) + '-' + String(date.getMonth() < 9 ? '0' + String(date.getMonth() + 1) : date.getMonth() + 1) + '-' + String(date.getHours() < 4 ? date.getDate() - 1 : date.getDate())
-  console.log(date)
+  date = String(date.getFullYear()) + '-' + String(date.getMonth() < 9 ? '0' + String(date.getMonth() + 1) : date.getMonth() + 1) + '-' + String(date.getMonth() < 9 ? '0' + String(String(date.getHours() < 4 ? date.getDate() - 1 : date.getDate())) : String(date.getHours() < 4 ? date.getDate() - 1 : date.getDate()))
   const playerDayStats = useQuery([matchup?.Season + 'PlayerData', 'Days'], queryFunc, { enabled: !!matchup })
+  console.log(playerDayStats)
+  console.log(date)
   return (
     <div className='mb-8'>
       <div className="mt-2 text-base text-center font-bold">Playing Today</div>
@@ -304,7 +306,7 @@ function PlayingToday({ matchup, matchupTeams }) {
               <div key={player.id} className='flex flex-col border-b border-gray-300'>
                 <div className="inline-block text-xs">
                   {player.PlayerName}
-                  <img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${player.nhlTeam}.png`} alt="" className='inline-block h-4 w-4 mx-1' />
+                  <img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${player.nhlTeam.split(",").slice(-1)[0]}.png`} alt="" className='inline-block h-4 w-4 mx-1' />
                 </div>
                 <div className="inline-block">
                   {player.Opp[0] === '@' ? '@' : 'v'}
@@ -321,7 +323,7 @@ function PlayingToday({ matchup, matchupTeams }) {
               <div key={player.id} className='flex flex-col border-b border-gray-300'>
                 <div className="inline-block text-xs">
                   {player.PlayerName}
-                  <img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${player.nhlTeam}.png`} alt="" className='inline-block h-4 w-4 mx-1' />
+                  <img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${player.nhlTeam.split(",").slice(-1)[0]}.png`} alt="" className='inline-block h-4 w-4 mx-1' />
                 </div>
                 <div className="inline-block">
                   {player.Opp[0] === '@' ? '@' : 'v'}
@@ -374,7 +376,7 @@ function MatchupBoxscore({ matchup, matchupStats, matchupTeams }) {
                 <tr key={player.id} className={`${!active && 'text-gray-400 text-opacity-80'}`}>
                   <td className="sticky left-0 whitespace-nowrap py-1 px-2 text-center text-xs border-t border-b border-gray-300 bg-gray-50" key="Player">{player.PlayerName}</td>
                   <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300" key="Pos">{player.nhlPos}</td>
-                  <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300" key="Team"><img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${player.nhlTeam}.png`} alt="" className='h-4 w-4' /></td>
+                  <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300" key="Team"><img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${player.nhlTeam.split(",").slice(-1)[0]}.png`} alt="" className='h-4 w-4' /></td>
                   <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300" key="GS">{player.GS}</td>
                   {['G', 'A', 'P', 'PPP', 'SOG', 'HIT', 'BLK'].map(obj => <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300" key={obj}>{player[obj]}</td>)}
                   <td className="py-1 px-2 text-center text-xs font-bold bg-gray-50 border-t border-b border-gray-300" key="Rating">{Math.round(player.Rating * 100) / 100}</td>
@@ -402,7 +404,7 @@ function MatchupBoxscore({ matchup, matchupStats, matchupTeams }) {
                 <tr key={player.id} className={`${!active && 'text-gray-400 text-opacity-80'}`}>
                   <td className="sticky left-0 py-1 px-2 text-center text-xs border-t border-b border-gray-300 bg-gray-50" key="Player">{player.PlayerName}</td>
                   <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300" key="Pos">{player.nhlPos}</td>
-                  <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300" key="Team"><img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${player.nhlTeam}.png`} alt="" className='h-4 w-4' /></td>
+                  <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300" key="Team"><img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${player.nhlTeam.split(",").slice(-1)[0]}.png`} alt="" className='h-4 w-4' /></td>
                   <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300" key="GS">{player.GS}</td>
                   <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300" key="Space"></td>
                   {['W', 'GAA', 'SVP'].map(obj => <><td className="py-1 px-2 col-span-2 text-center text-xs border-t border-b border-gray-300" key={obj}>{player[obj]}</td><td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300" key="Space"></td></>)}

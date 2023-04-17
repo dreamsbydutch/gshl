@@ -4,7 +4,7 @@ import { queryFunc } from '../utils/fetchData'
 import LoadingSpinner from '../components/LoadingSpinner'
 
 export default function TeamRoster({ teamInfo, season }) {
-    const showSalaries = false
+    const showSalaries = true
     const salaryData = useQuery([season + 'PlayerData', 'Salaries'], queryFunc)
     const rosterData = useQuery([season + 'PlayerData', 'CurrentRosters'], queryFunc)
     const currentRoster = rosterData.data?.filter(obj => obj.gshlTeam === teamInfo?.id).sort((a, b) => a.Rank - b.Rank)

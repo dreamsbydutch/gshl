@@ -69,10 +69,10 @@ function TeamPlayerContracts({ teamInfo }) {
             <tr>
               <th className='sticky left-0 p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>Name</th>
               <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>Pos</th>
-              <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>2022-23</th>
               <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>2023-24</th>
               <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>2024-25</th>
               <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>2025-26</th>
+              <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>2026-27</th>
               <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'></th>
             </tr>
           </thead>
@@ -110,7 +110,7 @@ function TeamPlayerContracts({ teamInfo }) {
               <td className="sticky left-0 font-bold py-1 px-2 text-center text-xs border-t border-gray-800 bg-gray-200">Cap Space</td>
               <td className="py-1 px-2 text-center text-xs border-t border-gray-800 bg-gray-200"></td>
               <td className="py-1 px-2 text-center text-xs border-t border-gray-800 bg-gray-200">{formatter.format(22500000 - teamContracts?.filter(obj => obj.YearsRemaining > 0).reduce((acc, obj) => acc + +obj.CapHit, 0)).replace("US", "")}</td>
-              <td className="py-1 px-2 text-center text-xs border-t border-gray-800 bg-gray-200">{formatter.format(22500000 - teamContracts?.filter(obj => obj.YearsRemaining > 1).reduce((acc, obj) => acc + +obj.CapHit, 0)).replace("US", "")}</td>
+              <td className="py-1 px-2 text-center text-xs border-t border-gray-800 bg-gray-200">{formatter.format(27500000 - teamContracts?.filter(obj => obj.YearsRemaining > 1).reduce((acc, obj) => acc + +obj.CapHit, 0)).replace("US", "")}</td>
               <td className="py-1 px-2 text-center text-xs border-t border-gray-800 bg-gray-200">{formatter.format(27500000 - teamContracts?.filter(obj => obj.YearsRemaining > 2).reduce((acc, obj) => acc + +obj.CapHit, 0)).replace("US", "")}</td>
               <td className="py-1 px-2 text-center text-xs border-t border-gray-800 bg-gray-200">{formatter.format(27500000 - teamContracts?.filter(obj => obj.YearsRemaining > 3).reduce((acc, obj) => acc + +obj.CapHit, 0)).replace("US", "")}</td>
               <td className="py-1 px-2 text-center text-xs border-t border-gray-800 bg-gray-200"></td>
