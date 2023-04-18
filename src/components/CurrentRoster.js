@@ -64,7 +64,7 @@ export default function TeamRoster({ teamInfo, season }) {
             <div className="flex flex-col max-w-md mx-auto border rounded-xl bg-brown-50 mt-2">
                 <div className="grid grid-cols-2 items-center my-2 mx-2">
                     {currentRoster?.filter(obj => obj.LineupPos === "BN").map((obj, i) => {
-                        let contract = expiringContracts.filter(b => b.Player === a?.PlayerName)[0]
+                        let contract = expiringContracts.filter(b => b.Player === obj?.PlayerName)[0]
                         return (
                             <div key={i} className="grid grid-cols-2 text-center px-2 my-2">
                                 <div className="col-span-3 text-sm">{obj?.PlayerName}</div>
