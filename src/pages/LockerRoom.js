@@ -29,6 +29,8 @@ export default function LockerRoom() {
           <TeamPlayerContracts {...{ teamInfo, season }} />
           <TeamRoster {...{ teamInfo, season }} />
           <TeamPlayerStats {...{ teamInfo, season }} />
+          <TeamPOPlayerStats {...{ teamInfo, season }} />
+          <TeamLTPlayerStats {...{ teamInfo, season }} />
         </>
       }
     </div>
@@ -40,7 +42,7 @@ function TeamPlayerContracts({ teamInfo }) {
   const contractData = useQuery(['MainInput', 'Contracts'], queryFunc)
 
   const teamContracts = contractData.data?.filter(obj => obj.CurrentTeam === teamInfo?.id)
-  const currentTeamContracts = teamContracts?.filter(obj => obj.YearsRemaining > 0)
+  const currentTeamContracts = teamContracts?.filter(obj => +obj.YearsRemaining > 0 || (+obj.YearsRemaining === 0 && obj.ExpiryType !== "Buyout"))
   let formatter = new Intl.NumberFormat(navigator.language, { style: 'currency', currency: 'USD', minimumSignificantDigits: 1 })
 
   // const [playerToAdd, setplayerToAdd] = useState("");
@@ -83,7 +85,12 @@ function TeamPlayerContracts({ teamInfo }) {
                 <tr key={i} className={`${obj.ExpiryType === "Buyout" ? 'text-gray-400' : 'text-gray-800'}`}>
                   <td className="sticky left-0 py-1 px-2 text-center text-xs border-t border-b border-gray-300 whitespace-nowrap bg-gray-50">{obj.Player}</td>
                   <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300">{obj.Pos}</td>
-                  <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300">{formatter.format(obj.CapHit).replace("US", "")}</td>
+                  {+obj.YearsRemaining > 0 ?
+                    <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300">{formatter.format(obj.CapHit).replace("US", "")}</td>
+                    : +obj.YearsRemaining === 0 ?
+                      <td className={`my-1 mx-2 text-center text-2xs font-bold rounded-xl border-t border-b border-gray-300 ${obj.ExpiryType === "RFA" ? 'text-orange-700 bg-orange-100' : obj.ExpiryType === "UFA" ? 'text-rose-800 bg-rose-100' : ''}`}>{obj.ExpiryType === 'Buyout' ? '' : obj.ExpiryType}</td>
+                      : <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300"></td>
+                  }
                   {+obj.YearsRemaining > 1 ?
                     <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300">{formatter.format(obj.CapHit).replace("US", "")}</td>
                     : +obj.YearsRemaining === 1 ?
@@ -128,13 +135,189 @@ function TeamPlayerContracts({ teamInfo }) {
 function TeamPlayerStats({ teamInfo, season }) {
   const playerSeasonData = useQuery([season + 'PlayerData', 'Splits'], queryFunc)
   const currentRosterData = useQuery([season + 'PlayerData', 'CurrentRosters'], queryFunc)
-  const teamPlayers = playerSeasonData.data?.filter(obj => obj.gshlTeam === teamInfo?.id)
+  const teamPlayers = playerSeasonData.data?.filter(obj => obj.gshlTeam === teamInfo?.id && obj.WeekType === "RS")
   const currentRoster = currentRosterData.data?.filter(obj => obj.gshlTeam === teamInfo?.id)
 
   if (!teamInfo || !teamPlayers) { return <LoadingSpinner /> }
   return (
     <>
-      <div className='mt-8 text-center mx-auto text-xl font-bold'>Team Player Stats</div>
+      <div className='mt-8 text-center mx-auto text-xl font-bold'>Season Stats</div>
+      <div className='table-auto overflow-scroll'>
+        <table className='mx-auto overflow-x-auto'>
+          <thead>
+            <tr>
+              <th className='sticky left-0 p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>Name</th>
+              <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>Pos</th>
+              <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>Team</th>
+              <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>G</th>
+              <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>A</th>
+              <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>P</th>
+              <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>PPP</th>
+              <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>SOG</th>
+              <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>HIT</th>
+              <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>BLK</th>
+              <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>Rtg</th>
+              <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>Days</th>
+              <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>GP</th>
+            </tr>
+          </thead>
+          <tbody>
+            {teamPlayers.sort((a, b) => +b.Rating - +a.Rating).filter(obj => obj.nhlPos !== "G").map(obj => {
+              return (
+                <tr key={obj.id}>
+                  <td className={`${currentRoster?.filter(a => a.PlayerName === obj.PlayerName).length > 0 ? 'font-bold' : 'text-gray-500'} sticky left-0 py-1 px-2 text-center text-xs border-t border-b border-gray-300 whitespace-nowrap bg-gray-50`}>{obj.PlayerName}</td>
+                  <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300">{obj.nhlPos}</td>
+                  <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300"><img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${obj?.nhlTeam.split(",").slice(-1)}.png`} alt="NHL Team Logo" className='h-4 w-4 mx-auto' /></td>
+                  <td className="py-1 px-1.5 text-center text-xs border-t border-b border-gray-300">{obj.G}</td>
+                  <td className="py-1 px-1.5 text-center text-xs border-t border-b border-gray-300">{obj.A}</td>
+                  <td className="py-1 px-1.5 text-center text-xs border-t border-b border-gray-300">{obj.P}</td>
+                  <td className="py-1 px-1.5 text-center text-xs border-t border-b border-gray-300">{obj.PPP}</td>
+                  <td className="py-1 px-1.5 text-center text-xs border-t border-b border-gray-300">{obj.SOG}</td>
+                  <td className="py-1 px-1.5 text-center text-xs border-t border-b border-gray-300">{obj.HIT}</td>
+                  <td className="py-1 px-1.5 text-center text-xs border-t border-b border-gray-300">{obj.BLK}</td>
+                  <td className="py-1 px-2 text-center text-xs font-bold border-t border-b border-gray-300 bg-gray-50">{Math.round(obj.Rating * 10) / 10}</td>
+                  <td className="py-1 px-1.5 text-center text-xs border-t border-b border-gray-300">{obj.RosterDays}</td>
+                  <td className="py-1 px-1.5 text-center text-xs border-t border-b border-gray-300">{obj.GS}</td>
+                </tr>
+              )
+            })}
+          </tbody>
+          <thead>
+            <tr>
+              <th className='sticky left-0 p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>Name</th>
+              <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>Pos</th>
+              <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>Team</th>
+              <th colSpan='2' className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>W</th>
+              <th colSpan='2' className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>GAA</th>
+              <th colSpan='2' className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>SV%</th>
+              <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'></th>
+              <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>Rtg</th>
+              <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>Days</th>
+              <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>GP</th>
+            </tr>
+          </thead>
+          <tbody>
+            {teamPlayers.sort((a, b) => +b.Rating - +a.Rating).filter(obj => obj.nhlPos === "G").map(obj => {
+              return (
+                <tr key={obj.id}>
+                  <td className={`${currentRoster?.filter(a => a.PlayerName === obj.PlayerName).length > 0 ? 'font-bold' : ''} sticky left-0 py-1 px-2 text-center text-xs border-t border-b border-gray-300 whitespace-nowrap bg-gray-50`}>{obj.PlayerName}</td>
+                  <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300">{obj.nhlPos}</td>
+                  <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300"><img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${obj?.nhlTeam.split(",").slice(-1)}.png`} alt="NHL Team Logo" className='h-4 w-4 mx-auto' /></td>
+                  <td colSpan='2' className="py-1 px-1.5 text-center text-xs border-t border-b border-gray-300">{obj.W}</td>
+                  <td colSpan='2' className="py-1 px-1.5 text-center text-xs border-t border-b border-gray-300">{obj.GAA}</td>
+                  <td colSpan='2' className="py-1 px-1.5 text-center text-xs border-t border-b border-gray-300">{obj.SVP}</td>
+                  <td className="py-1 px-1.5 text-center text-xs border-t border-b border-gray-300"></td>
+                  <td className="py-1 px-2 text-center text-xs font-bold border-t border-b border-gray-300 bg-gray-50">{Math.round(obj.Rating * 10) / 10}</td>
+                  <td className="py-1 px-1.5 text-center text-xs border-t border-b border-gray-300">{obj.RosterDays}</td>
+                  <td className="py-1 px-1.5 text-center text-xs border-t border-b border-gray-300">{obj.GS}</td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+      </div>
+    </>
+  )
+}
+function TeamPOPlayerStats({ teamInfo, season }) {
+  const playerSeasonData = useQuery([season + 'PlayerData', 'Splits'], queryFunc)
+  const currentRosterData = useQuery([season + 'PlayerData', 'CurrentRosters'], queryFunc)
+  const teamPlayers = playerSeasonData.data?.filter(obj => obj.gshlTeam === teamInfo?.id && obj.WeekType === "PO")
+  const currentRoster = currentRosterData.data?.filter(obj => obj.gshlTeam === teamInfo?.id)
+
+  if (!teamInfo || !teamPlayers) { return <LoadingSpinner /> }
+  if (teamPlayers.length === 0) { return <div></div> }
+  return (
+    <>
+      <div className='mt-8 text-center mx-auto text-xl font-bold'>Playoff Stats</div>
+      <div className='table-auto overflow-scroll'>
+        <table className='mx-auto overflow-x-auto'>
+          <thead>
+            <tr>
+              <th className='sticky left-0 p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>Name</th>
+              <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>Pos</th>
+              <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>Team</th>
+              <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>G</th>
+              <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>A</th>
+              <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>P</th>
+              <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>PPP</th>
+              <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>SOG</th>
+              <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>HIT</th>
+              <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>BLK</th>
+              <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>Rtg</th>
+              <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>Days</th>
+              <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>GP</th>
+            </tr>
+          </thead>
+          <tbody>
+            {teamPlayers.sort((a, b) => +b.Rating - +a.Rating).filter(obj => obj.nhlPos !== "G").map(obj => {
+              return (
+                <tr key={obj.id}>
+                  <td className={`${currentRoster?.filter(a => a.PlayerName === obj.PlayerName).length > 0 ? 'font-bold' : 'text-gray-500'} sticky left-0 py-1 px-2 text-center text-xs border-t border-b border-gray-300 whitespace-nowrap bg-gray-50`}>{obj.PlayerName}</td>
+                  <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300">{obj.nhlPos}</td>
+                  <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300"><img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${obj?.nhlTeam.split(",").slice(-1)}.png`} alt="NHL Team Logo" className='h-4 w-4 mx-auto' /></td>
+                  <td className="py-1 px-1.5 text-center text-xs border-t border-b border-gray-300">{obj.G}</td>
+                  <td className="py-1 px-1.5 text-center text-xs border-t border-b border-gray-300">{obj.A}</td>
+                  <td className="py-1 px-1.5 text-center text-xs border-t border-b border-gray-300">{obj.P}</td>
+                  <td className="py-1 px-1.5 text-center text-xs border-t border-b border-gray-300">{obj.PPP}</td>
+                  <td className="py-1 px-1.5 text-center text-xs border-t border-b border-gray-300">{obj.SOG}</td>
+                  <td className="py-1 px-1.5 text-center text-xs border-t border-b border-gray-300">{obj.HIT}</td>
+                  <td className="py-1 px-1.5 text-center text-xs border-t border-b border-gray-300">{obj.BLK}</td>
+                  <td className="py-1 px-2 text-center text-xs font-bold border-t border-b border-gray-300 bg-gray-50">{Math.round(obj.Rating * 10) / 10}</td>
+                  <td className="py-1 px-1.5 text-center text-xs border-t border-b border-gray-300">{obj.RosterDays}</td>
+                  <td className="py-1 px-1.5 text-center text-xs border-t border-b border-gray-300">{obj.GS}</td>
+                </tr>
+              )
+            })}
+          </tbody>
+          <thead>
+            <tr>
+              <th className='sticky left-0 p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>Name</th>
+              <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>Pos</th>
+              <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>Team</th>
+              <th colSpan='2' className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>W</th>
+              <th colSpan='2' className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>GAA</th>
+              <th colSpan='2' className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>SV%</th>
+              <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'></th>
+              <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>Rtg</th>
+              <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>Days</th>
+              <th className='p-1 text-2xs font-normal text-center bg-gray-800 text-gray-200'>GP</th>
+            </tr>
+          </thead>
+          <tbody>
+            {teamPlayers.sort((a, b) => +b.Rating - +a.Rating).filter(obj => obj.nhlPos === "G").map(obj => {
+              return (
+                <tr key={obj.id}>
+                  <td className={`${currentRoster?.filter(a => a.PlayerName === obj.PlayerName).length > 0 ? 'font-bold' : ''} sticky left-0 py-1 px-2 text-center text-xs border-t border-b border-gray-300 whitespace-nowrap bg-gray-50`}>{obj.PlayerName}</td>
+                  <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300">{obj.nhlPos}</td>
+                  <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300"><img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${obj?.nhlTeam.split(",").slice(-1)}.png`} alt="NHL Team Logo" className='h-4 w-4 mx-auto' /></td>
+                  <td colSpan='2' className="py-1 px-1.5 text-center text-xs border-t border-b border-gray-300">{obj.W}</td>
+                  <td colSpan='2' className="py-1 px-1.5 text-center text-xs border-t border-b border-gray-300">{obj.GAA}</td>
+                  <td colSpan='2' className="py-1 px-1.5 text-center text-xs border-t border-b border-gray-300">{obj.SVP}</td>
+                  <td className="py-1 px-1.5 text-center text-xs border-t border-b border-gray-300"></td>
+                  <td className="py-1 px-2 text-center text-xs font-bold border-t border-b border-gray-300 bg-gray-50">{Math.round(obj.Rating * 10) / 10}</td>
+                  <td className="py-1 px-1.5 text-center text-xs border-t border-b border-gray-300">{obj.RosterDays}</td>
+                  <td className="py-1 px-1.5 text-center text-xs border-t border-b border-gray-300">{obj.GS}</td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+      </div>
+    </>
+  )
+}
+function TeamLTPlayerStats({ teamInfo, season }) {
+  const playerSeasonData = useQuery([season + 'PlayerData', 'Splits'], queryFunc)
+  const currentRosterData = useQuery([season + 'PlayerData', 'CurrentRosters'], queryFunc)
+  const teamPlayers = playerSeasonData.data?.filter(obj => obj.gshlTeam === teamInfo?.id && obj.WeekType === "LT")
+  const currentRoster = currentRosterData.data?.filter(obj => obj.gshlTeam === teamInfo?.id)
+
+  if (!teamInfo || !teamPlayers) { return <LoadingSpinner /> }
+  if (teamPlayers.length === 0) { return <div></div> }
+  return (
+    <>
+      <div className='mt-8 text-center mx-auto text-xl font-bold'>Loser's Tournament Stats</div>
       <div className='table-auto overflow-scroll'>
         <table className='mx-auto overflow-x-auto'>
           <thead>
