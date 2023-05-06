@@ -10,7 +10,7 @@ import ErrorPage from './components/ErrorPage';
 import Home from './pages/Home';
 import Standings from './pages/Standings';
 import Schedule from './pages/Schedule';
-// import LeagueOffice from './pages/LeagueOffice';
+import LeagueOffice from './pages/LeagueOffice';
 import LockerRoom from './pages/LockerRoom';
 import MatchupPage from './pages/MatchupPage';
 
@@ -28,7 +28,7 @@ export default function App() {
           <Route path="/schedule" element={<Schedule />} />
           <Route path="/standings" element={<Standings />} />
           <Route path="/lockerroom" element={<LockerRoom />} />
-          {/* <Route path="/leagueoffice" element={<LeagueOffice />} /> */}
+          <Route path="/leagueoffice" element={<LeagueOffice />} />
           <Route path="/matchup/:id" element={<MatchupPage />} />
           <Route path="*" element={<ErrorPage />} />
         </Routes>
