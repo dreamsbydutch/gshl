@@ -1,26 +1,26 @@
-import React from 'react'
-// import PageNavbar from '../../components/Navbar/PageNavbar'
-// import { leagueOfficeNavData } from '../../utils/constants'
-// import Awards from './components/Awards/Awards'
-// import FreeAgency from './components/FreeAgency/FreeAgency'
-// import HallofFame from './components/HallofFame/HallofFame'
-// import TradeMarket from './components/TradeMarket/TradeMarket'
+import React, { useState } from 'react'
+import { LeagueOfficeToggle } from '../components/PageNavbar'
+import { useQuery } from 'react-query'
+import { queryFunc } from '../utils/fetchData'
+import LoadingSpinner from '../components/LoadingSpinner'
+import { useTeams } from '../utils/context'
 
 export default function LeagueOffice() {
-  // const [type, setType] = useState("Rulebook")
-  const type = "Rulebook"
+  const [type, setType] = useState("FreeAgents")
+  // const type = "Rulebook"
 
   return (
-    <>
-      {/* <PageNavbar data={leagueOfficeNavData} setter={setType} activeKey={type} /> */}
+    <div className='my-4 mx-2'>
+      <LeagueOfficeToggle setter={setType} activeKey={type} />
       {{
         // 'Awards': <Awards />,
         // 'FreeAgency': <FreeAgency />,
         'Rulebook': <Rulebook />,
         // 'HallofFame': <HallofFame />,
         // 'TradeMarket': <TradeMarket />
+        'FreeAgents': <FreeAgents />
       }[type]}
-    </>
+    </div>
   )
 }
 
@@ -29,22 +29,17 @@ export default function LeagueOffice() {
 
 function Rulebook() {
   const rulebook = [
-    [
-      'Rosters',
-      [
-        'Each roster consists of 2 Centers, 2 Left Wingers, 2 Right Wingers, 3 Defensemen, 1 Utility Skater, 1 Goalie, and 4 Bench Spots',
-        [
-          'A maximum of two healthy goalies is allowed on a roster at any point in time',
+    ['Rosters',
+      ['Each roster consists of 2 Centers, 2 Left Wingers, 2 Right Wingers, 3 Defensemen, 1 Utility Skater, 1 Goalie, and 4 Bench Spots',
+        ['A maximum of two healthy goalies is allowed on a roster at any point in time',
           ['Violators of this rule will have one of their goalies dropped at random by the commissioner'],
         ],
         'Teams have 1 IR slot and 1 IR+ slot for injury relief',
       ],
     ],
-    [
-      'Scoring/Categories',
+    ['Scoring/Categories',
       [
-        [
-          'Scoring is done by stat categories, each worth one point. There are 7 skater categories and 3 goalie categories for a total of 10 stat categories',
+        ['Scoring is done by stat categories, each worth one point. There are 7 skater categories and 3 goalie categories for a total of 10 stat categories',
           ['The 7 skater categories are Goals, Assists, Points, Powerplay Points, Shots, Hits, and Blocks',
             'The 3 goalie categories will be Wins, Goals Against Average, and Save Percentage'],
         ],
@@ -52,8 +47,7 @@ function Rulebook() {
         'Teams must have a minimum of 2 goalie starts during a matchup. If a team does not meet this minimum, then they will concede all 3 goalie categories',
       ],
     ],
-    [
-      'Waivers/Trades',
+    ['Waivers/Trades',
       [
         'Any player dropped from a roster will remain on waivers for 2 days until they are processed. During this time teams can place waiver claims on the player',
         'Waivers will be processed using Yahoo\'s continuous rolling list system',
@@ -67,8 +61,7 @@ function Rulebook() {
         ],
       ],
     ],
-    [
-      'Schedule/Tiebreakers',
+    ['Schedule/Tiebreakers',
       [
         'The GSHL season will be the length of the NHL regular season minus 3 playoff weeks. 21 or 22 weeks depending on the year.',
         'Each team plays a home-and-home with every team in their conference for a 14 game conference schedule',
@@ -87,8 +80,7 @@ function Rulebook() {
         ],
       ],
     ],
-    [
-      'Playoffs/Payouts',
+    ['Playoffs/Payouts',
       [
         ['The top 3 teams in each conference qualify for the playoffs along with the best two remaining teams as wildcards',
           ['If the two wildcard teams are from different conferences then each conference will play 1 v 4 and 2 v 3',
@@ -100,16 +92,14 @@ function Rulebook() {
         'The yearly buy-in for each team is $50. Yearly Payouts are $600 for the GSHL Cup champion, $150 for the GSHL Cup runner up, and the final $50 go to admin fees (engraving, etc.)'
       ],
     ],
-    [
-      'Draft',
+    ['Draft',
       [
         'The GSHL Draft will be held on the last Friday night prior to the start of the NHL regular season',
         'The GSHL Draft is 15 rounds long and follows a snake draft format',
         'Players under contract at the start of the draft will be slotted in to a teams draft class from their 15th pick and up',
       ],
     ],
-    [
-      'Draft Lottery/Loser\'s Tournament',
+    ['Draft Lottery/Loser\'s Tournament',
       [
         'The draft order is decided by a combination of a loser\'s tournament and a draft points system',
         [
@@ -144,8 +134,7 @@ function Rulebook() {
         'All remaining teams will be involved in the lotteries for picks 13 through 16',
       ],
     ],
-    [
-      'Salary Cap System',
+    ['Salary Cap System',
       [
         'The Salary Cap only applies to your players under contract each year or \'keepers\'. ',
         'The Salary Cap has a hard limit of $22,500,000, this limit will increase to $27,500,000 next season',
@@ -161,8 +150,8 @@ function Rulebook() {
           ['The early signing period will start on December 15th and finish at the end of the calendar year',
             'The late signing period will start at the end of the NHL regular season and finish at the end of the NHL playoffs. (GSHL Cup to Stanley Cup)',
             'The free agency period will start when the Stanley Cup is awarded and finish when the GSHL Draft starts']
-          ],
-          'Contracts turn over at the end of the NHL regular season',
+        ],
+        'Contracts turn over at the end of the NHL regular season',
         ['Contracts can be signed at any point during a signing period',
           ['To sign a contract you can just text Dutch with the player name and number of years',
             'Or you can put a little effort in and announce it yourself. ChatGPT now makes this very simple'],
@@ -173,6 +162,13 @@ function Rulebook() {
         'At the end of the late signing period every player not under contract becomes a UFA and can be signed by any team for 125% of their posted salary',
         'To bid on a UFA durng the summer you must send in a player name and nubmer of years to Dutch. Bids are processed on the 1st of each month throughout the summer',
         'If multiple teams have bid on the same player when it comes ime to process the player will decide which contract they sign based on a lottery using each team\'s draft lottery points multiplied by the length of the contract bid. Players will favour longer term deals when signing a UFA contract.'
+      ],
+    ],
+    ['Awards',
+      [
+        ['Counting Stat Awards',
+          [],
+        ],
       ],
     ],
   ]
@@ -203,4 +199,274 @@ function Rulebook() {
       })}
     </div>
   )
+}
+
+
+function FreeAgents() {
+  const salaryData = useQuery(['2023PlayerData', 'Salaries'], queryFunc)
+
+  if (!salaryData.data) { return <LoadingSpinner /> }
+  return (
+    <table className="mx-auto">
+      <thead>
+        <tr className="text-center">
+          <th className="px-2">Player Name</th>
+          <th className="px-2">Pos</th>
+          <th className="px-2">Age</th>
+          <th className="px-2">Salary</th>
+        </tr>
+      </thead>
+      <tbody>
+        {salaryData.data.filter(obj => obj.currentSalary).map(obj => <PlayerCard player={obj} />)}
+      </tbody>
+    </table>
+  )
+}
+
+function PlayerCard({ player }) {
+  const [showInfo, setShowInfo] = useState(false)
+  return (
+    <>
+      <tr className="border-t border-dashed border-gray-200 text-center" onClick={() => setShowInfo(!showInfo)}>
+        <td className="px-1">{player.playerName}</td>
+        <td className="px-1">{player.pos}</td>
+        <td className="px-1">{player.age}</td>
+        <td className="px-1">{player.currentSalary}</td>
+      </tr>
+      <tr>
+        <td colSpan='4' className={showInfo && 'pb-4'}>
+          {
+            showInfo &&
+            (player.pos === "G" ?
+              <GoalieCardStats player={player} /> :
+              <PlayerCardStats player={player} />)
+          }
+        </td>
+      </tr>
+    </>
+  )
+}
+
+function PlayerCardStats({ player }) {
+  const teamData = useTeams()
+  const playerGSHLStats23 = useQuery(['2023PlayerData', 'Totals'], queryFunc)
+  const playerGSHLStats22 = useQuery(['2022PlayerData', 'Totals'], queryFunc)
+  const playerGSHLStats21 = useQuery(['2021PlayerData', 'Totals'], queryFunc)
+  const playerGSHLStats20 = useQuery(['2020PlayerData', 'Totals'], queryFunc)
+  const gshlData = [
+    playerGSHLStats23.data?.filter(obj => obj.PlayerName === player.playerName && obj.posGroup === player.pos && obj.WeekType === "RS")[0],
+    playerGSHLStats22.data?.filter(obj => obj.PlayerName === player.playerName && obj.posGroup === player.pos && obj.WeekType === "RS")[0],
+    playerGSHLStats21.data?.filter(obj => obj.PlayerName === player.playerName && obj.posGroup === player.pos && obj.WeekType === "RS")[0],
+    playerGSHLStats20.data?.filter(obj => obj.PlayerName === player.playerName && obj.posGroup === player.pos && obj.WeekType === "RS")[0],
+  ]
+  const playerNHLStats23 = useQuery(['2023PlayerData', 'NHLPlayerStats'], queryFunc)
+  const playerNHLStats22 = useQuery(['2022PlayerData', 'NHLPlayerStats'], queryFunc)
+  const playerNHLStats21 = useQuery(['2021PlayerData', 'NHLPlayerStats'], queryFunc)
+  const playerNHLStats20 = useQuery(['2020PlayerData', 'NHLPlayerStats'], queryFunc)
+  const nhlData = [
+    playerNHLStats23.data?.filter(obj => obj.Player === player.playerName && obj.Pos === player.pos)[0],
+    playerNHLStats22.data?.filter(obj => obj.Player === player.playerName && obj.Pos === player.pos)[0],
+    playerNHLStats21.data?.filter(obj => obj.Player === player.playerName && obj.Pos === player.pos)[0],
+    playerNHLStats20.data?.filter(obj => obj.Player === player.playerName && obj.Pos === player.pos)[0],
+  ]
+  if (!nhlData || !gshlData || !teamData) { return <LoadingSpinner /> }
+  return (
+    <>
+      {nhlData.filter(obj => obj && +obj.Season > 0).length > 0 &&
+        <>
+          <div className="text-center font-bold mt-2">NHL Stats</div>
+          <table className="text-center mx-auto">
+            <thead>
+              <tr className='text-2xs'>
+                <th className='px-1.5'>Season</th>
+                <th className='px-1.5'>Age</th>
+                <th className='px-1.5'>Team</th>
+                <th className='px-1.5'>GS</th>
+                <th className='px-1.5'>G</th>
+                <th className='px-1.5'>A</th>
+                <th className='px-1.5'>P</th>
+                <th className='px-1.5'>PPP</th>
+                <th className='px-1.5'>SOG</th>
+                <th className='px-1.5'>HIT</th>
+                <th className='px-1.5'>BLK</th>
+                <th className='px-1.5'>RTG</th>
+              </tr>
+            </thead>
+            <tbody>
+              {nhlData.map(obj => {
+                if (!obj) { return <></> }
+                return (
+                  <tr className='text-xs'>
+                    <td className="">{obj.Season}</td>
+                    <td className="">{obj.Age}</td>
+                    <td className=""><img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${obj.Tm.split(",").slice(-1)}.png`} alt="NHL Team Logo" className='h-4 w-4 mx-auto' /></td>
+                    <td className="">{obj.GS}</td>
+                    <td className="">{obj.G}</td>
+                    <td className="">{obj.A}</td>
+                    <td className="">{obj.P}</td>
+                    <td className="">{obj.PPP}</td>
+                    <td className="">{obj.SOG}</td>
+                    <td className="">{obj.HIT}</td>
+                    <td className="">{obj.BLK}</td>
+                    <td className="">{Math.round(obj.RTG * 100) / 100}</td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </>
+      }
+      {gshlData.filter(obj => obj && +obj.Season > 0).length > 0 &&
+        <>
+          <div className="text-center font-bold mt-2">GSHL Stats</div>
+          <table className="text-center mx-auto">
+            <thead>
+              <tr className='text-2xs'>
+                <th className='px-1.5'>Season</th>
+                <th className='px-1.5'>Team</th>
+                <th className='px-1.5'>Days</th>
+                <th className='px-1.5'>GS</th>
+                <th className='px-1.5'>G</th>
+                <th className='px-1.5'>A</th>
+                <th className='px-1.5'>P</th>
+                <th className='px-1.5'>PPP</th>
+                <th className='px-1.5'>SOG</th>
+                <th className='px-1.5'>HIT</th>
+                <th className='px-1.5'>BLK</th>
+                <th className='px-1.5'>RTG</th>
+              </tr>
+            </thead>
+            <tbody>
+              {gshlData.map(obj => {
+                if (!obj) { return <></> }
+                const team = teamData.filter(a => a.id === obj.gshlTeam?.split(",").slice(-1)[0])[0]
+                if (!obj || !team) { return <></> }
+                return (
+                  <tr className='text-xs'>
+                    <td className="">{obj.Season}</td>
+                    <td className=""><img src={team.LogoURL} alt="NHL Team Logo" className='h-4 w-4 mx-auto' /></td>
+                    <td className="">{obj.RosterDays}</td>
+                    <td className="">{obj.GS}</td>
+                    <td className="">{obj.G}</td>
+                    <td className="">{obj.A}</td>
+                    <td className="">{obj.P}</td>
+                    <td className="">{obj.PPP}</td>
+                    <td className="">{obj.SOG}</td>
+                    <td className="">{obj.HIT}</td>
+                    <td className="">{obj.BLK}</td>
+                    <td className="">{Math.round(obj.Rating * 100) / 100}</td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </>
+      }
+    </>
+  )
+
+}
+
+function GoalieCardStats({ player }) {
+  const teamData = useTeams()
+  const goalieGSHLStats23 = useQuery(['2023PlayerData', 'Totals'], queryFunc)
+  const goalieGSHLStats22 = useQuery(['2022PlayerData', 'Totals'], queryFunc)
+  const goalieGSHLStats21 = useQuery(['2021PlayerData', 'Totals'], queryFunc)
+  const goalieGSHLStats20 = useQuery(['2020PlayerData', 'Totals'], queryFunc)
+  const gshlData = [
+    goalieGSHLStats23.data?.filter(obj => obj.PlayerName === player.playerName && obj.posGroup === player.pos && obj.WeekType === "RS")[0],
+    goalieGSHLStats22.data?.filter(obj => obj.PlayerName === player.playerName && obj.posGroup === player.pos && obj.WeekType === "RS")[0],
+    goalieGSHLStats21.data?.filter(obj => obj.PlayerName === player.playerName && obj.posGroup === player.pos && obj.WeekType === "RS")[0],
+    goalieGSHLStats20.data?.filter(obj => obj.PlayerName === player.playerName && obj.posGroup === player.pos && obj.WeekType === "RS")[0],
+  ]
+  const goalieNHLStats23 = useQuery(['2023PlayerData', 'NHLGoalieStats'], queryFunc)
+  const goalieNHLStats22 = useQuery(['2022PlayerData', 'NHLGoalieStats'], queryFunc)
+  const goalieNHLStats21 = useQuery(['2021PlayerData', 'NHLGoalieStats'], queryFunc)
+  const goalieNHLStats20 = useQuery(['2020PlayerData', 'NHLGoalieStats'], queryFunc)
+  const nhlData = [
+    goalieNHLStats23.data?.filter(obj => obj.Player === player.playerName)[0],
+    goalieNHLStats22.data?.filter(obj => obj.Player === player.playerName)[0],
+    goalieNHLStats21.data?.filter(obj => obj.Player === player.playerName)[0],
+    goalieNHLStats20.data?.filter(obj => obj.Player === player.playerName)[0],
+  ]
+  if (!nhlData || !gshlData || !teamData) { return <LoadingSpinner /> }
+  return (
+    <>
+      {nhlData.filter(obj => obj && +obj.Season > 0).length > 0 &&
+        <>
+          <div className="text-center font-bold mt-2">NHL Stats</div>
+          <table className="text-center mx-auto">
+            <thead>
+              <tr className='text-2xs'>
+                <th className='px-2'>Season</th>
+                <th className='px-2'>Age</th>
+                <th className='px-2'>Team</th>
+                <th className='px-2'>GS</th>
+                <th className='px-2'>W</th>
+                <th className='px-2'>GAA</th>
+                <th className='px-2'>SV%</th>
+                <th className='px-2'>RTG</th>
+              </tr>
+            </thead>
+            <tbody>
+              {nhlData.map(obj => {
+                if (!obj) { return <></> }
+                return (
+                  <tr className='text-xs'>
+                    <td className="">{obj.Season}</td>
+                    <td className="">{obj.Age}</td>
+                    <td className=""><img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${obj.Tm.split(",").slice(-1)}.png`} alt="NHL Team Logo" className='h-4 w-4 mx-auto' /></td>
+                    <td className="">{Math.round(obj.GS)}</td>
+                    <td className="">{Math.round(obj.W)}</td>
+                    <td className="">{Math.round(obj.GAA * 100) / 100}</td>
+                    <td className="">{Math.round(obj.SVP * 1000) / 1000}</td>
+                    <td className="">{Math.round(obj.RTG * 100) / 100}</td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </>
+      }
+      {gshlData.filter(obj => obj && +obj.Season > 0).length > 0 &&
+        <>
+          <div className="text-center font-bold mt-2">GSHL Stats</div>
+          <table className="text-center mx-auto">
+            <thead>
+              <tr className='text-2xs'>
+                <th className='px-2'>Season</th>
+                <th className='px-2'>Team</th>
+                <th className='px-2'>Days</th>
+                <th className='px-2'>GS</th>
+                <th className='px-2'>W</th>
+                <th className='px-2'>GAA</th>
+                <th className='px-2'>SV%</th>
+                <th className='px-2'>RTG</th>
+              </tr>
+            </thead>
+            <tbody>
+              {gshlData.map(obj => {
+                if (!obj) { return <></> }
+                const team = teamData.filter(a => a.id === obj.gshlTeam?.split(",").slice(-1)[0])[0]
+                if (!obj || !team) { return <></> }
+                return (
+                  <tr className='text-xs'>
+                    <td className="">{obj.Season}</td>
+                    <td className=""><img src={team.LogoURL} alt="NHL Team Logo" className='h-4 w-4 mx-auto' /></td>
+                    <td className="">{Math.round(obj.RosterDays)}</td>
+                    <td className="">{Math.round(obj.GS)}</td>
+                    <td className="">{Math.round(obj.W)}</td>
+                    <td className="">{Math.round(obj.GAA * 100) / 100}</td>
+                    <td className="">{Math.round(obj.SVP * 1000) / 1000}</td>
+                    <td className="">{Math.round(obj.Rating * 100) / 100}</td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </>
+      }
+    </>
+  )
+
 }

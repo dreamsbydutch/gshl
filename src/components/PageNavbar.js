@@ -238,3 +238,31 @@ export function TeamsToggle(props) {
     </>
   )
 }
+export function LeagueOfficeToggle(props) {
+  return (
+    <div className="my-3 mx-1">
+      <div className='flex flex-wrap gap-3 items-center justify-center list-none'>
+        <div
+          key='FreeAgents'
+          className={`
+            min-w-min text-center font-bold py-1 px-3 rounded-md shadow-emboss text-xs sm:text-sm
+            ${props.activeKey === 'FreeAgents' ? 'bg-gray-700 text-gray-100' : 'bg-gray-100 text-gray-700'}
+          `}
+          onClick={() => props.setter('FreeAgents')}
+        >
+          Free Agents
+        </div>
+        <div
+          key='Rulebook'
+          className={`
+            min-w-min text-center font-bold py-1 px-3 rounded-md shadow-emboss text-xs sm:text-sm 
+            ${props.activeKey === 'Rulebook' ? 'bg-gray-700 text-gray-100' : 'bg-gray-100 text-gray-700'}
+          `}
+          onClick={() => props.setter('Rulebook')}
+        >
+          Rulebook
+        </div>
+      </div>
+    </div>
+  )
+}

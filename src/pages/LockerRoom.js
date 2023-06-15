@@ -3,7 +3,7 @@ import { queryFunc } from '../utils/fetchData'
 import LoadingSpinner from '../components/LoadingSpinner'
 import { useQuery } from 'react-query'
 import { TeamsToggle } from '../components/PageNavbar'
-import TeamRoster from '../components/CurrentRoster'
+// import TeamRoster from '../components/CurrentRoster'
 import { useTeams } from '../utils/context'
 
 export default function LockerRoom() {
@@ -27,7 +27,7 @@ export default function LockerRoom() {
             {teamInfo?.TeamName}
           </div>
           <TeamPlayerContracts {...{ teamInfo, season }} />
-          <TeamRoster {...{ teamInfo, season }} />
+          {/* <TeamRoster {...{ teamInfo, season }} /> */}
           <TeamPlayerStats {...{ teamInfo, season }} />
           <TeamPOPlayerStats {...{ teamInfo, season }} />
           <TeamLTPlayerStats {...{ teamInfo, season }} />
