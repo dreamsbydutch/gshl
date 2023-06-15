@@ -295,11 +295,18 @@ function PlayerCardStats({ player }) {
             <tbody>
               {nhlData.map(obj => {
                 if (!obj) { return <></> }
+                let nhlTeam = [], gshlTotalsTeams = gshlData.filter(a => a?.Season === obj?.Season)[0]
+                if (obj.Tm === "TOT" && gshlTotalsTeams) {
+                  nhlTeam = gshlTotalsTeams.nhlTeam.split(",")
+                } else {
+                  nhlTeam = [obj.Tm]
+                }
+                if (!nhlTeam) { return <></> }
                 return (
                   <tr className='text-xs'>
                     <td className="">{obj.Season}</td>
                     <td className="">{obj.Age}</td>
-                    <td className=""><img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${obj.Tm.split(",").slice(-1)}.png`} alt="NHL Team Logo" className='h-4 w-4 mx-auto' /></td>
+                    <td className="">{nhlTeam.map(x => <img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${x}.png`} alt="NHL Team Logo" className='h-4 w-4 mx-auto inline-block' />)}</td>
                     <td className="">{obj.GS}</td>
                     <td className="">{obj.G}</td>
                     <td className="">{obj.A}</td>
@@ -344,7 +351,7 @@ function PlayerCardStats({ player }) {
                 return (
                   <tr className='text-xs'>
                     <td className="">{obj.Season}</td>
-                    <td className=""><img src={team.LogoURL} alt="NHL Team Logo" className='h-4 w-4 mx-auto' /></td>
+                    <td className="">{obj.gshlTeam?.split(",").map(x => <img src={teamData.filter(a => a.id === x)[0].LogoURL} alt="NHL Team Logo" className='h-4 w-4 mx-auto inline-block' />)}</td>
                     <td className="">{obj.RosterDays}</td>
                     <td className="">{obj.GS}</td>
                     <td className="">{obj.G}</td>
@@ -411,11 +418,18 @@ function GoalieCardStats({ player }) {
             <tbody>
               {nhlData.map(obj => {
                 if (!obj) { return <></> }
+                let team = []
+                if (obj.Tm === "TOT") {
+                  team = gshlData.filter(a => a.Season === obj.Season)[0].nhlTeam.split(",")
+                } else {
+                  team = [obj.Tm]
+                }
+                if (!team) { return <></> }
                 return (
                   <tr className='text-xs'>
                     <td className="">{obj.Season}</td>
                     <td className="">{obj.Age}</td>
-                    <td className=""><img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${obj.Tm.split(",").slice(-1)}.png`} alt="NHL Team Logo" className='h-4 w-4 mx-auto' /></td>
+                    <td className="">{team.map(x => <img src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${x}.png`} alt="NHL Team Logo" className='h-4 w-4 mx-auto' />)}</td>
                     <td className="">{Math.round(obj.GS)}</td>
                     <td className="">{Math.round(obj.W)}</td>
                     <td className="">{Math.round(obj.GAA * 100) / 100}</td>
@@ -447,12 +461,10 @@ function GoalieCardStats({ player }) {
             <tbody>
               {gshlData.map(obj => {
                 if (!obj) { return <></> }
-                const team = teamData.filter(a => a.id === obj.gshlTeam?.split(",").slice(-1)[0])[0]
-                if (!obj || !team) { return <></> }
                 return (
                   <tr className='text-xs'>
                     <td className="">{obj.Season}</td>
-                    <td className=""><img src={team.LogoURL} alt="NHL Team Logo" className='h-4 w-4 mx-auto' /></td>
+                    <td className="">{obj.gshlTeam?.split(",").map(x => <img src={teamData.filter(a => a.id === x)[0].LogoURL} alt="NHL Team Logo" className='h-4 w-4 mx-auto inline-block' />)}</td>
                     <td className="">{Math.round(obj.RosterDays)}</td>
                     <td className="">{Math.round(obj.GS)}</td>
                     <td className="">{Math.round(obj.W)}</td>
