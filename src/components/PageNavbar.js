@@ -218,7 +218,7 @@ export function TeamsToggle(props) {
   return (
     <>
       <div className="flex flex-nowrap max-w-lg my-3 mx-auto">
-        {teamData?.filter(obj => obj.Conference === "SV").map(obj => {
+        {teamData?.filter(obj => obj.id && obj.Conference === "SV").map(obj => {
           return (
             <div key={obj.id} className="mx-auto" onClick={() => props.setter(obj.id)}>
               <img className=' w-10 xs:w-12 flex-auto p-0.5 rounded-lg shadow-emboss bg-sunview-50 bg-opacity-50' src={obj.LogoURL} alt={obj.TeamName} />
@@ -227,7 +227,7 @@ export function TeamsToggle(props) {
         })}
       </div>
       <div className="flex flex-nowrap max-w-lg my-3 mx-auto">
-        {teamData?.filter(obj => obj.Conference === "HH").map(obj => {
+        {teamData?.filter(obj => obj.id && obj.Conference === "HH").map(obj => {
           return (
             <div key={obj.id} className="mx-auto" onClick={() => props.setter(obj.id)}>
               <img className='w-10 xs:w-12 flex-auto p-0.5 rounded-lg shadow-emboss bg-hotel-50 bg-opacity-50' src={obj.LogoURL} alt={obj.TeamName} />

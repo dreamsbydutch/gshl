@@ -227,6 +227,11 @@ function FreeAgents() {
 
 function PlayerCard({ player }) {
   const [showInfo, setShowInfo] = useState(false)
+  const yearlyRosterDays = {
+    '2023':160,
+    '2022':167,
+    '2021':96,
+  }
   return (
     <>
       <tr className="border-t border-dashed border-gray-200 text-center" onClick={() => setShowInfo(!showInfo)}>
@@ -240,8 +245,8 @@ function PlayerCard({ player }) {
           {
             showInfo &&
             (player.pos === "G" ?
-              <GoalieCardStats player={player} /> :
-              <PlayerCardStats player={player} />)
+              <GoalieCardStats player={player} yearlyRosterDays={yearlyRosterDays} /> :
+              <PlayerCardStats player={player} yearlyRosterDays={yearlyRosterDays} />)
           }
         </td>
       </tr>
@@ -249,7 +254,7 @@ function PlayerCard({ player }) {
   )
 }
 
-function PlayerCardStats({ player }) {
+function PlayerCardStats({ player, yearlyRosterDays }) {
   const teamData = useTeams()
   const playerGSHLStats23 = useQuery(['2023PlayerData', 'Totals'], queryFunc)
   const playerGSHLStats22 = useQuery(['2022PlayerData', 'Totals'], queryFunc)
@@ -343,6 +348,8 @@ function PlayerCardStats({ player }) {
                 <th className='px-1.5'>HIT</th>
                 <th className='px-1.5'>BLK</th>
                 <th className='px-1.5'>RTG</th>
+                <th className='px-1.5'>MS</th>
+                <th className='px-1.5'>BS</th>
               </tr>
             </thead>
             <tbody>
@@ -353,7 +360,7 @@ function PlayerCardStats({ player }) {
                 return (
                   <tr className='text-xs'>
                     <td className="">{obj.Season}</td>
-                    <td className="">{obj.gshlTeam?.split(",").map(x => <img src={teamData.filter(a => a.id === x)[0].LogoURL} alt="NHL Team Logo" className='h-4 w-4 mx-auto inline-block' />)}</td>
+                    <td className="">{obj.gshlTeam?.split(",").map(x => <img src={teamData.filter(a => a[obj.Season] === x)[0].LogoURL} alt="NHL Team Logo" className='h-4 w-4 mx-auto inline-block' />)}</td>
                     <td className="">{obj.RosterDays}</td>
                     <td className="">{obj.GS}</td>
                     <td className="">{obj.G}</td>
@@ -364,6 +371,8 @@ function PlayerCardStats({ player }) {
                     <td className="">{obj.HIT}</td>
                     <td className="">{obj.BLK}</td>
                     <td className="">{Math.round(obj.Rating * 100) / 100}</td>
+                    <td className="">{obj.MS}</td>
+                    <td className="">{obj.BS}</td>
                   </tr>
                 )
               })}
@@ -376,7 +385,7 @@ function PlayerCardStats({ player }) {
 
 }
 
-function GoalieCardStats({ player }) {
+function GoalieCardStats({ player, yearlyRosterDays }) {
   const teamData = useTeams()
   const goalieGSHLStats23 = useQuery(['2023PlayerData', 'Totals'], queryFunc)
   const goalieGSHLStats22 = useQuery(['2022PlayerData', 'Totals'], queryFunc)
@@ -398,6 +407,7 @@ function GoalieCardStats({ player }) {
     goalieNHLStats21.data?.filter(obj => obj.Player === player.playerName)[0],
     goalieNHLStats20.data?.filter(obj => obj.Player === player.playerName)[0],
   ]
+  console.log(teamData)
   if (!nhlData || !gshlData || !teamData) { return <LoadingSpinner /> }
   return (
     <>
@@ -466,7 +476,7 @@ function GoalieCardStats({ player }) {
                 return (
                   <tr className='text-xs'>
                     <td className="">{obj.Season}</td>
-                    <td className="">{obj.gshlTeam?.split(",").map(x => <img src={teamData.filter(a => a.id === x)[0].LogoURL} alt="NHL Team Logo" className='h-4 w-4 mx-auto inline-block' />)}</td>
+                    <td className="">{obj.gshlTeam?.split(",").map(x => <img src={teamData.filter(a => a[obj.Season] === x)[0].LogoURL} alt="NHL Team Logo" className='h-4 w-4 mx-auto inline-block' />)}</td>
                     <td className="">{Math.round(obj.RosterDays)}</td>
                     <td className="">{Math.round(obj.GS)}</td>
                     <td className="">{Math.round(obj.W)}</td>

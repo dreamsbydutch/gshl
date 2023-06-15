@@ -37,7 +37,7 @@ export const TeamsDataProvider = ({ children }) => {
   
     const gshlTeamsData = useQuery(['MainInput', 'GSHLTeams'], queryFunc)
   
-    const gshlTeams = gshlTeamsData.data?.filter(obj => obj[season]).map(obj => {
+    const gshlTeams = gshlTeamsData.data?.map(obj => {
         obj.id = obj[season]
         return obj
     })

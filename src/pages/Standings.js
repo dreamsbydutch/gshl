@@ -45,7 +45,7 @@ export const StandingsContainer = ({ standingsType, seasonID }) => {
   const standings = standingsData.data
   const gshlTeams = gshlTeamData.data?.filter(obj => obj[seasonID]).map(obj => { obj.teamID = obj[seasonID]; return obj; })
   const playoffProb = playoffProbData.data
-
+  
 
   const typeObj = {
     'OVR': [['', 'bg-gray-100', standings?.sort((a, b) => a.OvrRk - b.OvrRk)]],
@@ -72,8 +72,8 @@ export const StandingsContainer = ({ standingsType, seasonID }) => {
             <div className='font-bold mt-8 text-center text-sm font-varela'>{obj[0]}</div>
             <div className={'mb-4 p-2 rounded-xl shadow-md [&>*:last-child]:border-none ' + obj[1]} >
               {obj[2].map(team => {
-                const teamInfo = gshlTeams?.filter(a => a.teamID === team.teamID)[0]
-                const teamProb = playoffProb?.filter(a => a.teamID === team.teamID)[0]
+                const teamInfo = gshlTeams?.filter(a => a.teamID === team.gshlTeam)[0]
+                const teamProb = playoffProb?.filter(a => a.teamID === team.gshlTeam)[0]
                 if (!teamInfo || !teamProb) { return <LoadingSpinner /> }
                 return (
                   <StandingsItem key={team.teamID} {...{ teamInfo, team, teamProb, standingsType }} />

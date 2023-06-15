@@ -48,7 +48,6 @@ function WeeklySchedule({ seasonID }) {
   )
 }
 function WeekScheduleItem({ matchup }) {
-  console.log(matchup)
   const gshlTeams = useTeams()
   const homeTeam = gshlTeams?.filter(obj => +obj.id === +matchup.HomeTeam)[0]
   const awayTeam = gshlTeams?.filter(obj => +obj.id === +matchup.AwayTeam)[0]
