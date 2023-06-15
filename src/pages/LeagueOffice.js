@@ -159,16 +159,18 @@ function Rulebook() {
         'Players can only play under 2 consecutive contracts. Players coming off of their second consecutive contract must go back in to the draft pool',
         'Players coming off of their first contract are considered RFAs and can be signed by their team during the early or late signing period for 115% of their updated salary',
         'Players are only eligible to be signed to a contract if they have been on a GSHL roster for over 2/3 of the season or on that GSHL roster for over 1/3 of the season',
-        'At the end of the late signing period every player not under contract becomes a UFA and can be signed by any team for 125% of their posted salary',
-        'To bid on a UFA durng the summer you must send in a player name and nubmer of years to Dutch. Bids are processed on the 1st of each month throughout the summer',
-        'If multiple teams have bid on the same player when it comes ime to process the player will decide which contract they sign based on a lottery using each team\'s draft lottery points multiplied by the length of the contract bid. Players will favour longer term deals when signing a UFA contract.'
+        'At the end of the late signing period, every player that is not under contract becomes a UFA',
+        'UFAs can be signed by any team for 125% of their posted salary through a lottery process',
+        'UFA contract offers can be submitted at any time. UFA signings are processed on the 1st of each month throughout the summer',
+        'If multiple teams have bid on a player, they will decide based on the results of a lottery using each team\'s draft lottery points multiplied by the length of the contract bid. Players will favour longer term deals when signing a UFA contract.',
+        'UFA bids can be placed privately or publicly by an owner'
       ],
     ],
     ['Awards',
       [
-        ['Counting Stat Awards',
-          [],
-        ],
+        // ['Counting Stat Awards',
+        //   [],
+        // ],
       ],
     ],
   ]
