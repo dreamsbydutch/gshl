@@ -219,7 +219,7 @@ function FreeAgents() {
         </tr>
       </thead>
       <tbody>
-        {salaryData.data.filter(obj => obj.currentSalary).map(obj => <PlayerCard player={obj} />)}
+        {salaryData.data.filter(obj => obj.CurrentSalary).map(obj => <PlayerCard player={obj} />)}
       </tbody>
     </table>
   )
@@ -235,10 +235,10 @@ function PlayerCard({ player }) {
   return (
     <>
       <tr className="border-t border-dashed border-gray-200 text-center" onClick={() => setShowInfo(!showInfo)}>
-        <td className="px-1">{player.playerName}</td>
-        <td className="px-1">{player.pos}</td>
-        <td className="px-1">{player.age}</td>
-        <td className="px-1">{player.currentSalary}</td>
+        <td className="px-1">{player.PlayerName}</td>
+        <td className="px-1">{player.Pos}</td>
+        <td className="px-1">{player.Age}</td>
+        <td className="px-1">{player.CurrentSalary}</td>
       </tr>
       <tr>
         <td colSpan='4' className={showInfo && 'pb-4'}>
@@ -261,20 +261,20 @@ function PlayerCardStats({ player, yearlyRosterDays }) {
   const playerGSHLStats21 = useQuery(['2021PlayerData', 'Totals'], queryFunc)
   const playerGSHLStats20 = useQuery(['2020PlayerData', 'Totals'], queryFunc)
   const gshlData = [
-    playerGSHLStats23.data?.filter(obj => obj.PlayerName === player.playerName && obj.posGroup === player.pos && obj.WeekType === "RS")[0],
-    playerGSHLStats22.data?.filter(obj => obj.PlayerName === player.playerName && obj.posGroup === player.pos && obj.WeekType === "RS")[0],
-    playerGSHLStats21.data?.filter(obj => obj.PlayerName === player.playerName && obj.posGroup === player.pos && obj.WeekType === "RS")[0],
-    playerGSHLStats20.data?.filter(obj => obj.PlayerName === player.playerName && obj.posGroup === player.pos && obj.WeekType === "RS")[0],
+    playerGSHLStats23.data?.filter(obj => obj.PlayerName === player.PlayerName && obj.PosGroup === player.Pos && obj.WeekType === "RS")[0],
+    playerGSHLStats22.data?.filter(obj => obj.PlayerName === player.PlayerName && obj.PosGroup === player.Pos && obj.WeekType === "RS")[0],
+    playerGSHLStats21.data?.filter(obj => obj.PlayerName === player.PlayerName && obj.PosGroup === player.Pos && obj.WeekType === "RS")[0],
+    playerGSHLStats20.data?.filter(obj => obj.PlayerName === player.PlayerName && obj.PosGroup === player.Pos && obj.WeekType === "RS")[0],
   ]
   const playerNHLStats23 = useQuery(['2023PlayerData', 'NHLPlayerStats'], queryFunc)
   const playerNHLStats22 = useQuery(['2022PlayerData', 'NHLPlayerStats'], queryFunc)
   const playerNHLStats21 = useQuery(['2021PlayerData', 'NHLPlayerStats'], queryFunc)
   const playerNHLStats20 = useQuery(['2020PlayerData', 'NHLPlayerStats'], queryFunc)
   const nhlData = [
-    playerNHLStats23.data?.filter(obj => obj.Player === player.playerName && obj.Pos === player.pos)[0],
-    playerNHLStats22.data?.filter(obj => obj.Player === player.playerName && obj.Pos === player.pos)[0],
-    playerNHLStats21.data?.filter(obj => obj.Player === player.playerName && obj.Pos === player.pos)[0],
-    playerNHLStats20.data?.filter(obj => obj.Player === player.playerName && obj.Pos === player.pos)[0],
+    playerNHLStats23.data?.filter(obj => obj.Player === player.PlayerName && obj.Pos === player.Pos)[0],
+    playerNHLStats22.data?.filter(obj => obj.Player === player.PlayerName && obj.Pos === player.Pos)[0],
+    playerNHLStats21.data?.filter(obj => obj.Player === player.PlayerName && obj.Pos === player.Pos)[0],
+    playerNHLStats20.data?.filter(obj => obj.Player === player.PlayerName && obj.Pos === player.Pos)[0],
   ]
   if (!nhlData || !gshlData || !teamData) { return <LoadingSpinner /> }
   return (
@@ -392,20 +392,20 @@ function GoalieCardStats({ player, yearlyRosterDays }) {
   const goalieGSHLStats21 = useQuery(['2021PlayerData', 'Totals'], queryFunc)
   const goalieGSHLStats20 = useQuery(['2020PlayerData', 'Totals'], queryFunc)
   const gshlData = [
-    goalieGSHLStats23.data?.filter(obj => obj.PlayerName === player.playerName && obj.posGroup === player.pos && obj.WeekType === "RS")[0],
-    goalieGSHLStats22.data?.filter(obj => obj.PlayerName === player.playerName && obj.posGroup === player.pos && obj.WeekType === "RS")[0],
-    goalieGSHLStats21.data?.filter(obj => obj.PlayerName === player.playerName && obj.posGroup === player.pos && obj.WeekType === "RS")[0],
-    goalieGSHLStats20.data?.filter(obj => obj.PlayerName === player.playerName && obj.posGroup === player.pos && obj.WeekType === "RS")[0],
+    goalieGSHLStats23.data?.filter(obj => obj.PlayerName === player.PlayerName && obj.PosGroup === player.Pos && obj.WeekType === "RS")[0],
+    goalieGSHLStats22.data?.filter(obj => obj.PlayerName === player.PlayerName && obj.PosGroup === player.Pos && obj.WeekType === "RS")[0],
+    goalieGSHLStats21.data?.filter(obj => obj.PlayerName === player.PlayerName && obj.PosGroup === player.Pos && obj.WeekType === "RS")[0],
+    goalieGSHLStats20.data?.filter(obj => obj.PlayerName === player.PlayerName && obj.PosGroup === player.Pos && obj.WeekType === "RS")[0],
   ]
   const goalieNHLStats23 = useQuery(['2023PlayerData', 'NHLGoalieStats'], queryFunc)
   const goalieNHLStats22 = useQuery(['2022PlayerData', 'NHLGoalieStats'], queryFunc)
   const goalieNHLStats21 = useQuery(['2021PlayerData', 'NHLGoalieStats'], queryFunc)
   const goalieNHLStats20 = useQuery(['2020PlayerData', 'NHLGoalieStats'], queryFunc)
   const nhlData = [
-    goalieNHLStats23.data?.filter(obj => obj.Player === player.playerName)[0],
-    goalieNHLStats22.data?.filter(obj => obj.Player === player.playerName)[0],
-    goalieNHLStats21.data?.filter(obj => obj.Player === player.playerName)[0],
-    goalieNHLStats20.data?.filter(obj => obj.Player === player.playerName)[0],
+    goalieNHLStats23.data?.filter(obj => obj.Player === player.PlayerName)[0],
+    goalieNHLStats22.data?.filter(obj => obj.Player === player.PlayerName)[0],
+    goalieNHLStats21.data?.filter(obj => obj.Player === player.PlayerName)[0],
+    goalieNHLStats20.data?.filter(obj => obj.Player === player.PlayerName)[0],
   ]
   console.log(teamData)
   if (!nhlData || !gshlData || !teamData) { return <LoadingSpinner /> }
