@@ -83,7 +83,7 @@ function TeamPlayerContracts({ teamInfo }) {
               if (obj === null) { return <tr></tr> }
               return (
                 <tr key={i} className={`${obj.ExpiryType === "Buyout" ? 'text-gray-400' : 'text-gray-800'}`}>
-                  <td className="sticky left-0 py-1 px-2 text-center text-xs border-t border-b border-gray-300 whitespace-nowrap bg-gray-50">{obj.Player}</td>
+                  <td className="sticky left-0 py-1 px-2 text-center text-xs border-t border-b border-gray-300 whitespace-nowrap bg-gray-50">{obj.PlayerName}</td>
                   <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300">{obj.Pos}</td>
                   {+obj.YearsRemaining > 0 ?
                     <td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300">{formatter.format(obj.CapHit).replace("US", "")}</td>
