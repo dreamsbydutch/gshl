@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { queryFunc } from '../utils/fetchData'
-import { PageToolbar, SeasonToggleNavbar } from '../components/PageNavbar'
+import { SeasonToggleNavbar, StandingsToggleNavbar } from '../components/PageNavbar'
 import LoadingSpinner from '../components/LoadingSpinner'
 import { useQuery } from 'react-query'
 import { LosersBracket, PlayoffBracket } from '../components/Playoffs'
@@ -8,16 +8,10 @@ import { LosersBracket, PlayoffBracket } from '../components/Playoffs'
 export default function Standings() {
   const [standingsType, setStandingsType] = useState('OVR')
   const [seasonID, setSeasonID] = useState('2023')
-  const toolbarProps = {
-    'setter': setStandingsType,
-    'activeKey': standingsType,
-    'seasonToggleSetter': setSeasonID,
-    'seasonToggleActiveKey': seasonID,
-    'toolbarKeys': ['Overall', 'Conference', 'Wildcard', 'Playoffs']
-  }
   return (
     <div className='my-4 mx-2'>
-      <PageToolbar {...{ 'setter': setStandingsType, 'activeKey': standingsType, 'seasonToggleSetter': setSeasonID, 'seasonToggleActiveKey': seasonID, 'toolbarKeys': ['Overall', 'Conference', 'Wildcard', 'Playoffs'] }} />
+      <SeasonToggleNavbar setter={setSeasonID} activeKey={seasonID} />
+      <StandingsToggleNavbar setter={setStandingsType} activeKey={standingsType} />
       {standingsType !== "PO" ?
         <>
           <StandingsContainer {...{ standingsType, seasonID }} />
@@ -51,19 +45,22 @@ export const StandingsContainer = ({ standingsType, seasonID }) => {
   const standings = standingsData.data
   const gshlTeams = gshlTeamData.data?.filter(obj => obj[seasonID]).map(obj => { obj.teamID = obj[seasonID]; return obj; })
   const playoffProb = playoffProbData.data
-
+  
 
   const typeObj = {
-    'Overall': [['', 'bg-gray-100', standings?.sort((a, b) => a.OvrRk - b.OvrRk)]],
-    'Conference': [
+    'OVR': [['', 'bg-gray-100', standings?.sort((a, b) => a.OvrRk - b.OvrRk)]],
+    'Conf': [
       ['Sunview Conference', 'bg-sunview-50 bg-opacity-50', standings?.filter(obj => obj.conf === "SV").sort((a, b) => a.CCRk - b.CCRk)],
       ['Hickory Hotel Conferene', 'bg-hotel-50 bg-opacity-50', standings?.filter(obj => obj.conf === "HH").sort((a, b) => a.CCRk - b.CCRk)],
     ],
-    'Wildcard': [
+    'WC': [
       ['Sunview Top 3', 'bg-sunview-50 bg-opacity-50', standings?.filter(obj => obj.conf === 'SV').sort((a, b) => a.CCRk - b.CCRk).slice(0, 3)],
       ['Hickory Hotel Top 3', 'bg-hotel-50 bg-opacity-50', standings?.filter(obj => obj.conf === 'HH').sort((a, b) => a.CCRk - b.CCRk).slice(0, 3)],
       ['Wildcard', 'bg-gray-100 [&>*:nth-child(2)]:border-solid [&>*:nth-child(2)]:border-b-2 [&>*:nth-child(2)]:border-gray-800', standings?.filter(obj => obj.WCRk !== '').sort((a, b) => a.WCRk - b.WCRk).slice(0, 6)],
       ['Loser\'s Tournament', 'bg-brown-100', standings?.filter(obj => obj.WCRk !== '').sort((a, b) => a.WCRk - b.WCRk).slice(6)],
+    ],
+    'LT': [
+      ['', 'shadow-none', standings?.filter(obj => obj.LTRk).sort((a, b) => a.LTRk - b.LTRk)],
     ],
   }
   if (!standings || !gshlTeams || !playoffProb) { return <LoadingSpinner /> }
@@ -106,10 +103,10 @@ const StandingsItem = ({ teamInfo, team, teamProb, standingsType }) => {
         <div className={`col-span-1 text-sm ${team.LTDiff > 0 ? 'text-emerald-800' : team.LTDiff < 0 ? 'text-rose-800' : 'text-gray-500'}`}>{team.LTDiff > 0 ? '+' + team.LTDiff : team.LTDiff < 0 ? team.LTDiff : "-"}</div>
         {showInfo ?
           <>
-            <div className='col-span-12 mb-0.5 flex flex-row justify-center flex-wrap'>
-              <div className="text-2xs font-bold pr-2">Tiebreak Pts:</div>
-              <div className="text-2xs">{team.LTPTS + ' pts'}</div>
-            </div>
+          <div className='col-span-12 mb-0.5 flex flex-row justify-center flex-wrap'>
+            <div className="text-2xs font-bold pr-2">Tiebreak Pts:</div>
+            <div className="text-2xs">{team.LTPTS + ' pts'}</div>
+          </div>
             <TeamInfo {...{ teamProb, standingsType }} />
           </>
           :
