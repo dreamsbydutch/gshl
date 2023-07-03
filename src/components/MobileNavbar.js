@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 function NavBar() {
     return (
         <div className=''>
-            <div className='w-full h-16 bg-gray-200 shadow-inv flex justify-evenly items-center fixed bottom-0 z-20'>
+            <div className='w-full h-16 bg-gray-200 shadow-inv flex justify-evenly items-center fixed bottom-0 z-50'>
                 <NavLink to="" className={(navData) => navData.isActive ? "invert before:content-[''] before:inline-block before:absolute before:w-14 before:h-14 before:z-[-1] before:bg-gray-200 before:transform before:translate-x-navbarActiveLg before:translate-y-navbarActiveLg before:rounded-xl" : ""}>
                     <img className="h-12" alt="PGC logo" src="https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/logo512.png" />
                 </NavLink>
