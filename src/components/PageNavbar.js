@@ -2,85 +2,43 @@ import React, { Fragment } from 'react'
 import { Popover, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import LoadingSpinner from './LoadingSpinner'
-import { useWeeks } from '../utils/context'
-import { seasons } from '../utils/constants'
-import { TeamInfoType } from '../utils/endpointTypes'
+import { useTeams, useWeeks } from '../utils/context'
 
-export function PageToolbar(props: {
-  activeKey: string,
-  setter: Function,
-  seasonToggleActiveKey?: string,
-  seasonToggleSetter?: Function,
-  toolbarKeys: string[],
-}) {
+export function StandingsToggleNavbar(props) {
   return (
-    <>
-      {props.seasonToggleActiveKey && props.seasonToggleSetter &&
-        <SeasonToggleNavbar {...{ 'activeKey': props.seasonToggleActiveKey, 'setter': props.seasonToggleSetter, }} />
-      }
-      <div className={props.seasonToggleActiveKey && props.seasonToggleSetter ?
-        "h-10 w-9/12 px-2 bg-gray-200 shadow-inv py-1 fixed left-0 right-0 ml-20 bottom-16 z-30"
-        :
-        "h-10 w-full max-w-min px-1 bg-gray-200 shadow-inv py-1 fixed left-0 right-0 bottom-16 mx-auto z-30"
-      }>
-        <div key="pageToolberContainer" className='h-8 flex gap-1 items-center mx-auto overflow-x-scroll no-scrollbar'>
-          {props.toolbarKeys.map((toolbarKey, i) => {
-            return (
-              <>
-                {i !== 0 && <span key={'split' + i} className='h-4/6 border-1 border-gray-400' />}
-                <div
-                  key={toolbarKey}
-                  className={`
-                            whitespace-nowrap text-center font-bold py-1 px-3 rounded-lg text-sm
-                            ${props.activeKey === toolbarKey ? 'bg-gray-700 text-gray-100' : 'bg-gray-200 text-gray-700'}
-                          `}
-                  onClick={() => props.setter(toolbarKey)}
-                >
-                  {toolbarKey}
-                </div>
-              </>
-            )
-          })}
+    <div className="my-3 mx-1">
+      <div className='flex flex-wrap gap-3 items-center justify-center list-none'>
+        <div key='OVR' className={`min-w-min text-center font-bold py-1 px-3 rounded-md shadow-emboss text-xs sm:text-sm ${props.activeKey === 'OVR' ? 'bg-gray-700 text-gray-100' : 'bg-gray-100 text-gray-700'}`} onClick={() => props.setter('OVR')}>
+          Overall
         </div>
-      </div>
-    </>
-  )
-}
-
-export function SecondaryPageToolbar(props: {
-  activeKey: string|null,
-  setter: Function,
-  toolbarKeys: string[],
-}) {
-  return (
-    <div className="h-10 w-full max-w-min px-1 bg-gray-200 shadow-inv py-1 fixed left-0 right-0 bottom-24 mb-2 mx-auto z-20">
-      <div key="pageToolberContainer" className='h-8 flex gap-1 items-center mx-auto overflow-x-scroll no-scrollbar'>
-        {props.toolbarKeys.map((toolbarKey, i) => {
-          return (
-            <>
-              {i !== 0 && <span key={'split' + i} className='h-4/6 border-1 border-gray-400' />}
-              <div
-                key={toolbarKey}
-                className={`
-                            whitespace-nowrap text-center font-bold py-1 px-3 rounded-lg text-sm
-                            ${props.activeKey === toolbarKey ? 'bg-gray-700 text-gray-100' : 'bg-gray-200 text-gray-700'}
-                          `}
-                onClick={() => props.setter(props.activeKey === toolbarKey ? null : toolbarKey)}
-              >
-                {toolbarKey}
-              </div>
-            </>
-          )
-        })}
+        <div key='Conf' className={`min-w-min text-center font-bold py-1 px-3 rounded-md shadow-emboss text-xs sm:text-sm ${props.activeKey === 'Conf' ? 'bg-gray-700 text-gray-100' : 'bg-gray-100 text-gray-700'}`} onClick={() => props.setter('Conf')}>
+          Conference
+        </div>
+        <div key='WC' className={`min-w-min text-center font-bold py-1 px-3 rounded-md shadow-emboss text-xs sm:text-sm ${props.activeKey === 'WC' ? 'bg-gray-700 text-gray-100' : 'bg-gray-100 text-gray-700'}`} onClick={() => props.setter('WC')}>
+          Wildcard
+        </div>
+        <div key='PO' className={`min-w-min text-center font-bold py-1 px-3 rounded-md shadow-emboss text-xs sm:text-sm ${props.activeKey === 'PO' ? 'bg-gray-700 text-gray-100' : 'bg-gray-100 text-gray-700'}`} onClick={() => props.setter('PO')}>
+          Playoffs
+        </div>
       </div>
     </div>
   )
 }
-export function SeasonToggleNavbar(props: {
-  activeKey: string,
-  setter: Function,
-  position?: string[],
-}) {
+export function ScheduleToggleNavbar(props) {
+  return (
+    <div className="my-3 mx-1">
+      <div className='flex flex-wrap gap-3 items-center justify-center list-none'>
+        <div key='Week' className={`min-w-min text-center font-bold py-1 px-3 rounded-md shadow-emboss text-xs sm:text-sm ${props.activeKey === 'Week' ? 'bg-gray-700 text-gray-100' : 'bg-gray-100 text-gray-700'}`} onClick={() => props.setter('Week')}>
+          Weekly Schedule
+        </div>
+        <div key='Team' className={`min-w-min text-center font-bold py-1 px-3 rounded-md shadow-emboss text-xs sm:text-sm ${props.activeKey === 'Team' ? 'bg-gray-700 text-gray-100' : 'bg-gray-100 text-gray-700'}`} onClick={() => props.setter('Team')}>
+          Team Schedule
+        </div>
+      </div>
+    </div>
+  )
+}
+export function SeasonToggleNavbar(props) {
 
   const seasons = [
     { key: '2023', name: '2022-23', },
@@ -95,18 +53,18 @@ export function SeasonToggleNavbar(props: {
   ]
 
   return (
-    <div className={`z-40 ${props.position ? props.position[0] : 'fixed h-10 bg-gray-200 shadow-inv bottom-16 left-0 py-2 px-2'}`}>
+    <div className="flex justify-end">
       <Popover className="">
         {({ open }) => (
           <>
             <Popover.Button
-              className={`inline-flex items-center rounded-lg bg-gray-300 px-2 py-1 text-2xs font-bold text-gray-900 shadow-emboss`}
+              className={`${open ? '' : 'text-opacity-90'} inline-flex items-center rounded-lg bg-gray-700 px-2 py-1 text-2xs font-medium text-white shadow-emboss hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
             >
               <ChevronDownIcon
-                className={`${open ? '' : 'text-opacity-70'} h-4 w-4 text-gray-700 transition duration-150 ease-in-out`}
+                className={`${open ? '' : 'text-opacity-70'} h-4 w-4 text-white transition duration-150 ease-in-out group-hover:text-opacity-80`}
                 aria-hidden="true"
               />
-              <span className='whitespace-nowrap'>{(parseInt(props.activeKey) - 1) + '-' + String(props.activeKey).slice(2)}</span>
+              <span>{(parseInt(props.activeKey) - 1) + '-' + String(props.activeKey).slice(2)}</span>
             </Popover.Button>
             <Transition
               as={Fragment}
@@ -117,7 +75,7 @@ export function SeasonToggleNavbar(props: {
               leaveFrom="opacity-100 translate-y-0"
               leaveTo="opacity-0 translate-y-1"
             >
-              <Popover.Panel className={`absolute ${props.position ? props.position[1] : 'bottom-12 left-0'} z-10 mt-3 transform px-4 sm:px-0 lg:max-w-3xl`}>
+              <Popover.Panel className="absolute right-0 z-10 mt-3 transform px-4 sm:px-0 lg:max-w-3xl">
                 <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
                   <div className="relative grid gap-8 bg-white p-7 lg:grid-cols-2">
                     {seasons.map((item) => (
@@ -127,7 +85,7 @@ export function SeasonToggleNavbar(props: {
                         className="-m-4 flex items-center rounded-lg p-2 transition duration-150 ease-in-out hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
                       >
                         <div className="ml-1">
-                          <p className="text-xs font-medium text-gray-800 whitespace-nowrap">
+                          <p className="text-xs font-medium text-gray-800">
                             {item.name}
                           </p>
                         </div>
@@ -255,30 +213,55 @@ export function WeeksToggle(props) {
     </div>
   )
 }
-export function TeamsToggle(props: {
-  activeKey: number | undefined,
-  setter: Function,
-  toolbarKeys: TeamInfoType[] | null,
-}) {
+export function TeamsToggle(props) {
+  const teamData = useTeams()
   return (
-    <div className="h-10 w-min max-w-full px-2 bg-gray-200 shadow-inv fixed left-0 right-0 mx-auto bottom-16 z-30">
-      <div key="teamToggleContainer" className='h-10 flex gap-0.5 items-center mx-auto overflow-x-scroll no-scrollbar'>
-        {props.toolbarKeys?.map((toolbarKey, i) => {
+    <>
+      <div className="flex flex-nowrap max-w-lg my-3 mx-auto">
+        {teamData?.filter(obj => obj.id && obj.Conference === "SV").map(obj => {
           return (
-            <>
-              {i !== 0 && <span key={'split' + i} className='h-4/6 border-1 border-gray-400' />}
-              <div
-                key={toolbarKey[seasons[0].Season]}
-                className={`rounded-md
-                            ${props.activeKey === toolbarKey[seasons[0].Season] ? toolbarKey.Conference === "SV" ? 'bg-sunview-700' : 'bg-hotel-700' : 'bg-gray-200'}
-                          `}
-                onClick={() => props.setter(toolbarKey[seasons[0].Season] === props.activeKey ? null : toolbarKey[seasons[0].Season])}
-              >
-                <img className='p-1.5 rounded-lg max-w-max h-10' src={toolbarKey.LogoURL} alt={toolbarKey.TeamName} />
-              </div>
-            </>
+            <div key={obj.id} className="mx-auto" onClick={() => props.setter(obj.id)}>
+              <img className=' w-10 xs:w-12 flex-auto p-0.5 rounded-lg shadow-emboss bg-sunview-50 bg-opacity-50' src={obj.LogoURL} alt={obj.TeamName} />
+            </div>
           )
         })}
+      </div>
+      <div className="flex flex-nowrap max-w-lg my-3 mx-auto">
+        {teamData?.filter(obj => obj.id && obj.Conference === "HH").map(obj => {
+          return (
+            <div key={obj.id} className="mx-auto" onClick={() => props.setter(obj.id)}>
+              <img className='w-10 xs:w-12 flex-auto p-0.5 rounded-lg shadow-emboss bg-hotel-50 bg-opacity-50' src={obj.LogoURL} alt={obj.TeamName} />
+            </div>
+          )
+        })}
+      </div>
+    </>
+  )
+}
+export function LeagueOfficeToggle(props) {
+  return (
+    <div className="my-3 mx-1">
+      <div className='flex flex-wrap gap-3 items-center justify-center list-none'>
+        <div
+          key='FreeAgents'
+          className={`
+            min-w-min text-center font-bold py-1 px-3 rounded-md shadow-emboss text-xs sm:text-sm
+            ${props.activeKey === 'FreeAgents' ? 'bg-gray-700 text-gray-100' : 'bg-gray-100 text-gray-700'}
+          `}
+          onClick={() => props.setter('FreeAgents')}
+        >
+          Free Agents
+        </div>
+        <div
+          key='Rulebook'
+          className={`
+            min-w-min text-center font-bold py-1 px-3 rounded-md shadow-emboss text-xs sm:text-sm 
+            ${props.activeKey === 'Rulebook' ? 'bg-gray-700 text-gray-100' : 'bg-gray-100 text-gray-700'}
+          `}
+          onClick={() => props.setter('Rulebook')}
+        >
+          Rulebook
+        </div>
       </div>
     </div>
   )

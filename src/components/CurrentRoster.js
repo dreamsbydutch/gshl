@@ -1,24 +1,16 @@
 import React from 'react'
 import { useQuery } from 'react-query'
 import { queryFunc } from '../utils/fetchData'
-import LoadingSpinner from './LoadingSpinner'
-import { LockerRoomStatPropsType, PlayerContractType, PlayerRosterType, PlayerSalaryType, QueryKeyType } from '../utils/endpointTypes'
-import { seasons } from '../utils/constants'
+import LoadingSpinner from '../components/LoadingSpinner'
 
-export default function TeamRoster(props: LockerRoomStatPropsType) {
+export default function TeamRoster({ teamInfo, season }) {
     const showSalaries = true
-    const currentSalaryKey: QueryKeyType = [props.season, 'PlayerData', 'Salaries']
-    const currentSalaryResponse = useQuery(currentSalaryKey, queryFunc)
-    const currentSalaryData: PlayerSalaryType[] = currentSalaryResponse.data
-    const currentRosterKey: QueryKeyType = [props.season, 'PlayerData', 'CurrentRosters']
-    const currentRosterResponse = useQuery(currentRosterKey, queryFunc)
-    const currentRosterData: PlayerRosterType[] = currentRosterResponse.data
-    const contractKey: QueryKeyType = [props.season, 'MainInput', 'Contracts']
-    const contractResponse = useQuery(contractKey, queryFunc)
-    const contractData: PlayerContractType[] = contractResponse.data
-    const expiringContracts = contractData?.filter(obj => props.teamInfo&&obj.CurrentTeam === props.teamInfo[seasons[0].Season] && +obj.YearsRemaining === 0)
-    const currentRoster = currentRosterData?.filter(obj => props.teamInfo&&obj.gshlTeam === props.teamInfo[seasons[0].Season]).sort((a, b) => a.Rank - b.Rank)
-    const salaries = currentSalaryData
+    const salaryData = useQuery([season + 'PlayerData', 'Salaries'], queryFunc)
+    const rosterData = useQuery([season + 'PlayerData', 'CurrentRosters'], queryFunc)
+    const contractData = useQuery(['MainInput', 'Contracts'], queryFunc)
+    const expiringContracts = contractData.data?.filter(obj => obj.CurrentTeam === teamInfo?.id && +obj.YearsRemaining === 0)
+    const currentRoster = rosterData.data?.filter(obj => obj.gshlTeam === teamInfo?.id).sort((a, b) => a.Rank - b.Rank)
+    const salaries = salaryData.data
 
     const teamLineup = currentRoster?.filter(obj => obj.LineupPos === "Util")[0]?.nhlPos !== "D" ? [[
         [currentRoster?.filter(obj => obj.LineupPos === "LW")[0], currentRoster?.filter(obj => obj.LineupPos === "C")[0], currentRoster?.filter(obj => obj.LineupPos === "RW")[0]],
@@ -36,7 +28,7 @@ export default function TeamRoster(props: LockerRoomStatPropsType) {
     ]]
 
 
-    if (!salaries || !currentRoster || !props.teamInfo) { return <LoadingSpinner /> }
+    if (!salaries || !currentRoster || !teamInfo) { return <LoadingSpinner /> }
     return (
         <>
             <div className='mt-12 text-center mx-auto text-xl font-bold'>Current Roster</div>
@@ -49,7 +41,7 @@ export default function TeamRoster(props: LockerRoomStatPropsType) {
                                     <div key={i} className="grid grid-cols-6 items-center py-2">
                                         {obj.map((a, j) => {
                                             if (!a) { return <div></div> }
-                                            let contract = expiringContracts?.filter(b => b.PlayerName === a?.PlayerName)[0]
+                                            let contract = expiringContracts?.filter(b => b.Player === a?.PlayerName)[0]
                                             return (
                                                 <div key={j} className="grid grid-cols-2 col-span-2 text-center px-2">
                                                     <div className="col-span-3 text-sm">{a?.PlayerName}</div>
@@ -73,7 +65,7 @@ export default function TeamRoster(props: LockerRoomStatPropsType) {
                 <div className="flex flex-col max-w-md mx-auto border rounded-xl bg-brown-50 mt-2">
                     <div className="grid grid-cols-2 items-center my-2 mx-2">
                         {currentRoster?.filter(obj => obj.LineupPos === "BN").map((obj, i) => {
-                            let contract = expiringContracts?.filter(b => b.PlayerName === obj?.PlayerName)[0]
+                            let contract = expiringContracts.filter(b => b.Player === obj?.PlayerName)[0]
                             return (
                                 <div key={i} className="grid grid-cols-2 text-center px-2 my-2">
                                     <div className="col-span-3 text-sm">{obj?.PlayerName}</div>

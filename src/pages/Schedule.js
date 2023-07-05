@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { WeeksToggle, TeamsToggle } from '../components/PageNavbar'
+import { SeasonToggleNavbar, ScheduleToggleNavbar, WeeksToggle, TeamsToggle } from '../components/PageNavbar'
 import { Link } from 'react-router-dom'
 import { useQuery } from 'react-query'
 import { queryFunc } from '../utils/fetchData'
@@ -12,8 +12,8 @@ export default function Schedule() {
 
   return (
     <div className='my-3 mx-2'>
-      {/* <SeasonToggleNavbar setter={setSeasonID} activeKey={seasonID} /> */}
-      {/* <ScheduleToggleNavbar setter={setSchedType} activeKey={schedType} /> */}
+      <SeasonToggleNavbar setter={setSeasonID} activeKey={seasonID} />
+      <ScheduleToggleNavbar setter={setSchedType} activeKey={schedType} />
       {schedType === 'Week' ? <WeeklySchedule {...{ seasonID }} /> : <TeamSchedule {...{ seasonID }} />}
     </div>
   )

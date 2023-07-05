@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { queryFunc } from '../utils/fetchData'
-import { SeasonToggleNavbar } from '../components/PageNavbar'
+import { SeasonToggleNavbar, StandingsToggleNavbar } from '../components/PageNavbar'
 import LoadingSpinner from '../components/LoadingSpinner'
 import { useQuery } from 'react-query'
 import { LosersBracket, PlayoffBracket } from '../components/Playoffs'
@@ -11,7 +11,7 @@ export default function Standings() {
   return (
     <div className='my-4 mx-2'>
       <SeasonToggleNavbar setter={setSeasonID} activeKey={seasonID} />
-      {/* <StandingsToggleNavbar setter={setStandingsType} activeKey={standingsType} /> */}
+      <StandingsToggleNavbar setter={setStandingsType} activeKey={standingsType} />
       {standingsType !== "PO" ?
         <>
           <StandingsContainer {...{ standingsType, seasonID }} />

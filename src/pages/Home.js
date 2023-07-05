@@ -4,11 +4,10 @@ import PowerRankings from '../components/PowerRankings'
 import MissedStarts from '../components/MissedStarts'
 import ThreeStars from '../components/ThreeStars'
 import { LosersBracket, PlayoffBracket } from '../components/Playoffs'
-import { seasons } from '../utils/constants'
 
 export default function Home() {
   return (
-     (new Date() <= new Date(seasons[0].PlayoffStartDate)) ?
+     (new Date() <= new Date('2023-03-20')) ?
     <>
       <MatchupScroller />
       <MissedStarts />
@@ -18,9 +17,9 @@ export default function Home() {
     :    
         <div className="flex flex-col mb-12">
           <div className="text-2xl text-center py-2 font-bold">GSHL Cup Playoffs</div>
-          <PlayoffBracket {...{ 'seasonID': seasons[0].Season }} />
+          <PlayoffBracket {...{ 'seasonID': '2023' }} />
           <div className="text-2xl text-center pt-12 pb-2 font-bold">Loser's Tournament</div>
-          <LosersBracket {...{ 'seasonID': seasons[0].Season }} />
+          <LosersBracket {...{ 'seasonID': '2023' }} />
         </div>
   )
 }
