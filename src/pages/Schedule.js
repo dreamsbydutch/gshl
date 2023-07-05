@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { SeasonToggleNavbar, ScheduleToggleNavbar, WeeksToggle, TeamsToggle } from '../components/PageNavbar'
 import { Link } from 'react-router-dom'
 import { useQuery } from 'react-query'
 import { queryFunc } from '../utils/fetchData'
@@ -12,8 +11,6 @@ export default function Schedule() {
 
   return (
     <div className='my-3 mx-2'>
-      <SeasonToggleNavbar setter={setSeasonID} activeKey={seasonID} />
-      <ScheduleToggleNavbar setter={setSchedType} activeKey={schedType} />
       {schedType === 'Week' ? <WeeklySchedule {...{ seasonID }} /> : <TeamSchedule {...{ seasonID }} />}
     </div>
   )
@@ -33,7 +30,6 @@ function WeeklySchedule({ seasonID }) {
   return (
     <>
       <div className="mt-10">
-        <WeeksToggle setter={setWeekID} season={seasonID} activeKey={weekID} />
       </div>
       <div className='grid grid-cols-7 items-center text-center font-bold mt-4 mb-2'>
         <div className='text-xs col-span-3'>Away Team</div>
@@ -148,7 +144,6 @@ function TeamSchedule({ seasonID }) {
   if (!scheduleData.data) { return <LoadingSpinner /> }
   return (
     <div className="my-10">
-      <TeamsToggle setter={setTeamID} season={seasonID} activeKey={teamID} />
       {teamID &&
         <>
           <div className='text-xl text-center font-bold font-varela mt-10'>
