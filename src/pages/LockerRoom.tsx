@@ -547,6 +547,9 @@ function TeamStatChart(props: LockerRoomTeamStatPropsType) {
 
   const chartOptions = {
     scales: {
+      y: {
+        inverse: true,
+      },
       x: {
         max: 25,
         min: 0,
@@ -568,14 +571,14 @@ function TeamStatChart(props: LockerRoomTeamStatPropsType) {
     },
   };
 
-  const labels = (new Array(25).fill(1)).map((obj, i) => "Week "+ i+1)
+  const labels = (new Array(25).fill(1)).map((obj, i) => `Week ${i+1}`)
 
   const chartData = {
     labels,
     datasets: [
       {
         label: 'Power Ranking',
-        data: props.teamWeeksData?.map(obj => 17-obj.PwrRk),
+        data: props.teamWeeksData?.map(obj => obj.PwrRk),
         borderColor: 'rgb(255, 99, 132)',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
       },
