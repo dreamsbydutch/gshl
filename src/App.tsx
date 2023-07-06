@@ -18,6 +18,7 @@ import { useAllPlayerDays } from './utils/fetchData';
 
 
 export default function App() {
+  return (
     <Router>
       <ScrollToTop />
       {window.innerWidth < 800 ? <MobileNavbar /> : <MobileNavbar />}
