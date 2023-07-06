@@ -548,7 +548,11 @@ function TeamStatChart(props: LockerRoomTeamStatPropsType) {
   const chartOptions = {
     scales: {
       y: {
-        inverse: true,
+        max: 16,
+        min: 1,
+        ticks: {
+          reverse: true,
+        }
       },
       x: {
         max: 25,
