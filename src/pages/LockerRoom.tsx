@@ -575,14 +575,14 @@ function TeamStatChart(props: LockerRoomTeamStatPropsType) {
     },
   };
 
-  const labels = (new Array(25).fill(1)).map((obj, i) => i + 1)
+  const labels = (new Array(25).fill(1)).map((obj, i) => "Week "+ i+1 +" Power Rank")
 
   const chartData = {
     labels,
     datasets: [
       {
-        label: 'Dataset 1',
-        data: props.teamWeeksData?.map(obj => obj.PwrRk),
+        label: 'Power Ranking',
+        data: props.teamWeeksData?.map(obj => 17-obj.PwrRk),
         borderColor: 'rgb(255, 99, 132)',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
       },
