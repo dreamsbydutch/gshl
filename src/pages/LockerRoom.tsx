@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { queryFunc, usePlayerSplits } from '../utils/fetchData'
 import LoadingSpinner from '../components/LoadingSpinner'
 import { useQuery } from 'react-query'
-import { SeasonToggleNavbar, SecondaryPageToolbar, TeamsToggle } from '../components/PageNavbar'
+import { SecondaryPageToolbar, TeamsToggle } from '../components/PageNavbar'
 import TeamRoster from '../components/CurrentRoster'
 import { useTeams } from '../utils/context'
 import { seasons } from '../utils/constants'
@@ -582,7 +582,7 @@ function TeamStatChart(props: LockerRoomTeamStatPropsType) {
     datasets: [
       {
         label: 'Dataset 1',
-        data: props.teamWeeksData?.map(obj => obj.YTDRtg),
+        data: props.teamWeeksData?.map(obj => obj.PwrRk),
         borderColor: 'rgb(255, 99, 132)',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
       },
