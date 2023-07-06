@@ -550,8 +550,9 @@ function TeamStatChart(props: LockerRoomTeamStatPropsType) {
       y: {
         max: 16,
         min: 1,
+        reverse: true,
         ticks: {
-          reverse: true,
+          stepSize: 4,
         }
       },
       x: {
