@@ -549,10 +549,7 @@ function TeamStatChart(props: LockerRoomTeamStatPropsType) {
     scales: {
       y: {
         max: 16,
-        min: 0,
-        ticks: {
-          stepSize: 20
-        }
+        min: 0
       },
       x: {
         max: 25,
