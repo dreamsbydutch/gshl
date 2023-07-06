@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { PageToolbar, SecondaryPageToolbar } from '../components/PageNavbar'
 import { useQuery } from 'react-query'
-import { queryFunc, usePlayerTotals, usePlayerNHLStats, usePlayerSplits } from '../utils/fetchData'
+import { queryFunc, usePlayerTotals, usePlayerNHLStats } from '../utils/fetchData'
 import LoadingSpinner from '../components/LoadingSpinner'
 import { useTeams } from '../utils/context'
 import { PlayerNHLType, PlayerSalariesType, PlayerTotalsType, QueryKeyType } from '../utils/endpointTypes'
@@ -238,8 +238,6 @@ function FreeAgents() {
 }
 function PlayerCard({ player }: { player: PlayerSalariesType }) {
   const [showInfo, setShowInfo] = useState(false)
-  const playerSplitsInfo = usePlayerSplits({'PlayerName':player.PlayerName,'PosGroup':player.PosGroup})
-  console.log(playerSplitsInfo)
 
   return (
     <div className="border-b border-dashed border-gray-200 max-w-xl mx-auto" onClick={() => setShowInfo(!showInfo)}>
