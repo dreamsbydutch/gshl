@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
-
+import { useLocation } from "react-router-dom";
 
 import MobileNavbar from './components/MobileNavbar';
 // import Navbar from './components/Navbar';
@@ -13,18 +13,16 @@ import Schedule from './pages/Schedule';
 import LeagueOffice from './pages/LeagueOffice';
 import LockerRoom from './pages/LockerRoom';
 import MatchupPage from './pages/MatchupPage';
-
-import ScrollToTop from './utils/ScrollToTop'
+import { useAllPlayerDays } from './utils/fetchData';
 
 
 
 export default function App() {
-  return (
     <Router>
       <ScrollToTop />
       {window.innerWidth < 800 ? <MobileNavbar /> : <MobileNavbar />}
         <Routes>
-          <Route exact path="/" element={<Home />} />
+          <Route path="/" element={<Home />} />
           <Route path="/schedule" element={<Schedule />} />
           <Route path="/standings" element={<Standings />} />
           <Route path="/lockerroom" element={<LockerRoom />} />
@@ -32,7 +30,18 @@ export default function App() {
           <Route path="/matchup/:id" element={<MatchupPage />} />
           <Route path="*" element={<ErrorPage />} />
         </Routes>
-      {window.innerWidth < 850 ? <div className="mb-12 text-white">.</div> : <Footer />}
+      {window.innerWidth < 850 ? <div className=" mb-16 text-white">.</div> : <Footer />}
     </Router >
   );
+}
+
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+      window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
 }

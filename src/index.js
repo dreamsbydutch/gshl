@@ -13,7 +13,7 @@ ReactDOM.render(
     <QueryClientProvider client={queryClient}>
       <WeeksDataProvider>
         <TeamsDataProvider>
-          <App />
+            <App />
         </TeamsDataProvider>
       </WeeksDataProvider>
     </QueryClientProvider>

@@ -1,8 +1,9 @@
 import React from 'react'
 import { useQuery } from 'react-query'
 import LoadingSpinner from '../components/LoadingSpinner'
-import { useWeeks, useTeams } from '../utils/context'
-import { formatDate, queryFunc } from '../utils/fetchData'
+import { queryFunc } from '../utils/fetchData'
+import { formatDate } from '../utils/utils'
+import { useTeams, useWeeks } from '../utils/context'
 
 export default function MissedStarts() {
     const weeks = useWeeks()
