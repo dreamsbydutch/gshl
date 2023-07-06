@@ -548,8 +548,8 @@ function TeamStatChart(props: LockerRoomTeamStatPropsType) {
   const chartOptions = {
     scales: {
       y: {
-        max: 140,
-        min: -100,
+        max: 16,
+        min: 0,
         ticks: {
           stepSize: 20
         }
@@ -570,12 +570,12 @@ function TeamStatChart(props: LockerRoomTeamStatPropsType) {
       },
       title: {
         display: true,
-        text: 'Weekly Team Ratings',
+        text: 'Weekly Power Rankings',
       },
     },
   };
 
-  const labels = (new Array(25).fill(1)).map((obj, i) => "Week "+ i+1 +" Power Rank")
+  const labels = (new Array(25).fill(1)).map((obj, i) => "Week "+ i+1)
 
   const chartData = {
     labels,
