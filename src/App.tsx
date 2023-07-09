@@ -22,7 +22,7 @@ export default function App() {
       <ScrollToTop />
       {window.innerWidth < 800 ? <MobileNavbar /> : <MobileNavbar />}
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<LockerRoom />} />
           <Route path="/schedule" element={<Schedule />} />
           <Route path="/standings" element={<Standings />} />
           <Route path="/lockerroom" element={<LockerRoom />} />

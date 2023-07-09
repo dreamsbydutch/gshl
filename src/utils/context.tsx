@@ -1,8 +1,9 @@
 import React, { ReactNode, useContext } from "react";
 import { useQuery } from "react-query";
-import { queryFunc } from "./fetchData";
+import { queryFunc, usePlayerContracts } from "./fetchData";
 import { seasons } from "./constants";
 import { QueryKeyType, ScheduleWeekType, TeamInfoType } from "./endpointTypes";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 interface ProviderProps {
   children: ReactNode
@@ -45,17 +46,27 @@ export const WeeksDataProvider: React.FC<ProviderProps> = ({ children }): JSX.El
 export const useWeeks = () => useContext(WeeksContext)
 
 
-const TeamsContext = React.createContext<TeamInfoType[] | null>(null)
+const TeamsContext = React.createContext<{'currentTeams':TeamInfoType[],'pastTeams':TeamInfoType[]} | undefined>(undefined)
 export const TeamsDataProvider: React.FC<ProviderProps> = ({ children }): JSX.Element => {
   const queryKey: QueryKeyType = [seasons[0].Season, 'MainInput', 'GSHLTeams']
+  const contractData = usePlayerContracts();
   const { data, status } = useQuery(queryKey, queryFunc)
   if (status === 'error') { return <div>Teams Context Error</div> }
-  if (status !== 'success') { return <>fff</> }
+  if (status !== 'success') { return <LoadingSpinner /> }
 
-  const gshlTeams: TeamInfoType[] = data
+  const gshlTeams: TeamInfoType[] = data.map((obj:TeamInfoType) => {
+    obj.CapSpace = 22500000 - contractData.filter(contract => contract.CurrentTeam === obj[seasons[0].Season]).reduce((prev,curr) => {
+      return prev.CapHit + curr.CapHit
+    }).CapHit
+    return obj
+  })
 
+  const output = {
+    'currentTeams':gshlTeams.filter(obj => obj[seasons[0].Season]),
+    'pastTeams':gshlTeams.filter(obj => !obj[seasons[0].Season]),
+  }
   return (
-    <TeamsContext.Provider value={gshlTeams}>
+    <TeamsContext.Provider value={output}>
       {children}
     </TeamsContext.Provider>
   )
