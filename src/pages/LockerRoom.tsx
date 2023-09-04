@@ -19,7 +19,7 @@ import {
 	PlayerContractType,
 	QueryKeyType,
 	SeasonInfoDataType,
-	Seasons,
+	Season,
 	TeamDraftPickType,
 	TeamInfoType,
 } from '../utils/endpointTypes'
@@ -88,14 +88,14 @@ export default function LockerRoom() {
 					{type === 'Player Stats' && (
 						<>
 							<SeasonToggleNavbar {...seasonToolbarProps} />
-							<TeamPlayerStats {...playerStatProps} />
-							<TeamPOPlayerStats {...playerStatProps} />
-							<TeamLTPlayerStats {...playerStatProps} />
+							{/* <TeamPlayerStats {...playerStatProps} /> */}
+							{/* <TeamPOPlayerStats {...playerStatProps} /> */}
+							{/* <TeamLTPlayerStats {...playerStatProps} /> */}
 						</>
 					)}
 					{type === 'Team Stats' && (
 						<>
-							<TeamStatChart {...teamStatprops} />
+							{/* <TeamStatChart {...teamStatprops} /> */}
 						</>
 					)}
 					{type === 'History' && <></>}
