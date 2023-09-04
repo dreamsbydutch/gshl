@@ -143,7 +143,7 @@ export function CapOverview() {
 				)}
 				<td className="px-2 py-1 text-xs font-normal text-center text-gray-800 whitespace-nowrap">
 					{team.CapSpace && moneyFormatter(team.CapSpace[1])}(
-					{
+					{ 
 						contractData?.filter(obj => obj.CurrentTeam === team[getCurrentSeason().Season] && +obj.YearsRemaining > 1 && obj.ExpiryType !== 'Buyout')
 							.length
 					}
