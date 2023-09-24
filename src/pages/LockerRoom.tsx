@@ -199,7 +199,7 @@ export function CapOverview() {
 
 function TeamPlayerContracts(props: LockerRoomPlayerStatPropsType) {
 	const currentTeamContracts = props.teamContracts?.filter(
-		obj => +obj.YearsRemaining > 0 || (+obj.YearsRemaining === 0 && obj.ExpiryType !== 'Buyout')
+		obj => +obj.YearsRemaining > 0 || (+obj.YearsRemaining === 0 && obj.ExpiryType === 'Buyout')
 	)
 
 	if (!currentTeamContracts) {
