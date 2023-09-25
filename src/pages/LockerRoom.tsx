@@ -4,15 +4,15 @@ import {
 	useAllFutureDraftPicks,
 	useAllPastDraftPicks,
 	useAllPlayerContracts,
-	useAllPlayerSplits,
 	useCurrentRosters,
+	useGSHLTeams,
+	usePlayerSplits,
 } from '../utils/fetchData'
 import LoadingSpinner from '../components/LoadingSpinner'
-import { useQuery } from 'react-query'
 import { SeasonToggleNavbar, SecondaryPageToolbar, TeamsToggle } from '../components/PageNavbar'
-import TeamRoster from '../components/CurrentRoster'
+// import TeamRoster from '../components/CurrentRoster'
 import { useTeams } from '../utils/context'
-import { seasons } from '../utils/constants'
+import { seasons, upcomingSeasons } from '../utils/constants'
 import {
 	LockerRoomPlayerStatPropsType,
 	LockerRoomTeamStatPropsType,
@@ -25,22 +25,21 @@ import {
 } from '../utils/endpointTypes'
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js'
 import { Line } from 'react-chartjs-2'
-import { getCurrentSeason, getUpcomingSeasons, moneyFormatter } from '../utils/utils'
+import { getCurrentSeason, moneyFormatter } from '../utils/utils'
 import { Link, NavLink, useParams } from 'react-router-dom'
 
 export default function LockerRoom() {
 	const { teamID } = useParams()
-	const gshlTeams = useTeams()
 	const [type, setType] = useState('Contracts')
-	const [teamInfo, setTeamInfo] = useState<TeamInfoType | undefined>(
-		gshlTeams?.currentTeams.filter(obj => obj[getCurrentSeason().Season] === teamID)[0] || undefined
-	)
-	const [season, setSeason] = useState<SeasonInfoDataType>(seasons[0])
-	const playerSplits = useAllPlayerSplits(season)
+	const [season, setSeason] = useState<SeasonInfoDataType>(seasons.slice(-1)[0])
+	const gshlTeams = useGSHLTeams(season)
+	console.log(season)
+	const [teamInfo, setTeamInfo] = useState<TeamInfoType | undefined>(gshlTeams?.filter(obj => obj.id === Number(teamID))[0] || undefined)
+	const playerSplits = usePlayerSplits(undefined, season)
 	const rosterData = useCurrentRosters()
 	const contractData = useAllPlayerContracts()
 	useEffect(() => window.scrollTo(0, 0), [teamInfo, type])
-	useEffect(() => setTeamInfo(gshlTeams?.currentTeams.filter(obj => obj[getCurrentSeason().Season] === teamID)[0]), [teamID])
+	useEffect(() => setTeamInfo(gshlTeams?.filter(obj => obj.id === Number(teamID))[0]), [gshlTeams, teamID])
 
 	const seasonToolbarProps = {
 		setter: setSeason,
@@ -52,7 +51,7 @@ export default function LockerRoom() {
 		season,
 		playerSeasonData: playerSplits,
 		currentRosterData: rosterData,
-		teamContracts: contractData.filter(obj => (teamInfo ? teamInfo[getCurrentSeason().Season] === obj.CurrentTeam : true)),
+		teamContracts: contractData.filter(obj => (teamInfo ? teamInfo.id === +obj.CurrentTeam : true)),
 	}
 
 	if (!gshlTeams) return <LoadingSpinner />
@@ -62,7 +61,8 @@ export default function LockerRoom() {
 				{...{
 					setter: setTeamInfo,
 					activeKey: teamInfo,
-					toolbarKeys: gshlTeams.currentTeams,
+					toolbarKeys: gshlTeams,
+					url: '/lockerroom/',
 				}}
 			/>
 			{teamInfo && (
@@ -93,11 +93,7 @@ export default function LockerRoom() {
 							{/* <TeamLTPlayerStats {...playerStatProps} /> */}
 						</>
 					)}
-					{type === 'Team Stats' && (
-						<>
-							{/* <TeamStatChart {...teamStatprops} /> */}
-						</>
-					)}
+					{type === 'Team Stats' && <>{/* <TeamStatChart {...teamStatprops} /> */}</>}
 					{type === 'History' && <></>}
 					<div className="mb-14 text-white">.</div>
 				</>
@@ -113,9 +109,8 @@ export default function LockerRoom() {
 }
 
 export function CapOverview() {
-	const gshlTeams = useTeams()
+	const gshlTeams = useTeams()?.filter(obj => obj.season === getCurrentSeason().Season)[0]
 	const contractData = useAllPlayerContracts()
-	const upcomingSeasons = getUpcomingSeasons()
 	if (!gshlTeams || !contractData || !upcomingSeasons) {
 		return <LoadingSpinner />
 	}
@@ -123,7 +118,7 @@ export function CapOverview() {
 		return (
 			<tr key={team.id}>
 				<td className="sticky left-0 flex justify-start px-2 py-1 text-sm font-normal text-gray-800 bg-gray-50 whitespace-nowrap">
-					<Link to={`/lockerroom/${team[getCurrentSeason().Season]}`}>
+					<Link to={`/lockerroom/${team.id}`}>
 						<div className="place-self-center overflow-hidden">
 							<img src={team.LogoURL} alt={`${team.TeamName} Team Logo`} className="h-6 w-6 mx-2 inline-block" />
 							{team.TeamName}
@@ -133,37 +128,20 @@ export function CapOverview() {
 				{upcomingSeasons[0].PlayoffEndDate > new Date() && (
 					<td className="px-2 py-1 text-xs font-normal text-center text-gray-800 whitespace-nowrap">
 						{team.CapSpace && moneyFormatter(team.CapSpace[0])}(
-						{
-							contractData?.filter(
-								obj => obj.CurrentTeam === team[getCurrentSeason().Season] && +obj.YearsRemaining > 0 && obj.ExpiryType !== 'Buyout'
-							).length
-						}
-						)
+						{contractData?.filter(obj => +obj.CurrentTeam === team.id && +obj.YearsRemaining > 0 && obj.ExpiryType !== 'Buyout').length})
 					</td>
 				)}
 				<td className="px-2 py-1 text-xs font-normal text-center text-gray-800 whitespace-nowrap">
 					{team.CapSpace && moneyFormatter(team.CapSpace[1])}(
-					{ 
-						contractData?.filter(obj => obj.CurrentTeam === team[getCurrentSeason().Season] && +obj.YearsRemaining > 1 && obj.ExpiryType !== 'Buyout')
-							.length
-					}
-					)
+					{contractData?.filter(obj => +obj.CurrentTeam === team.id && +obj.YearsRemaining > 1 && obj.ExpiryType !== 'Buyout').length})
 				</td>
 				<td className="px-2 py-1 text-xs font-normal text-center text-gray-800 whitespace-nowrap">
 					{team.CapSpace && moneyFormatter(team.CapSpace[2])}(
-					{
-						contractData?.filter(obj => obj.CurrentTeam === team[getCurrentSeason().Season] && +obj.YearsRemaining > 2 && obj.ExpiryType !== 'Buyout')
-							.length
-					}
-					)
+					{contractData?.filter(obj => +obj.CurrentTeam === team.id && +obj.YearsRemaining > 2 && obj.ExpiryType !== 'Buyout').length})
 				</td>
 				<td className="px-2 py-1 text-xs font-normal text-center text-gray-800 whitespace-nowrap">
 					{team.CapSpace && moneyFormatter(team.CapSpace[3])}(
-					{
-						contractData?.filter(obj => obj.CurrentTeam === team[getCurrentSeason().Season] && +obj.YearsRemaining > 3 && obj.ExpiryType !== 'Buyout')
-							.length
-					}
-					)
+					{contractData?.filter(obj => +obj.CurrentTeam === team.id && +obj.YearsRemaining > 3 && obj.ExpiryType !== 'Buyout').length})
 				</td>
 			</tr>
 		)
@@ -185,7 +163,7 @@ export function CapOverview() {
 						</tr>
 					</thead>
 					<tbody>
-						{gshlTeams.currentTeams
+						{gshlTeams.teams
 							?.sort((a, b) => (a.CapSpace && b.CapSpace ? b.CapSpace[0] - a.CapSpace[0] : 0))
 							.map(team => (
 								<TeamCapSpaceRow {...{ team, contractData }} />
@@ -198,10 +176,9 @@ export function CapOverview() {
 }
 
 function TeamPlayerContracts(props: LockerRoomPlayerStatPropsType) {
-	const currentTeamContracts = props.teamContracts?.filter(
-		obj => +obj.YearsRemaining > 0 || (+obj.YearsRemaining === 0 && obj.ExpiryType !== 'Buyout')
-	)
+	const currentTeamContracts = props.teamContracts?.filter(obj => +obj.YearsRemaining > 0)
 
+	console.log(currentTeamContracts)
 	if (!currentTeamContracts) {
 		return <LoadingSpinner />
 	}
@@ -215,10 +192,10 @@ function TeamPlayerContracts(props: LockerRoomPlayerStatPropsType) {
 	)
 }
 function TeamDraftPicks(props: LockerRoomPlayerStatPropsType) {
-	const gshlTeams = useTeams()
+	const gshlTeams = useGSHLTeams(seasons.slice(-1)[0])
 	const draftPickData: TeamDraftPickType[] = useAllFutureDraftPicks(props.teamInfo || undefined)
 	const currentTeamContracts = props.teamContracts
-		?.filter(obj => +obj.YearsRemaining > 0 || (+obj.YearsRemaining === 0 && obj.ExpiryType !== 'Buyout'))
+		?.filter(obj => +obj.YearsRemaining > 0 && obj.ExpiryType !== 'Buyout')
 		.sort((a, b) => b.CapHit - a.CapHit)
 	const numberSuffix = (num: number) => {
 		num = num < 20 ? num : num % 10
@@ -233,7 +210,7 @@ function TeamDraftPicks(props: LockerRoomPlayerStatPropsType) {
 				return 'th'
 		}
 	}
-	const teamDraftPicks = draftPickData?.filter(obj => props.teamInfo && obj.gshlTeam === props.teamInfo[getCurrentSeason().Season])
+	const teamDraftPicks = draftPickData?.filter(obj => props.teamInfo && +obj.gshlTeam === +props.teamInfo.id)
 	if (!teamDraftPicks) return <LoadingSpinner />
 
 	return (
@@ -247,7 +224,7 @@ function TeamDraftPicks(props: LockerRoomPlayerStatPropsType) {
 					}
 					let originalTeam: TeamInfoType | undefined = undefined
 					if (obj.OriginalTeam !== obj.gshlTeam && gshlTeams) {
-						originalTeam = gshlTeams.currentTeams.filter(x => x[getCurrentSeason().Season] === obj.OriginalTeam)[0]
+						originalTeam = gshlTeams.filter(x => x.id === +obj.OriginalTeam)[0]
 					}
 					console.log(obj)
 					if (teamDraftPicks.length - i > currentTeamContracts.length) {
@@ -276,7 +253,7 @@ function TeamDraftPicks(props: LockerRoomPlayerStatPropsType) {
 function TeamPlayerStatsTable(props: LockerRoomPlayerStatPropsType) {
 	if (!props.teamInfo) return <></>
 	const teamPlayers = props.playerSeasonData?.filter(obj => props.teamInfo && obj.gshlTeam.includes(props.teamInfo.id) && obj.WeekType === 'RS')
-	const currentRoster = props.currentRosterData?.filter(obj => props.teamInfo && obj.gshlTeam === props.teamInfo[seasons[0].Season])
+	const currentRoster = props.currentRosterData?.filter(obj => props.teamInfo && obj.gshlTeam.includes(props.teamInfo.id))
 	console.log(props)
 
 	if (!props.teamInfo || !teamPlayers) return <LoadingSpinner />
@@ -319,9 +296,7 @@ function TeamPlayerStatsTable(props: LockerRoomPlayerStatPropsType) {
 										<td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300">{obj.nhlPos}</td>
 										<td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300">
 											<img
-												src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${obj?.nhlTeam
-													.split(',')
-													.slice(-1)}.png`}
+												src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${obj?.nhlTeam?.slice(-1)}.png`}
 												alt="NHL Team Logo"
 												className="h-4 w-4 mx-auto"
 											/>
@@ -378,9 +353,7 @@ function TeamPlayerStatsTable(props: LockerRoomPlayerStatPropsType) {
 										<td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300">{obj.nhlPos}</td>
 										<td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300">
 											<img
-												src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${obj?.nhlTeam
-													.split(',')
-													.slice(-1)}.png`}
+												src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${obj?.nhlTeam?.slice(-1)}.png`}
 												alt="NHL Team Logo"
 												className="h-4 w-4 mx-auto"
 											/>
@@ -410,10 +383,8 @@ function TeamPlayerStatsTable(props: LockerRoomPlayerStatPropsType) {
 	)
 }
 function TeamPOPlayerStats(props: LockerRoomPlayerStatPropsType) {
-	const teamPlayers = props.playerSeasonData?.filter(
-		obj => props.teamInfo && obj.gshlTeam === props.teamInfo[seasons[0].Season] && obj.WeekType === 'PO'
-	)
-	const currentRoster = props.currentRosterData?.filter(obj => props.teamInfo && obj.gshlTeam === props.teamInfo[seasons[0].Season])
+	const teamPlayers = props.playerSeasonData?.filter(obj => props.teamInfo && obj.gshlTeam.includes(props.teamInfo.id) && obj.WeekType === 'PO')
+	const currentRoster = props.currentRosterData?.filter(obj => props.teamInfo && obj.gshlTeam.includes(props.teamInfo.id))
 
 	if (!props.teamInfo || !teamPlayers) {
 		return <LoadingSpinner />
@@ -459,9 +430,7 @@ function TeamPOPlayerStats(props: LockerRoomPlayerStatPropsType) {
 										<td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300">{obj.nhlPos}</td>
 										<td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300">
 											<img
-												src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${obj?.nhlTeam
-													.split(',')
-													.slice(-1)}.png`}
+												src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${obj?.nhlTeam?.slice(-1)}.png`}
 												alt="NHL Team Logo"
 												className="h-4 w-4 mx-auto"
 											/>
@@ -518,9 +487,7 @@ function TeamPOPlayerStats(props: LockerRoomPlayerStatPropsType) {
 										<td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300">{obj.nhlPos}</td>
 										<td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300">
 											<img
-												src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${obj?.nhlTeam
-													.split(',')
-													.slice(-1)}.png`}
+												src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${obj?.nhlTeam?.slice(-1)}.png`}
 												alt="NHL Team Logo"
 												className="h-4 w-4 mx-auto"
 											/>
@@ -550,10 +517,8 @@ function TeamPOPlayerStats(props: LockerRoomPlayerStatPropsType) {
 	)
 }
 function TeamLTPlayerStats(props: LockerRoomPlayerStatPropsType) {
-	const teamPlayers = props.playerSeasonData?.filter(
-		obj => props.teamInfo && obj.gshlTeam === props.teamInfo[seasons[0].Season] && obj.WeekType === 'LT'
-	)
-	const currentRoster = props.currentRosterData?.filter(obj => props.teamInfo && obj.gshlTeam === props.teamInfo[seasons[0].Season])
+	const teamPlayers = props.playerSeasonData?.filter(obj => props.teamInfo && obj.gshlTeam.includes(props.teamInfo.id) && obj.WeekType === 'LT')
+	const currentRoster = props.currentRosterData?.filter(obj => props.teamInfo && obj.gshlTeam.includes(props.teamInfo.id))
 
 	if (!props.teamInfo || !teamPlayers) {
 		return <LoadingSpinner />
@@ -599,9 +564,7 @@ function TeamLTPlayerStats(props: LockerRoomPlayerStatPropsType) {
 										<td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300">{obj.nhlPos}</td>
 										<td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300">
 											<img
-												src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${obj?.nhlTeam
-													.split(',')
-													.slice(-1)}.png`}
+												src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${obj?.nhlTeam?.slice(-1)}.png`}
 												alt="NHL Team Logo"
 												className="h-4 w-4 mx-auto"
 											/>
@@ -658,9 +621,7 @@ function TeamLTPlayerStats(props: LockerRoomPlayerStatPropsType) {
 										<td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300">{obj.nhlPos}</td>
 										<td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300">
 											<img
-												src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${obj?.nhlTeam
-													.split(',')
-													.slice(-1)}.png`}
+												src={`https://raw.githubusercontent.com/dreamsbydutch/gshl/main/public/assets/Logos/nhlTeams/${obj?.nhlTeam?.slice(-1)}.png`}
 												alt="NHL Team Logo"
 												className="h-4 w-4 mx-auto"
 											/>
@@ -741,8 +702,7 @@ function TeamStatChart(props: LockerRoomTeamStatPropsType) {
 }
 
 function PlayerContractTable(props: { contracts: PlayerContractType[]; team: TeamInfoType | undefined }) {
-	const upcomingSeasons = getUpcomingSeasons()
-	const gshlTeams = useTeams()
+	const gshlTeams = useTeams()?.filter(obj => obj.season === getCurrentSeason().Season)[0]
 
 	const PlayerContractRow = (props: { player: PlayerContractType; team: TeamInfoType | undefined }) => (
 		<tr key={props.player.id} className={`${props.player.ExpiryType === 'Buyout' ? 'text-gray-400' : 'text-gray-800'}`}>
@@ -753,7 +713,8 @@ function PlayerContractTable(props: { contracts: PlayerContractType[]; team: Tea
 			{props.team == undefined && (
 				<td className="py-1 px-2 text-center text-xs border-t border-b border-gray-300">
 					<img
-						src={gshlTeams?.currentTeams.filter(team => props.player.CurrentTeam === team[getCurrentSeason().Season])[0].LogoURL}
+						src={gshlTeams?.teams.filter(team => props.player.CurrentTeam === team.id)[0]?.LogoURL || ''}
+						alt={gshlTeams?.teams.filter(team => props.player.CurrentTeam === team.id)[0]?.TeamName || ''}
 						className="h-4 w-4 mx-auto"
 					/>
 				</td>

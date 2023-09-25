@@ -5,7 +5,6 @@ import {
 	QueryKeyType,
 	TeamInfoType,
 	TeamDaysType,
-	Season,
 	TeamWeeksType,
 	TeamTotalsType,
 	PlayerDayType,
@@ -16,8 +15,13 @@ import {
 	SeasonInfoDataType,
 	PlayerDraftPickType,
 	TeamDraftPickType,
+	ScheduleMatchupType,
+	ScheduleWeekType,
+	StandingsInfoType,
 } from './endpointTypes'
 import { getCurrentSeason } from './utils'
+import { formatPlayerDay, formatPlayerSeason, formatPlayerWeek, formatScheduleMatchup, formatStandingsInfo } from './formattingFunc'
+import { useTeams } from './context'
 
 export async function queryFunc({ queryKey }: { queryKey: QueryKeyType }) {
 	const [season, statType, pageID] = queryKey
@@ -30,154 +34,52 @@ export async function queryFunc({ queryKey }: { queryKey: QueryKeyType }) {
 	const data = await fetch('https://opensheet.elk.sh/' + season[statType] + '/' + pageID)
 	return data.json()
 }
+function queryPlayerData(
+	statType: 'Totals' | 'Splits' | 'Weeks' | 'Days',
+	player?: { PlayerName: string; PosGroup: 'F' | 'D' | 'G' },
+	seasonInput?: SeasonInfoDataType
+): unknown {
+	let statQueries = useQueries(
+		seasons
+			.filter(season => (seasonInput ? season === seasonInput : season))
+			.map(season => {
+				const queryKey: QueryKeyType = [season, 'PlayerData', statType]
+				return {
+					queryKey,
+					queryFn: queryFunc,
+				}
+			})
+	).map(queryResult => {
+		if (player)
+			return queryResult.data.filter(
+				(statline: any) => statline && statline.PlayerName === player.PlayerName && statline.PosGroup === player.PosGroup
+			)[0]
+		return queryResult.data
+	})
+	return statQueries.filter(Boolean)
+}
 
 // PLAYER STATS FETCH FUNCTIONS
 //--------------------------------------------------------------------------------------
-//
 // Totals / Splits / Weeks / Days
 // Fetch a players stats from a single year or all years
 // Fetch all players stats from a single year
 //--------------------------------------------------------------------------------------
-export function usePlayerTotals(player: { PlayerName: string; PosGroup: 'F' | 'D' | 'G' }, seasonInput?: SeasonInfoDataType): PlayerSeasonType[] {
-	let statQueries: PlayerSeasonType[] = useQueries(
-		seasons
-			.filter(season => (seasonInput ? season === seasonInput : season))
-			.map(season => {
-				const queryKey: QueryKeyType = [season, 'PlayerData', 'Totals']
-				return {
-					queryKey,
-					queryFn: queryFunc,
-				}
-			})
-	).map(queryResult => {
-		let seasonPlayerData: PlayerSeasonType[] = queryResult.data?.map((player: any) => {
-			return {
-				...player,
-				gshlTeam: player.gshlTeam.split(','),
-				nhlTeam: player.nhlTeam.split(','),
-			}
-		})
-		return seasonPlayerData.filter(statline => statline && statline.PlayerName === player.PlayerName && statline.PosGroup === player.PosGroup)[0]
-	})
-	return statQueries.filter(Boolean)
+export function usePlayerTotals(player?: { PlayerName: string; PosGroup: 'F' | 'D' | 'G' }, seasonInput?: SeasonInfoDataType) {
+	let playerData: PlayerSeasonType[] = queryPlayerData('Totals', player, seasonInput) as PlayerSeasonType[]
+	return playerData.map((player: PlayerSeasonType) => formatPlayerSeason(player))
 }
-export function useAllPlayerTotals(season: SeasonInfoDataType): PlayerSeasonType[] {
-	const queryKey: QueryKeyType = [season, 'PlayerData', 'Totals']
-	const statQuery = useQuery({
-		queryKey,
-		queryFn: queryFunc,
-	})
-	const data: PlayerSeasonType[] = statQuery.data?.filter(Boolean).map((player: any) => {
-		return {
-			...player,
-			gshlTeam: player.gshlTeam.split(','),
-			nhlTeam: player.nhlTeam.split(','),
-		}
-	})
-	return data
+export function usePlayerSplits(player?: { PlayerName: string; PosGroup: 'F' | 'D' | 'G' }, seasonInput?: SeasonInfoDataType) {
+	let playerData: PlayerSeasonType[] = queryPlayerData('Splits', player, seasonInput) as PlayerSeasonType[]
+	return playerData.map((player: PlayerSeasonType) => formatPlayerSeason(player))
 }
-
-export function usePlayerSplits(player: { PlayerName: string; PosGroup: 'F' | 'D' | 'G' }, seasonInput?: SeasonInfoDataType): PlayerSeasonType[] {
-	let statQueries: PlayerSeasonType[] = useQueries(
-		seasons
-			.filter(season => (seasonInput ? season === seasonInput : season))
-			.map(season => {
-				const queryKey: QueryKeyType = [season, 'PlayerData', 'Splits']
-				return {
-					queryKey,
-					queryFn: queryFunc,
-				}
-			})
-	).map(queryResult => {
-		let seasonPlayerData: PlayerSeasonType[] = queryResult.data?.map((player: any) => {
-			return {
-				...player,
-				gshlTeam: player.gshlTeam.split(','),
-				nhlTeam: player.nhlTeam.split(','),
-			}
-		})
-		return seasonPlayerData?.filter(statline => statline && statline.PlayerName === player.PlayerName && statline.PosGroup === player.PosGroup)[0]
-	})
-	return statQueries.filter(Boolean)
+export function usePlayerWeeks(player?: { PlayerName: string; PosGroup: 'F' | 'D' | 'G' }, seasonInput?: SeasonInfoDataType) {
+	let playerData: PlayerWeekType[] = queryPlayerData('Weeks', player, seasonInput) as PlayerWeekType[]
+	return playerData.map((player: PlayerWeekType) => formatPlayerWeek(player))
 }
-export function useAllPlayerSplits(season: SeasonInfoDataType): PlayerSeasonType[] {
-	const queryKey: QueryKeyType = [season, 'PlayerData', 'Splits']
-	const statQuery = useQuery({
-		queryKey,
-		queryFn: queryFunc,
-	})
-	const data: PlayerSeasonType[] = statQuery.data?.filter(Boolean).map((player: any) => {
-		return {
-			...player,
-			gshlTeam: player.gshlTeam.split(','),
-			nhlTeam: player.nhlTeam.split(','),
-		}
-	})
-	return data
-}
-
-export function usePlayerWeeks(player: { PlayerName: string; PosGroup: 'F' | 'D' | 'G' }, seasonInput?: SeasonInfoDataType): PlayerWeekType[] {
-	let statQueries: PlayerWeekType[] = useQueries(
-		seasons
-			.filter(season => (seasonInput ? season === seasonInput : season))
-			.map(season => {
-				const queryKey: QueryKeyType = [season, 'PlayerData', 'Weeks']
-				return {
-					queryKey,
-					queryFn: queryFunc,
-				}
-			})
-	).map(queryResult => {
-		let seasonPlayerData: PlayerWeekType[] = queryResult.data?.map((player: any) => {
-			return {
-				...player,
-				nhlTeam: player.nhlTeam.split(','),
-			}
-		})
-		return seasonPlayerData.filter(statline => statline && statline.PlayerName === player.PlayerName && statline.PosGroup === player.PosGroup)[0]
-	})
-	return statQueries.filter(Boolean)
-}
-export function useAllPlayerWeeks(season: SeasonInfoDataType): PlayerWeekType[] {
-	const queryKey: QueryKeyType = [season, 'PlayerData', 'Weeks']
-	const statQuery = useQuery({
-		queryKey,
-		queryFn: queryFunc,
-	})
-	const data: PlayerWeekType[] = statQuery.data?.filter(Boolean)
-	return data
-}
-
-export function usePlayerDays(player: { PlayerName: string; PosGroup: 'F' | 'D' | 'G' }, seasonInput?: SeasonInfoDataType): PlayerDayType[] {
-	let statQueries: PlayerDayType[] = useQueries(
-		seasons
-			.filter(season => (seasonInput ? season === seasonInput : season))
-			.map(season => {
-				const queryKey: QueryKeyType = [season, 'PlayerData', 'Days']
-				return {
-					queryKey,
-					queryFn: queryFunc,
-				}
-			})
-	).map(queryResult => {
-		let seasonPlayerData: PlayerDayType[] = queryResult.data?.map((player: any) => {
-			return {
-				...player,
-				nhlTeam: player.nhlTeam.split(','),
-			}
-		})
-		return seasonPlayerData.filter(statline => statline && statline.PlayerName === player.PlayerName && statline.PosGroup === player.PosGroup)[0]
-	})
-	return statQueries.filter(Boolean)
-}
-export function useAllPlayerDays(season: SeasonInfoDataType): PlayerDayType[] {
-	const queryKey: QueryKeyType = [season, 'PlayerData', 'Days']
-	const statQuery = useQuery({
-		queryKey,
-		queryFn: queryFunc,
-	})
-	const data: PlayerDayType[] = statQuery.data?.filter(Boolean)
-	return data
+export function usePlayerDays(player?: { PlayerName: string; PosGroup: 'F' | 'D' | 'G' }, seasonInput?: SeasonInfoDataType) {
+	let playerData: PlayerDayType[] = queryPlayerData('Weeks', player, seasonInput) as PlayerDayType[]
+	return playerData.map((player: PlayerDayType) => formatPlayerDay(player))
 }
 
 export function usePlayerNHLStats(player: { PlayerName: string; PosGroup: 'F' | 'D' | 'G' }, seasonInput?: SeasonInfoDataType): PlayerNHLType[] {
@@ -292,7 +194,7 @@ export function useAllFutureDraftPicks(team?: TeamInfoType): TeamDraftPickType[]
 // TEAM STATS FETCH FUNCTIONS
 //--------------------------------------------------------------------------------------
 // Totals / Weeks / Days
-// Fetch a players stats from a single year or all years
+// Fetch a teams stats from a single year or all years
 // Fetch all players stats from a single year
 //--------------------------------------------------------------------------------------
 export function usePlayerDraftHistory(player: { PlayerName: string; PosGroup: 'F' | 'D' | 'G' }) {
@@ -354,4 +256,52 @@ export function useTeamTotals(team: TeamInfoType, season: SeasonInfoDataType) {
 	const queryRes = useQuery(queryKey, queryFunc)
 	let statQuery: (TeamTotalsType | null)[] = queryRes.data
 	return statQuery.filter(teamTotal => teamTotal?.gshlTeam === team[season.Season])
+}
+
+// LEAGUE INFO FETCH FUNCTIONS
+//--------------------------------------------------------------------------------------
+// Users / GSHLTeams / Weeks / Schedule / Contracts / Rulebook
+// Fetch a players stats from a single year or all years
+// Fetch all players stats from a single year
+//--------------------------------------------------------------------------------------
+export function useLeagueSchedule(season?: SeasonInfoDataType, week?: ScheduleWeekType, team?: TeamInfoType) {
+	const queryKey: QueryKeyType = [seasons[-1], 'MainInput', 'Schedule']
+	let queryRes = useQuery(queryKey, queryFunc)
+	if (queryRes.isError) {
+		console.log(queryRes.error)
+		return undefined
+	}
+	if (!queryRes.isSuccess) {
+		return undefined
+	}
+
+	let scheduleData: ScheduleMatchupType[] = queryRes.data.map((matchup: any) => formatScheduleMatchup(matchup))
+	if (season) {
+		scheduleData = scheduleData.filter(matchup => matchup.Season === season.Season)
+	}
+	if (week) {
+		scheduleData = scheduleData.filter(matchup => matchup.WeekNum === week.WeekNum)
+	}
+	if (team) {
+		scheduleData = scheduleData.filter(matchup => matchup.AwayTeam === team[matchup.Season] || matchup.HomeTeam === team[matchup.Season])
+	}
+	return scheduleData.sort((a, b) => (b.MatchupRtg || 0) - (a.MatchupRtg || 0))
+}
+export function useLeagueStandings(season: SeasonInfoDataType) {
+	const queryKey: QueryKeyType = [season, 'TeamData', 'Standings']
+	let queryRes = useQuery(queryKey, queryFunc)
+	if (queryRes.isError || queryRes.data?.hasOwnProperty('error')) {
+		console.log(queryRes.error)
+		return undefined
+	}
+	if (!queryRes.isSuccess) {
+		return undefined
+	}
+
+	let standingsData: StandingsInfoType[] = queryRes.data
+	return standingsData.map(obj => formatStandingsInfo(obj))
+}
+export function useGSHLTeams(season: SeasonInfoDataType) {
+	const data = useTeams()?.filter(obj => obj.season === season.Season)[0]
+	return data?.teams
 }

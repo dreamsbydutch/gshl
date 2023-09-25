@@ -4,18 +4,18 @@ import './index.css';
 import '../node_modules/font-awesome/css/font-awesome.min.css';
 import App from './App';
 import { QueryClient, QueryClientProvider } from 'react-query'
-import { TeamsDataProvider } from './utils/context';
+import { TeamsDataProvider, WeeksDataProvider } from './utils/context';
 
 const queryClient = new QueryClient();
 
 ReactDOM.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      {/* <WeeksDataProvider> */}
+      <WeeksDataProvider>
         <TeamsDataProvider>
             <App />
         </TeamsDataProvider>
-      {/* </WeeksDataProvider> */}
+      </WeeksDataProvider>
     </QueryClientProvider>
   </React.StrictMode>,
   document.getElementById('root')

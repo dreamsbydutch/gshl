@@ -2,7 +2,7 @@
 export type PlayerContractType = {
 	id: number
 	PlayerName: string
-	Pos: NHLPositions
+	Pos: NHLPosition
 	Years: 1 | 2 | 3
 	AAV: number
 	SigningTeam: number
@@ -40,7 +40,7 @@ export type ScheduleMatchupType = {
 }
 export type ScheduleWeekType = {
 	id: number
-	Season: number
+	Season: Season
 	WeekNum: number
 	StartDate: Date
 	EndDate: Date
@@ -48,6 +48,14 @@ export type ScheduleWeekType = {
 	WeekType: 'RS' | 'PO'
 }
 export type TeamInfoType = {
+	id: number
+	TeamName: string
+	OwnerID: number
+	LogoURL: string
+	Conference: 'SV' | 'HH'
+	CapSpace: number[] | undefined
+}
+export type RawTeamInfoType = {
 	id: number
 	TeamName: string
 	OwnerID: number
@@ -74,6 +82,56 @@ export type OwnerInfoType = {
 	LastName: string
 	Nickname: string
 	Email: string
+}
+export type StandingsInfoType = {
+	Season: Season
+	gshlTeam: number
+	TeamName: String
+	Owner: number
+	LogoURL: String
+	Conf: 'SV' | 'HH'
+	W: number
+	HW: number
+	HL: number
+	L: number
+	PTS: number
+	CF: number
+	CA: number
+	CCW: number
+	CCHW: number
+	CCHL: number
+	CCL: number
+	CCPTS: number
+	CCCF: number
+	CCCA: number
+	POW: number
+	POHW: number
+	POHL: number
+	POL: number
+	POPTS: number
+	POCF: number
+	POCA: number
+	LTW: number
+	LTHW: number
+	LTHL: number
+	LTL: number
+	LTPTS: number
+	LTCF: number
+	LTCA: number
+	Stk: String
+	Rtg: number
+	Rk: number
+	PrevRtg: number
+	PrevRk: number
+	RtgCh: number
+	RkCh: number
+	POFinish: String
+	POPer: number | null
+	OvrRk: number
+	WCRk: number | null
+	LTRk: number | null
+	CCRk: number
+	DraftPtsAdj: number | null
 }
 
 // PLAYER DATA TYPES
@@ -123,16 +181,17 @@ type GoalieStatsType = {
 	TOI?: number | null
 }
 export type PlayerDayType = PlayerInfoType &
-	(SkaterStatsType | GoalieStatsType) & {
+	SkaterStatsType &
+	GoalieStatsType & {
 		WeekNum: number
 		Date: Date
-		Injury: InjuryDesignations
-		DailyPos: GSHLPositions
+		Injury: InjuryDesignation
+		DailyPos: GSHLPosition
 		Opp: string | null
 		Score: string | null
 		YahooRk: number | null
-		FullPos: GSHLPositions
-		BestPos: GSHLPositions
+		FullPos: GSHLPosition
+		BestPos: GSHLPosition
 	}
 export type PlayerWeekType = PlayerInfoType & (SkaterStatsType | GoalieStatsType) & { WeekNum: number; RosterDays: number }
 export type PlayerSeasonType =
@@ -163,7 +222,7 @@ export type PlayerSalaryType = Omit<PlayerInfoType, 'WeekType' | 'nhlTeam' | 'PP
 export type PlayerCurrentRosterType = Omit<PlayerInfoType, 'WeekType' | 'Age' | 'Rating' | 'PPD' | 'MG' | 'GP' | 'GS' | 'MS' | 'BS'> & {
 	Rank: number
 	ContractEligible: Boolean
-	LineupPos: GSHLPositions
+	LineupPos: GSHLPosition
 }
 export type PlayerDraftPickType = {
 	Season: Season
@@ -381,12 +440,22 @@ export type SeasonInfoDataType = {
 export type TeamsTogglePropsType = {
 	activeKey: TeamInfoType | undefined
 	setter: Function
+	seasonToggleActiveKey?: SeasonInfoDataType
+	seasonToggleSetter?: Function
 	toolbarKeys: TeamInfoType[] | null
+	url: string
+}
+export type WeeksTogglePropsType = {
+	activeKey: ScheduleWeekType | undefined
+	setter: Function
+	seasonToggleActiveKey?: SeasonInfoDataType
+	seasonToggleSetter?: Function
+	toolbarKeys: ScheduleWeekType[] | null
 }
 export type PageToolbarPropsType = {
 	activeKey: string
 	setter: Function
-	seasonToggleActiveKey?: string
+	seasonToggleActiveKey?: SeasonInfoDataType
 	seasonToggleSetter?: Function
 	toolbarKeys: string[]
 }
@@ -432,6 +501,7 @@ export type QueryKeyType =
 	  ]
 	| [SeasonInfoDataType, 'MainInput', 'Users' | 'GSHLTeams' | 'Weeks' | 'Schedule' | 'Contracts' | 'Rulebook']
 export type Season = 2015 | 2016 | 2017 | 2018 | 2019 | 2020 | 2021 | 2022 | 2023 | 2024 | 2025 | 2026 | 2027
+export type StandingsOption = 'Overall' | 'Conference' | 'Wildcard' | 'Playoffs' | 'LosersTourney'
 type WeekType = 'RS' | 'NC' | 'CC' | 'PO' | 'QF' | 'SF' | 'F' | 'LT'
 type NHLPosition = 'C' | 'C,LW' | 'C,RW' | 'C,LW,RW' | 'LW' | 'LW,RW' | 'RW' | 'D' | 'G'
 type GSHLPosition = 'C' | 'LW' | 'RW' | 'D' | 'G' | 'Util' | 'BN' | 'IR+' | 'IR'
