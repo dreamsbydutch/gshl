@@ -34,30 +34,30 @@ export async function queryFunc({ queryKey }: { queryKey: QueryKeyType }) {
 	const data = await fetch('https://opensheet.elk.sh/' + season[statType] + '/' + pageID)
 	return data.json()
 }
-function queryPlayerData(
-	statType: 'Totals' | 'Splits' | 'Weeks' | 'Days',
-	player?: { PlayerName: string; PosGroup: 'F' | 'D' | 'G' },
-	seasonInput?: SeasonInfoDataType
-): unknown {
-	let statQueries = useQueries(
-		seasons
-			.filter(season => (seasonInput ? season === seasonInput : season))
-			.map(season => {
-				const queryKey: QueryKeyType = [season, 'PlayerData', statType]
-				return {
-					queryKey,
-					queryFn: queryFunc,
-				}
-			})
-	).map(queryResult => {
-		if (player)
-			return queryResult.data.filter(
-				(statline: any) => statline && statline.PlayerName === player.PlayerName && statline.PosGroup === player.PosGroup
-			)[0]
-		return queryResult.data
-	})
-	return statQueries.filter(Boolean)
-}
+// function queryPlayerData(
+// 	statType: 'Totals' | 'Splits' | 'Weeks' | 'Days',
+// 	player?: { PlayerName: string; PosGroup: 'F' | 'D' | 'G' },
+// 	seasonInput?: SeasonInfoDataType
+// ): unknown {
+// 	let statQueries = useQueries(
+// 		seasons
+// 			.filter(season => (seasonInput ? season === seasonInput : season))
+// 			.map(season => {
+// 				const queryKey: QueryKeyType = [season, 'PlayerData', statType]
+// 				return {
+// 					queryKey,
+// 					queryFn: queryFunc,
+// 				}
+// 			})
+// 	).map(queryResult => {
+// 		if (player)
+// 			return queryResult.data.filter(
+// 				(statline: any) => statline && statline.PlayerName === player.PlayerName && statline.PosGroup === player.PosGroup
+// 			)[0]
+// 		return queryResult.data
+// 	})
+// 	return statQueries.filter(Boolean)
+// }
 
 // PLAYER STATS FETCH FUNCTIONS
 //--------------------------------------------------------------------------------------
@@ -65,22 +65,22 @@ function queryPlayerData(
 // Fetch a players stats from a single year or all years
 // Fetch all players stats from a single year
 //--------------------------------------------------------------------------------------
-export function usePlayerTotals(player?: { PlayerName: string; PosGroup: 'F' | 'D' | 'G' }, seasonInput?: SeasonInfoDataType) {
-	let playerData: PlayerSeasonType[] = queryPlayerData('Totals', player, seasonInput) as PlayerSeasonType[]
-	return playerData.map((player: PlayerSeasonType) => formatPlayerSeason(player))
-}
-export function usePlayerSplits(player?: { PlayerName: string; PosGroup: 'F' | 'D' | 'G' }, seasonInput?: SeasonInfoDataType) {
-	let playerData: PlayerSeasonType[] = queryPlayerData('Splits', player, seasonInput) as PlayerSeasonType[]
-	return playerData.map((player: PlayerSeasonType) => formatPlayerSeason(player))
-}
-export function usePlayerWeeks(player?: { PlayerName: string; PosGroup: 'F' | 'D' | 'G' }, seasonInput?: SeasonInfoDataType) {
-	let playerData: PlayerWeekType[] = queryPlayerData('Weeks', player, seasonInput) as PlayerWeekType[]
-	return playerData.map((player: PlayerWeekType) => formatPlayerWeek(player))
-}
-export function usePlayerDays(player?: { PlayerName: string; PosGroup: 'F' | 'D' | 'G' }, seasonInput?: SeasonInfoDataType) {
-	let playerData: PlayerDayType[] = queryPlayerData('Weeks', player, seasonInput) as PlayerDayType[]
-	return playerData.map((player: PlayerDayType) => formatPlayerDay(player))
-}
+// export function usePlayerTotals(player?: { PlayerName: string; PosGroup: 'F' | 'D' | 'G' }, seasonInput?: SeasonInfoDataType) {
+// 	let playerData: PlayerSeasonType[] = queryPlayerData('Totals', player, seasonInput) as PlayerSeasonType[]
+// 	return playerData.map((player: PlayerSeasonType) => formatPlayerSeason(player))
+// }
+// export function usePlayerSplits(player?: { PlayerName: string; PosGroup: 'F' | 'D' | 'G' }, seasonInput?: SeasonInfoDataType) {
+// 	let playerData: PlayerSeasonType[] = queryPlayerData('Splits', player, seasonInput) as PlayerSeasonType[]
+// 	return playerData.map((player: PlayerSeasonType) => formatPlayerSeason(player))
+// }
+// export function usePlayerWeeks(player?: { PlayerName: string; PosGroup: 'F' | 'D' | 'G' }, seasonInput?: SeasonInfoDataType) {
+// 	let playerData: PlayerWeekType[] = queryPlayerData('Weeks', player, seasonInput) as PlayerWeekType[]
+// 	return playerData.map((player: PlayerWeekType) => formatPlayerWeek(player))
+// }
+// export function usePlayerDays(player?: { PlayerName: string; PosGroup: 'F' | 'D' | 'G' }, seasonInput?: SeasonInfoDataType) {
+// 	let playerData: PlayerDayType[] = queryPlayerData('Weeks', player, seasonInput) as PlayerDayType[]
+// 	return playerData.map((player: PlayerDayType) => formatPlayerDay(player))
+// }
 
 export function usePlayerNHLStats(player: { PlayerName: string; PosGroup: 'F' | 'D' | 'G' }, seasonInput?: SeasonInfoDataType): PlayerNHLType[] {
 	let statQueries: PlayerNHLType[] = useQueries([
