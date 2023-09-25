@@ -176,7 +176,13 @@ export function CapOverview() {
 }
 
 function TeamPlayerContracts(props: LockerRoomPlayerStatPropsType) {
+<<<<<<< HEAD
 	const currentTeamContracts = props.teamContracts?.filter(obj => +obj.YearsRemaining > 0)
+=======
+	const currentTeamContracts = props.teamContracts?.filter(
+		obj => +obj.YearsRemaining > 0 || (+obj.YearsRemaining === 0 && obj.ExpiryType === 'Buyout')
+	)
+>>>>>>> d919a643b72e9220c18da2c6df8c4b3643d90aac
 
 	console.log(currentTeamContracts)
 	if (!currentTeamContracts) {
