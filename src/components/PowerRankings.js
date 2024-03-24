@@ -39,6 +39,12 @@ function RankingItem(props) {
         rankChange = [Math.abs(props.teamData.RkCh), "Even"]
     }
     if (!lastweek || !lastWkTeam) {return <LoadingSpinner />}
+    <div className="mx-3 max-w-3xl my-8 py-4 px-1 rounded-2xl bg-gray-100 hover:text-gray-800 shadow-md">
+        <div className="font-oswald text-4xl font-extrabold text-center mt-2 mb-2">GSHL Power Rankings</div>
+        <ul className="mx-2 p-0 [&>*:last-child]:border-none">
+            {standingsData.data?.sort((a, b) => a.Rk - b.Rk).map(obj => <RankingItem {...{ 'teamData': obj, 'currentWeek':weeks.currentWeek, schedule, teams }} />)}
+        </ul>
+    </div>
     return (
         <li key={props.teamData.teamID} className="border-b border-gray-600 py-2.5 flex items-center">
             <div className="font-oswald text-base xs:text-lg font-bold w-4 mx-2 flex flex-row justify-around">
