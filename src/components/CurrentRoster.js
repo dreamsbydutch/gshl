@@ -4,7 +4,7 @@ import { queryFunc } from '../utils/fetchData'
 import LoadingSpinner from '../components/LoadingSpinner'
 
 export default function TeamRoster({ teamInfo, season }) {
-    const showSalaries = true
+    const showSalaries = false
     const salaryData = useQuery([season + 'PlayerData', 'Salaries'], queryFunc)
     const rosterData = useQuery([season + 'PlayerData', 'CurrentRosters'], queryFunc)
     const contractData = useQuery(['MainInput', 'Contracts'], queryFunc)
