@@ -54,6 +54,7 @@ export default function MatchupScroller() {
 }
 
 function ScrollerItem(props) {
+    console.log(props.teamData)
     let homeTeam = props.teams?.filter(obj => obj.id === props.teamData.HomeTeam)[0]
     let awayTeam = props.teams?.filter(obj => obj.id === props.teamData.AwayTeam)[0]
     if (!props.teams || !props.teamData) { return <LoadingSpinner /> }
